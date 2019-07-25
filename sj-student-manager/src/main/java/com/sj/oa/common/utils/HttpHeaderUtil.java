@@ -114,8 +114,8 @@ public class HttpHeaderUtil{
         {
             url = new URL(IP_URL);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(3000);
-            connection.setReadTimeout(3000);
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(10000);
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setRequestMethod("POST");

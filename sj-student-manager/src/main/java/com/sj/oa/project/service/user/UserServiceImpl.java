@@ -60,6 +60,9 @@ public class UserServiceImpl implements IUserService{
             uid=String.valueOf((l+1));
         }
         record.setUid(uid);
+        //使用MD5加密新用户密码
+        //alter by gaojun on 20190725
+        record.setPwd(Encryption.getMD5(record.getPwd(),record.getUid()).toString());
         return userMapper.insertSelective(record);
     }
 
@@ -96,6 +99,7 @@ public class UserServiceImpl implements IUserService{
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             throw new RuntimeException("系统异常！");
         }
 

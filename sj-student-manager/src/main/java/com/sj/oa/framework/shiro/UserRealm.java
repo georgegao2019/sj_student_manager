@@ -1,6 +1,7 @@
 package com.sj.oa.framework.shiro;
 
 import com.sj.oa.common.constant.CsEnum;
+import com.sj.oa.common.utils.shiro.Encryption;
 import com.sj.oa.project.po.Permission;
 import com.sj.oa.project.po.Role;
 import com.sj.oa.project.po.User;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.sj.oa.common.utils.shiro.ShiroUtils.getUserId;
 
 /**
  * @author  永健
@@ -50,12 +53,13 @@ public class UserRealm extends AuthorizingRealm{
         String loginName = u_pTaken.getUsername();
 
         //用户校验
+        //用户名校验
         User user = loginService.login(loginName);
         if (user == null)
         {
             throw new UnknownAccountException("用户不存在！");
         }
-
+        //账户状态校验
         String status = user.getStatus().toString();
         if (status.equals(CsEnum.user.USER_USER_BLOCKED.getValue()))
         {
@@ -65,8 +69,11 @@ public class UserRealm extends AuthorizingRealm{
 
         /**  用户存在密码交给 realm 比对
          * 1).principal: 认证的实体信息，可以使username 也可以是数据表对应的用户实体类对象
-         * 2).credentials:  密码
-         * 3).realmName: 当前reaml 对象的name. 丢奥用父类的getName() 方法即可
+         * 2).credentials:  密码，shiro会使用这个密码与token中的密码做比较，相同即认证成功
+         *                  所以这个密码我们应该传入的是数据库中的密码，也就是user实体中的密码
+         *                  如果使用token中得到的密码并加密，会导致输入任何密码都可以登录成功
+         * 3).credentialsSalt: 如果密码使用了加密规则，需要传入加密的盐值
+         * 4).realmName: 当前reaml 对象的name. 就用父类的getName() 方法即可
          **/
 
 
@@ -76,9 +83,9 @@ public class UserRealm extends AuthorizingRealm{
 
 
         //加盐 计算盐值 保证每个加密后的 MD5 不一样
-        ByteSource credentialsSalt = ByteSource.Util.bytes(user.getUid());
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPwd(), credentialsSalt,
-                                                                     this.getName());
+        //加密后密码校验
+        ByteSource s = ByteSource.Util.bytes(user.getUid());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user,user.getPwd(),s,this.getName());
         return info;
     }
 

@@ -10,7 +10,7 @@ public  class Encryption {
         //密码
         Object credentials = pwd;
         //使用ByteSource.Util.bytes()计算盐值
-        Object Salt = ByteSource.Util.bytes(salt);
+        ByteSource Salt = ByteSource.Util.bytes(salt);
         //加密次数
         int hashIterations = 1024;
         Object result = new SimpleHash(hashAlgorithmName, credentials, Salt, hashIterations);

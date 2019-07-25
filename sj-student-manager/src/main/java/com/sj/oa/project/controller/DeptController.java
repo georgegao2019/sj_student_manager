@@ -171,6 +171,7 @@ public class DeptController extends BaseController{
     public AjaxResult addDept(Dept dept)
     {
         dept.setCreateTime(new Date());
+        dept.setStatus(0);
         return  result(iDeptService.insertSelective(dept));
     }
 

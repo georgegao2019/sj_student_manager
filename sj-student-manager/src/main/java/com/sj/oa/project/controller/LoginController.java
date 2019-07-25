@@ -59,41 +59,29 @@ public class LoginController extends BaseController{
         Subject subject = SecurityUtils.getSubject();
 
         //验证用户名和密码 验证码的问题
-        try
-        {
+        try {
             loginService.checkLogin(user.getName(), user.getPwd(), validateCode);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             session.setAttribute(Constants.LOGIN_ERROR, e.getMessage());
             return error(e.getMessage());
         }
 
-        try
-        {
-            if (!subject.isAuthenticated())
-            {
+        try {
+            boolean isAuthenticated = subject.isAuthenticated();
+            if (!isAuthenticated) {
                 subject.login(token);
             }
-
-        }
-        catch (IncorrectCredentialsException e)
-        {
+        } catch (IncorrectCredentialsException e) {
+            e.printStackTrace();
             session.setAttribute(Constants.LOGIN_ERROR,"密码错误");
             return error("密码错误！");
-        }
-        catch (UnknownAccountException e)
-        {
+        } catch (UnknownAccountException e) {
             session.setAttribute(Constants.LOGIN_ERROR,e.getMessage());
             return error(e.getMessage());
-        }
-        catch (LockedAccountException e)
-        {
+        } catch (LockedAccountException e) {
             session.setAttribute("login",e.getMessage());
             return error(e.getMessage());
-        }
-        catch (AuthenticationException e)
-        {
+        } catch (AuthenticationException e) {
 //            String msg = "用户名或密码错误！";
 //            if (!StringUtils.isEmpty(e.getMessage()))
 //            {

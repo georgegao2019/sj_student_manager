@@ -148,7 +148,7 @@ and ps.positionId =u.position
 
     <!--批量删除-->
     <delete id="deleteByPrimaryKeys" parameterType="String">
-        UPDA TE
+        UPDATE
         t_user
         set status = -1
         WHERE uid IN
