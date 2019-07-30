@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.MajorInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.MajorInfo">
+        <result column="id" property="id" />
+        <result column="major_code" property="majorCode" />
+        <result column="major_name" property="majorName" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,major_code,major_name
+    </sql>
+
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String">
+      select <include refid="Base_Column_List"/>
+        from t_major_info
+        where id = #{id};
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteByPrimaryKeys" parameterType="String">
+        UPDATE
+        t_major_info
+        set status = -1
+        WHERE uid IN
+        <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--
+     添加
+    -->
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.MajorInfo">
+        insert into t_major_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="majorCode != null">
+                major_code,
+            </if>
+            <if test="majorName != null">
+                major_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="majorCode != null">
+                #{majorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="majorName != null">
+                #{majorName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.MajorInfo">
+        update t_major_info
+        <set>
+            <if test="majorCode != null">
+                major_code = #{majorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="majorName != null">
+                major_name = #{majorName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 用户列表 根据不同条件查询-->
+    <select id="selectByMajorInfo" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.MajorInfo">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_major_info
+        <where>
+            <if test="majorCode !=null">
+                and major_code = #{majorCode}
+            </if>
+            <if test="majorName !=null">
+                and major_name = #{majorName}
+            </if>
+        </where>
+    </select>
+</mapper>
