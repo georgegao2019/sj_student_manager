@@ -37,8 +37,7 @@ public class PositionServiceImpl implements IPositionService{
     public int deleteByPrimarysKey(Integer[] positionId)
     {
         // 当前岗位是否已经分配
-        for (Integer id :
-                positionId)
+        for (Integer id :positionId)
         {
             User user = new User();
             user.setPosition(id);

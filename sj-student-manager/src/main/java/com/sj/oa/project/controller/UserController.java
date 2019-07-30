@@ -81,6 +81,7 @@ public class UserController extends BaseController{
 
 
     /**
+     *
      * 编辑用户 system/user/edit/20180914-1
      */
     @RequiresPermissions("user:update")
@@ -96,6 +97,24 @@ public class UserController extends BaseController{
         model.addAttribute("positions", role_post_dept.get("position"));
         model.addAttribute("user", user);
         return prefix + "edit";
+    }
+
+    /**
+     * 查看用户详情
+     * system/user/info
+     *
+     * @param userId
+     * @param model
+     * @return
+     */
+    @RequestMapping("/info/{userId}")
+    @RequiresPermissions("user:info")
+    @Operlog(modal = "用户管理", descr = "查看用户信息详情")
+    public String userInfo(@PathVariable("userId") String userId,Model model){
+        //个人信息
+        User user = iUserService.selectByPrimaryKey(userId);
+        model.addAttribute("user", user);
+        return prefix + "info";
     }
 
     /**

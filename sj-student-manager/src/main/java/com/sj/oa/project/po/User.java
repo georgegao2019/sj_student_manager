@@ -6,57 +6,51 @@ import java.util.Date;
 
 public class User extends BasePo{
 
-
     private String uid;
-
+    //密码
     private String pwd;
+    //登录用户名
     private String loginName;
-
-
+    //学生姓名
     private String name;
-
-
+    //学生学号
+    private String studentId;
+    //性别
     private String sex;
-
-
+    //年龄
     private Integer age;
-
-
+    //部门
     private Integer dept;
-
-
+    //身份证号
+    private String cardNo;
+    //专业
+    private String major;
+    //岗位
     private Integer position;
-
-
+    //爱好
     private String hobby;
-
-
+    //联系方式
     private String tel;
-
-
+    //邮箱
     private String email;
-
-
+    //头像地址
     private String avatar;
-
-
+    //创建时间
     private Date createTime;
-
+    //状态
     private Integer status;
-
-
+    //是否删除
     private Integer isdel;
-
-
+    //自我介绍
     private String self_introduction;
-
+    //角色ID
     private Integer role_ID;
 
     /**
      * 角色
      */
     private Role role;
-
+    //部门
     private Dept deptPo;
 
     /**
@@ -124,6 +118,14 @@ public class User extends BasePo{
         this.name = name;
     }
 
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
     public String getSex()
     {
         return sex;
@@ -142,6 +144,22 @@ public class User extends BasePo{
     public void setAge(Integer age)
     {
         this.age = age;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 
     public Integer getDept()
