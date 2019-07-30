@@ -9,8 +9,11 @@
         <result column="pwd" property="pwd" jdbcType="VARCHAR"/>
         <result column="loginName" property="loginName" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="studentid" property="studentId" jdbcType="VARCHAR" />
         <result column="sex" property="sex" jdbcType="VARCHAR"/>
         <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
+        <result column="major" property="major" jdbcType="VARCHAR" />
         <result column="dept" property="dept" jdbcType="VARCHAR"/>
         <result column="position" property="position" jdbcType="VARCHAR"/>
         <result column="self_introduction" property="self_introduction" jdbcType="VARCHAR"/>
@@ -55,7 +58,7 @@
       抽取公共字段
     -->
     <sql id="Base_Column_List">
-        uid, pwd,loginName,name, sex, age, dept, position, self_introduction,hobby, tel, email, u.createTime as uctime,
+        uid, pwd,loginName,name, studentid, sex, age, card_no, major, dept, position, self_introduction,hobby, tel, email, u.createTime as uctime,
         avatar,u.status as ustatus, u.role_ID as uroleId,isdel
     </sql>
 
@@ -116,6 +119,9 @@ and ps.positionId =u.position
             <if test="uid !=null and uid !=''">
                 and uid = #{uid}
             </if>
+            <if test="studentId !=null and studentId !=''">
+                and studentId = #{studentId}
+            </if>
             <if test="name !=null and name !=''">
                 and name LIKE concat('%',#{name},'%')
             </if>
@@ -148,7 +154,7 @@ and ps.positionId =u.position
 
     <!--批量删除-->
     <delete id="deleteByPrimaryKeys" parameterType="String">
-        UPDA TE
+        UPDATE
         t_user
         set status = -1
         WHERE uid IN
