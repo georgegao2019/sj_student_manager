@@ -23,6 +23,8 @@ import java.util.List;
 @RequestMapping("/operlog")
 public class OperLogController extends BaseController{
     private String prefix = "system/operlog/";
+
+    //注入
     @Autowired
     IOperLogService iOperLogService;
 

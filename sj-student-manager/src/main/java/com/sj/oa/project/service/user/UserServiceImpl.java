@@ -212,4 +212,9 @@ public class UserServiceImpl implements IUserService{
         return CsEnum.unique.IS_UNIQUE.getValue();
     }
 
+    @Override
+    public User selectByStudentId(String studentId) {
+        return userMapper.selectByStudentId(studentId);
+    }
+
 }

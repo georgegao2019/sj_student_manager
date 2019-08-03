@@ -277,6 +277,25 @@ public class UserController extends BaseController{
         return uniqueFlag;
     }
 
+    @PostMapping("/getUserByStudentId")
+    @ResponseBody
+    public Object getUserByStudentId(User user){
+        AjaxResult result = null;
+        if(!StringUtils.isEmpty(user.getStudentId())){
+            User userInfo = iUserService.selectByStudentId(user.getStudentId());
+            if(userInfo != null){
+                result = AjaxResult.success("操作成功");
+                result.put("user",userInfo);
+            }else{
+                result = AjaxResult.error(1,"学号不存在");
+            }
+        }else{
+            result = AjaxResult.error(2,"请求参数不全");
+        }
+
+        return result;
+    }
+
 
     public Map<String, Object> getRole_Post_Dept()
     {

@@ -77,4 +77,9 @@ public interface UserMapper{
     /** 查询最新的id*/
     Long selectUserMaxId();
 
+    /**
+     * 根据学号查询学生信息
+     */
+    User selectByStudentId(String studentId);
+
 }

@@ -86,8 +86,7 @@ public class OperLogServiceImpl implements IOperLogService{
      * @date 2018/9/18 20:20
      */
     @Override
-    public List<OperLog> selectOperLogList(OperLog record)
-    {
+    public List<OperLog> selectOperLogList(OperLog record) {
         return operLogMapper.selectOperLogList(record);
     }
 }

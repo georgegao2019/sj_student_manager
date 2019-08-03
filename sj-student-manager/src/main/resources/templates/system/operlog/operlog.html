@@ -62,7 +62,8 @@
 <script th:inline="javascript">
     var detailFlag = [[${@permission.hasPermi('operlog:update')}]];
     var prefix = "/operlog"
-
+    //jquery技术 js->包装->jauery
+    //bootstrap
     $(function () {
         var options = {
             url: prefix + "/tableList",
