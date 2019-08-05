@@ -5,13 +5,15 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="content" property="content"/>
+        <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+        <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
         <result column="createBy" property="createBy" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="INTEGER"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, title,content, createBy,type,status, createTime
+        id, title,content,dept_id,dept_name,createBy,type,status, createTime
     </sql>
 
     <!--根据主键查询-->
@@ -36,6 +38,9 @@
             </if>
             <if test="createBy !=null and createBy!=''">
                 and createBy like CONCAT('%',#{createBy},'%')
+            </if>
+            <if test="deptId !=null and deptId!=''">
+                and dept_id = #{deptId}
             </if>
             <if test="status !=null and status!='' or status==0">
                 and status=#{status}
@@ -72,6 +77,12 @@
             <if test="createBy != null">
                 createBy,
             </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="deptName != null">
+                dept_name,
+            </if>
             <if test="type != null">
                 type,
             </if>
@@ -91,6 +102,12 @@
             </if>
             <if test="createBy != null">
                 #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=VARCHAR},
+            </if>
+            <if test="deptName != null">
+                #{deptName,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
                 #{type,jdbcType=INTEGER},
@@ -117,6 +134,12 @@
             </if>
             <if test="createBy != null">
                 createBy=#{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                dept_id=#{deptId,jdbcType=VARCHAR},
+            </if>
+            <if test="deptName != null">
+                dept_name=#{deptName,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
                 type=#{type,jdbcType=INTEGER},

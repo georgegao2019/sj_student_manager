@@ -113,15 +113,15 @@
 <!--</div>-->
 <div class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-sm-4">
+        <!--<div class="col-sm-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>考勤</h5>
                 </div>
                 <div class="calendar ibox-content" style="background-image: url('/img/attendlock.jpg')">
-                    <!--<div class="row">-->
-                    <!--<div align="center" id="currentDate"></div>-->
-                    <!--</div>-->
+                    &lt;!&ndash;<div class="row">&ndash;&gt;
+                    &lt;!&ndash;<div align="center" id="currentDate"></div>&ndash;&gt;
+                    &lt;!&ndash;</div>&ndash;&gt;
                     <div class="row">
 
                         <div class="col-sm-5">
@@ -152,7 +152,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="col-sm-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -181,29 +181,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>会议通知</h5>
-                </div>
-                <div class="ibox-content">
-                    <ul>
-                        <li th:each="meet,iterStat:${meets}" th:if="${iterStat.count}<=8">
-                            <a href="javascript:;" th:onclick="'javascript:checkMeetMsg('+${meet.id}+')'"
-                               th:text="${#strings.abbreviate(meet.title,10)}"></a>
-                            <div class="iboxBlock">
-                                时间：
-                                <span th:text="${#dates.format(meet.startTime,'yyyy-MM-dd HH:mm:ss')}"></span>
-                            </div>
-                        </li>
-                        <li th:if="${#lists.isEmpty(meets)}">暂无会议通知</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <div class="col-sm-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -222,6 +199,29 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <!-- <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>会议通知</h5>
+                </div>
+                <div class="ibox-content">
+                    <ul>
+                        <li th:each="meet,iterStat:${meets}" th:if="${iterStat.count}<=8">
+                            <a href="javascript:;" th:onclick="'javascript:checkMeetMsg('+${meet.id}+')'"
+                               th:text="${#strings.abbreviate(meet.title,10)}"></a>
+                            <div class="iboxBlock">
+                                时间：
+                                <span th:text="${#dates.format(meet.startTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+                            </div>
+                        </li>
+                        <li th:if="${#lists.isEmpty(meets)}">暂无会议通知</li>
+                    </ul>
+                </div>
+            </div>
+        </div>-->
+
         <div class="col-sm-4" shiro:hasPermission="task:list">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">

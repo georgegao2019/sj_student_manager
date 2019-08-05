@@ -13,6 +13,11 @@ public class Notice extends BasePo{
 
     private String createBy;
 
+    //公告所属部门id
+    private Integer deptId;
+    //公告所属部门名称
+    private String deptName;
+
     //0 正常，1不正常
     private Integer status;
 
@@ -59,6 +64,22 @@ public class Notice extends BasePo{
     public void setCreateBy(String createBy)
     {
         this.createBy = createBy;
+    }
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
     public Integer getStatus()

@@ -5,6 +5,7 @@ import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.Notice;
+import com.sj.oa.project.po.User;
 import com.sj.oa.project.service.notice.INoticeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,17 @@ public class NoticeController extends BaseController{
     public TableDataInfo listPag(Notice pnotice)
     {
         startPage();
+        //获取当前登录用户信息 -> 判断用户身份 -> 查询权限内的公告通知
+        //-> 管理员可以查看所有公告通知
+        User user = getUser();
+        Integer deptId = null;
+        if(user != null){
+            //获取用户的角色id
+            if(!User.isAdmin(user)) {
+                deptId = user.getDept();
+            }
+        }
+        pnotice.setDeptId(deptId);
         List<Notice> notices = iNoticeService.selectNoticeList(pnotice);
         return getDataTable(notices);
     }
@@ -125,8 +137,13 @@ public class NoticeController extends BaseController{
     public AjaxResult addRole(Notice notice)
     {
         notice.setCreateTime(new Date());
-//        登录人
-        notice.setCreateBy(String.valueOf(getUserId()));
+        //获取登录用户
+        User user = getUser();
+        //登录部门
+        notice.setDeptId(user.getDept());
+        notice.setDeptName(user.getDeptPo().getDeptName());
+        //登录人
+        notice.setCreateBy(user.getName());
         int insert = 0;
         try
         {

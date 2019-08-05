@@ -67,6 +67,27 @@ public class User extends BasePo{
         return uid.equals("1111111111") ? true : false;
     }
 
+    public static boolean isAdmin(User user){
+        if(user != null && user.getDept() != null){
+            return user.getDept()==1||user.getDept()==13? true:false;
+        }else{
+            return false;
+        }
+    }
+    /**
+     * 判断用户角色是不是信息管理中心干员
+     * @return
+     */
+    public static boolean isInformationCenterP(Integer role_ID){
+        return role_ID==41? true:false;
+    }
+    /**
+     * 判断用户角色是不是信息管理中心部长
+     * @return
+     */
+    public static boolean isInformationCenterM(Integer role_ID){
+        return role_ID==42? true:false;
+    }
 
     public String getUid()
     {

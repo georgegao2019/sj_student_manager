@@ -97,10 +97,12 @@ public class IndexController extends BaseController{
     public String toMain(Model model)
     {
         // 会议列表    getUserId()
-        List<Meet> meets = iMeetService.selectMyMeetList(getUserId());
+        //List<Meet> meets = iMeetService.selectMyMeetList(getUserId());
 
         //公告列表
-        List<Notice> notices = iNoticeService.selectNoticeList(new Notice());
+        Notice pnotice = new Notice();
+        pnotice.setStatus(0);
+        List<Notice> notices = iNoticeService.selectNoticeList(pnotice);
 
         //便签列表
         Note note = new Note();
@@ -119,13 +121,13 @@ public class IndexController extends BaseController{
 
 
         //考勤时间工作
-        WorkTime workShif = workShifMapper.selectUsing();
+        //WorkTime workShif = workShifMapper.selectUsing();
 
         model.addAttribute("notice", notices);
-        model.addAttribute("meets", meets);
+        //model.addAttribute("meets", meets);
         model.addAttribute("notes", notes);
         model.addAttribute("Task", actTasks);
-        model.addAttribute("workShif", workShif);
+        //model.addAttribute("workShif", workShif);
 
 
         return "main";
