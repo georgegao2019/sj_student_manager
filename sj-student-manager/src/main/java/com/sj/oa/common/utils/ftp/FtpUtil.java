@@ -29,7 +29,7 @@ public class FtpUtil{
     /**
      * FTP服务器ip
      */
-    private static final String host = "106.14.226.138";
+    private static final String host = "47.105.195.27";
     /**
      * FTP服务器端口
      */
@@ -37,19 +37,19 @@ public class FtpUtil{
     /**
      * FTP登录账号
      */
-    private static final String username = "ftpuser";
+    private static final String username = "sj";
     /**
      * FTP登录密码
      */
-    private static final String password = "";
+    private static final String password = "sj_123456";
     /**
      * FTP服务器基础目录,/home/ftpuser/images 图片上传到这 服务器路径
      */
-    private static final String basePath = "/home/ftpuser/images";
+    private static final String basePath = "/home/www/site/dev";
     /**
      * FTP服务器文件存放路径。例如分日期存放：/2018/05/28。文件的路径为basePath+filePath
      */
-    public static final String filePath = "http://106.14.226.138:7777";
+    public static final String filePath = "http://47.105.195.27:7777";
 
 
     /**
@@ -264,7 +264,7 @@ public class FtpUtil{
         {
             int reply;
             // 连接FTP服务器
-            ftp.connect(host, port);
+            ftp.connect(host,port);
             // 如果采用默认端口，可以使用ftp.connect(host)的方式直接连接FTP服务器
             // 登录
             ftp.login(username, password);

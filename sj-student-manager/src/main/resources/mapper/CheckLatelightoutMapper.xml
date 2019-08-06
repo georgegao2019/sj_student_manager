@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.CheckLatelightoutMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.CheckLatelightout">
+        <result column="id" property="id" />
+        <result column="dormitory_code" property="dormitoryCode" />
+        <result column="lightout_time" property="lightoutTime" />
+        <result column="check_person" property="checkPerson" />
+        <result column="check_time" property="checkTime" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,dormitory_code,lightout_time,check_person,check_time,status,
+        create_time,create_user,update_time,update_user
+    </sql>
+
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String">
+        select <include refid="Base_Column_List"/>
+        from t_check_latelightout
+        where id = #{id};
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteByPrimaryKeys" parameterType="int">
+        UPDATE
+        t_check_latelightout
+        set status = 1
+        WHERE id IN
+        <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--
+     添加
+    -->
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.CheckLatelightout">
+        insert into t_check_latelightout
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="dormitoryCode != null">
+                dormitory_code,
+            </if>
+            <if test="lightoutTime != null">
+                lightout_time,
+            </if>
+            <if test="checkPerson != null">
+                check_person,
+            </if>
+            <if test="checkTime != null">
+                check_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="dormitoryCode != null">
+                #{dormitoryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="lightoutTime != null">
+                #{lightoutTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkPerson != null">
+                #{checkPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="checkTime != null">
+                #{checkTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.CheckLatelightout">
+        update t_check_latelightout
+        <set>
+            <if test="dormitoryCode != null">
+                dormitory_code = #{dormitoryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="lightoutTime != null">
+                lightout_time = #{lightoutTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkPerson != null">
+                check_person = #{checkPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="checkTime != null">
+                check_time = #{checkTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_time = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 用户列表 根据不同条件查询-->
+    <select id="selectByCheckLatelightout" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.CheckLatelightout">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_check_latelightout
+        <where>
+            <if test="dormitoryCode !=null">
+                and dormitory_code = #{dormitoryCode}
+            </if>
+            <if test="beginTime !=null">
+                <![CDATA[   and DATE_FORMAT(check_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]>
+            </if>
+            <if test="overTime !=null">
+                <![CDATA[  and DATE_FORMAT(check_time, '%Y-%m-%d') <= DATE_FORMAT(#{overTime}, '%Y-%m-%d')    ]]>
+            </if>
+        </where>
+    </select>
+</mapper>
