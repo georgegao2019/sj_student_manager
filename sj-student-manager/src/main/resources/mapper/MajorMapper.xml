@@ -9,10 +9,15 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="major_code" jdbcType="VARCHAR" property="majorCode"/>
         <result column="major_name" jdbcType="VARCHAR" property="majorName"/>
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
     </resultMap>
 
     <sql id="Base_Column_List">
-       id, major_code, major_name
+       id, major_code, major_name,status,create_time,create_user,update_time,update_user
     </sql>
 
     <!--
@@ -72,7 +77,22 @@
                 major_code,
             </if>
             <if test="majorName != null">
-                major_name
+                major_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -81,6 +101,21 @@
             </if>
             <if test="majorName != null">
                 #{majorName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>

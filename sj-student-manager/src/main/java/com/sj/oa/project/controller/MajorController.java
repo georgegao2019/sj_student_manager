@@ -5,7 +5,9 @@ import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.Major;
+import com.sj.oa.project.po.User;
 import com.sj.oa.project.service.major.IMajorService;
+import com.sj.oa.project.service.user.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,10 +25,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/major")
 public class MajorController extends BaseController {
-    private String prefix = "system/major/";
+    private String prefix = "system/college/";
 
     @Autowired
     IMajorService majorService;
+
+    @Autowired
+    private IUserService iUserService;
 
     /**
      *
@@ -38,7 +44,7 @@ public class MajorController extends BaseController {
     @RequiresPermissions("major:list")
     public String tolist()
     {
-        return prefix + "major";
+        return prefix + "majorInfo";
     }
 
     /**
@@ -96,6 +102,19 @@ public class MajorController extends BaseController {
 
     /**
      *
+     * @描述: 添加页面
+     *
+     * @params:
+     * @return:
+     * @date: 2018/9/26 21:15
+     */
+    @RequestMapping("/toAdd")
+    public String toAdd(Model model) {
+        return prefix + "/majorInfoAdd";
+    }
+
+    /**
+     *
      * @描述 执行保存操作
      *
      * @date 2018/9/16 11:54
@@ -106,6 +125,10 @@ public class MajorController extends BaseController {
     @ResponseBody
     public AjaxResult addMajor(Major major)
     {
+        major.setStatus(0);
+        User loginUser = iUserService.selectByPrimaryKey(getUserId());
+        major.setCreateUser(loginUser.getName());
+        major.setCreateTime(new Date());
         return  result(majorService.insertSelective(major));
     }
 
@@ -121,7 +144,7 @@ public class MajorController extends BaseController {
     {
         Major major = majorService.selectByPrimaryKey(id);
         model.addAttribute("Major", major);
-        return prefix + "edit";
+        return prefix + "majorInfoEdit";
 
     }
 

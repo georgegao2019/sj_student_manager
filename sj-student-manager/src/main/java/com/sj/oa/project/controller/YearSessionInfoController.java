@@ -71,7 +71,7 @@ public class YearSessionInfoController extends BaseController{
      */
     @RequestMapping("/toAdd")
     public String toAdd(Model model) {
-        return prefix + "/add";
+        return prefix + "/yearSessionAdd";
     }
     /**
      *
@@ -122,7 +122,7 @@ public class YearSessionInfoController extends BaseController{
     public String toEdit(@PathVariable("id") Integer id, Model model) {
         YearSessionInfo record = iYearSessionInfoService.selectByPrimaryKey(id);
         model.addAttribute("note", record);
-        return prefix + "/edit";
+        return prefix + "/yearSessionEdit";
     }
     /**
      *
