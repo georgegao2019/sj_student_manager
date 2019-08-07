@@ -10,6 +10,7 @@ public class Major extends BasePo {
     private Integer id;
     private String majorCode;
     private String majorName;
+    private Integer status;
 
     public Integer getId() {
         return id;
@@ -42,5 +43,13 @@ public class Major extends BasePo {
                 ", majorCode='" + majorCode + '\'' +
                 ", majorName='" + majorName + '\'' +
                 '}';
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
