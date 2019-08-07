@@ -14,6 +14,7 @@ public class Classall extends BasePo {
     private int manNumber;
     private int womenNumber;
     private String headmaster;
+    private String majorCode;
 
     public int getId() {
         return id;
@@ -79,6 +80,14 @@ public class Classall extends BasePo {
         this.headmaster = headmaster;
     }
 
+    public String getMajorCode() {
+        return majorCode;
+    }
+
+    public void setMajorCode(String majorCode) {
+        this.majorCode = majorCode;
+    }
+
     @Override
     public String toString() {
         return "Classall{" +
@@ -90,6 +99,7 @@ public class Classall extends BasePo {
                 ", manNumber=" + manNumber +
                 ", womenNumber=" + womenNumber +
                 ", headmaster='" + headmaster + '\'' +
+                ", majorCode='" + majorCode + '\'' +
                 '}';
     }
 }

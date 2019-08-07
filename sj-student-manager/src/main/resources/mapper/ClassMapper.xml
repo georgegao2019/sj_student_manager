@@ -19,72 +19,54 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        depId, leader,deptName, introduce, d.createTime,d.status
+        id, class_name,belong_major, grade, total_number,man_number,women_number,headmaster,major_code
     </sql>
 
     <!--
        根据主键查询
     -->
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select u.uid,u.name,
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select *
         <include refid="Base_Column_List"/>
-        from t_dept d
-        LEFT JOIN t_user u on d.depId=u.dept
-        where depId = #{depId,jdbcType=VARCHAR}
+        from t_class_info
+        where id = #{id,jdbcType=INTEGER}
     </select>
 
     <!--
-       检验部门唯一性
+       查询出所有专业下的所有班级
     -->
-    <select id="checkDeptNameUnique" parameterType="String" resultMap="BaseResultMap">
-    select * from t_dept d
-    where deptName=#{deptName}
-  </select>
-
-
-    <!--
-       查询出所有部门下的所有用户
-    -->
-    <select id="selectDeptAndUser" resultMap="BaseResultMap">
-        select u.uid,u.name,
+    <select id="selectClassAndMajor" resultMap="BaseResultMap">
+        select cl.id,cl.class_name,
         <include refid="Base_Column_List"/>
-        from t_dept d
-        LEFT JOIN t_user u on d.depId=u.dept
+        from t_class_info cl
+        LEFT JOIN t_major_info m on cl.major_code = m.major_code
 
     </select>
 
 
     <!--
-      部门列表
+      班级列表
     -->
-    <select id="selectDeptList" resultMap="BaseResultMap" parameterType="Dept">
+    <select id="selectClassList" resultMap="BaseResultMap" parameterType="Classall">
         select
         <include refid="Base_Column_List"/>
-        FROM t_dept d
+        FROM t_class_info cl
         <where>
-            <if test="deptName !=null and deptName !=''">
-                and deptName LIKE concat('%',#{deptName},'%')
+            <if test="className !=null and className !=''">
+                and className LIKE concat('%',#{className},'%')
             </if>
-
-            <if test="status!=null and status!='' or status==0">
-                and status=#{status}
+            <if test="major !=null and major !=''">
+                and belong_major LIKE concat('%',#{major},'%')
             </if>
-            <if test="beginTime !=null">
-                <![CDATA[   and DATE_FORMAT(d.createTime, '%Y-%m-%d')>=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]>
-            </if>
-            <if test="overTime !=null">
-                <![CDATA[  and DATE_FORMAT(d.createTime, '%Y-%m-%d') <= DATE_FORMAT(#{overTime}, '%Y-%m-%d')    ]]>
-            </if>
-            AND status &gt;=0
         </where>
     </select>
 
     <!--
         批量删除
     -->
-    <delete id="deleteByPrimaryKeys" parameterType="String">
-        delete from t_dept
-        where depId IN
+    <delete id="deleteByPrimaryKeys" parameterType="Integer">
+        delete from t_class_info
+        where id IN
         <foreach collection="array" open="(" separator="," close=")" item="id">
             #{id}
         </foreach>
@@ -93,77 +75,109 @@
     <!--
        添加
     -->
-    <insert id="insert" parameterType="Dept">
+    <insert id="insert" parameterType="Classall">
 
-    insert into t_dept (leader, deptName, introduce,
-    createTime)
-    values (#{leader}, #{deptName,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR},
-    #{createTime,jdbcType=TIMESTAMP})
+    insert into t_class_info (class_name,belong_major, grade, total_number,man_number,women_number,headmaster.major_code)
+    values (#{className,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR},
+    #{totalNumber,jdbcType=INTEGER},#{manNumber,jdbcType=INTEGER},#{womenNumber,jdbcType=INTEGER},#{headmaster,jdbcType=VARCHAR},#{majorCode,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="Dept">
-        insert into t_dept
+    <insert id="insertSelective" parameterType="Classall">
+        insert into t_class_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="leader != null">
-                leader,
+            <if test=" className != null">
+                class_name,
             </if>
-            <if test="deptName != null">
-                deptName,
+            <if test="major != null">
+                belong_major,
             </if>
-            <if test="introduce != null">
-                introduce,
+            <if test="grade != null">
+                grade,
             </if>
-            <if test="status != null">
-                status,
+            <if test="totalNumber != null">
+                total_number,
             </if>
-            <if test="createTime != null">
-                createTime,
+            <if test="manNumber != null">
+                man_number,
+            </if>
+            <if test="womenNumber != null">
+                women_number,
+            </if>
+            <if test="headmaster != null">
+                headmaster,
+            </if>
+            <if test="majorCode != null">
+                major_code,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="leader != null">
-                #{leader,jdbcType=VARCHAR},
+            <if test="className != null">
+                #{ class_name,jdbcType=VARCHAR},
             </if>
-            <if test="deptName != null">
-                #{deptName,jdbcType=VARCHAR},
+            <if test="major != null">
+                #{  belong_major,jdbcType=VARCHAR},
             </if>
-            <if test="introduce != null">
-                #{introduce,jdbcType=VARCHAR},
+            <if test="grade != null">
+                #{grade,jdbcType=VARCHAR},
             </if>
-            <if test="status != null">
-                #{status,jdbcType=INTEGER},
+            <if test="totalNumber != null">
+                #{total_number,jdbcType=INTEGER},
             </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+            <if test="manNumber != null">
+                #{man_number,jdbcType=INTEGER},
+            </if>
+            <if test="womenNumber != null">
+                #{women_number,jdbcType=INTEGER},
+            </if>
+            <if test="headmaster != null">
+                #{headmaster,jdbcType=VARCHAR},
+            </if>
+            <if test="majorCode != null">
+                #{major_code,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="Dept">
+    <update id="updateByPrimaryKeySelective" parameterType="Classall">
 
-        update t_dept
+        update t_class_info
         <set>
-            <if test="deptName != null">
-                deptName = #{deptName,jdbcType=VARCHAR},
+            <if test="className != null">
+                #{ class_name,jdbcType=VARCHAR},
             </if>
-            <if test="leader != null">
-                leader = #{leader,jdbcType=VARCHAR},
+            <if test="major != null">
+                #{  belong_major,jdbcType=VARCHAR},
             </if>
-            <if test="introduce != null">
-                introduce = #{introduce,jdbcType=VARCHAR},
+            <if test="grade != null">
+                #{grade,jdbcType=VARCHAR},
             </if>
-            <if test="status != null">
-                status = #{status},
+            <if test="totalNumber != null">
+                #{total_number,jdbcType=INTEGER},
+            </if>
+            <if test="manNumber != null">
+                #{man_number,jdbcType=INTEGER},
+            </if>
+            <if test="womenNumber != null">
+                #{women_number,jdbcType=INTEGER},
+            </if>
+            <if test="headmaster != null">
+                #{headmaster,jdbcType=VARCHAR},
+            </if>
+            <if test="majorCode != null">
+                #{major_code,jdbcType=VARCHAR}
             </if>
         </set>
-        where depId = #{depId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="Dept">
 
-    update t_dept
-    set deptName = #{deptName,jdbcType=VARCHAR},
-    leader=#{leader}
-      introduce = #{introduce,jdbcType=VARCHAR},
-      createTime = #{createTime,jdbcType=TIMESTAMP}
-      status = #{status,jdbcType=INTEGER}
-    where depId = #{depId,jdbcType=VARCHAR}
+    <update id="updateByPrimaryKey" parameterType="Classall">
+      update t_class_info
+       set #{class_name,jdbcType=VARCHAR},
+          #{belong_major,jdbcType=VARCHAR},
+          #{grade,jdbcType=VARCHAR},
+          #{total_number,jdbcType=INTEGER},
+          #{man_number,jdbcType=INTEGER},
+          #{women_number,jdbcType=INTEGER},
+          #{headmaster,jdbcType=VARCHAR},
+          #{major_code,jdbcType=VARCHAR}
+      where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

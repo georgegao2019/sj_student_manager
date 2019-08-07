@@ -52,7 +52,11 @@ public interface IClassService {
      */
     List<Classall> selectClassList(Classall classall);
 
-
+    /**
+     * @描述: 查询所有专业下的所有班级 班级归类 树状数据
+     * @return
+     */
+    List<Classall> selectClassAndMajor();
 
 
 }
