@@ -4,12 +4,9 @@ import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
-import com.sj.oa.project.po.CheckMorningExercises;
-import com.sj.oa.project.po.Major;
 import com.sj.oa.project.po.User;
-import com.sj.oa.project.service.check.ICheckMorningExercisesService;
-import com.sj.oa.project.service.check.ICheckMorningExercisesService;
-import com.sj.oa.project.service.major.IMajorService;
+import com.sj.oa.project.po.YearSessionInfo;
+import com.sj.oa.project.service.college.IYearSessionInfoService;
 import com.sj.oa.project.service.user.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +22,17 @@ import java.util.List;
 /**
  * @author gaojun
  * @date 2019/8/1
- * 早操检查controller
+ * 应届管理controller
  */
 @Controller
-@RequestMapping("/cMorningExercises")
-public class CheckMorningExercisesController extends BaseController{
+@RequestMapping("/yearSession")
+public class YearSessionInfoController extends BaseController{
     //前缀
-    private final static String prefix = "system/cMorningExercises";
+    private final static String prefix = "system/college";
     @Autowired
-    ICheckMorningExercisesService iCheckMorningExercisesService;
+    IYearSessionInfoService iYearSessionInfoService;
     @Autowired
     IUserService iUserService;
-    @Autowired
-    private IMajorService iMajorService;
     /**
      *
      * @描述: 跳转到列表页
@@ -47,11 +42,9 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2018/9/26 21:13
      */
     @RequestMapping("/tolist")
-    @RequiresPermissions("cMorningExercises:list")
+    @RequiresPermissions("yearSession:list")
     public String toList(Model model) {
-        //查询全部专业
-        //List<Major> majors = iMajorService.selectMajorList();
-        return prefix + "/cMorningExercises";
+        return prefix + "/yearSessionInfo";
     }
     /**
      *
@@ -63,9 +56,9 @@ public class CheckMorningExercisesController extends BaseController{
      */
     @RequestMapping("/tableList")
     @ResponseBody
-    public TableDataInfo tableList(CheckMorningExercises record) {
+    public TableDataInfo tableList(YearSessionInfo record) {
         startPage();
-        List<CheckMorningExercises> records = iCheckMorningExercisesService.selectByCheckMorningExercises(record);
+        List<YearSessionInfo> records = iYearSessionInfoService.selectByYearSessionInfo(record);
         return getDataTable(records);
     }
     /**
@@ -89,16 +82,16 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2018/9/26 21:16
      */
     @RequestMapping("/addSave")
-    @RequiresPermissions("cMorningExercises:add")
-    @Operlog(modal = "早操检查",descr = "添加记录")
+    @RequiresPermissions("yearSession:add")
+    @Operlog(modal = "应届管理",descr = "添加记录")
     @ResponseBody
-    public AjaxResult addSave(CheckMorningExercises record) throws Exception {
+    public AjaxResult addSave(YearSessionInfo record) throws Exception {
         record.setCreateTime(new Date());
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
         record.setCreateUser(loginUser.getName());
-        //新增的早操检查记录默认是 有效 状态
+        //新增的应届管理记录默认是 有效 状态
         record.setStatus(0);
-        return result(iCheckMorningExercisesService.insertSelective(record));
+        return result(iYearSessionInfoService.insertSelective(record));
     }
     /**
      *
@@ -109,11 +102,11 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2019/8/1 22:02
      */
     @RequestMapping("/del")
-    @RequiresPermissions("cMorningExercises:del")
-    @Operlog(modal = "早操检查",descr = "删除记录")
+    @RequiresPermissions("yearSession:del")
+    @Operlog(modal = "应届管理",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
-        return result(iCheckMorningExercisesService.deleteByPrimaryKeys(ids));
+        return result(iYearSessionInfoService.deleteByPrimaryKeys(ids));
     }
     /**
      *
@@ -123,11 +116,11 @@ public class CheckMorningExercisesController extends BaseController{
      * @return:
      * @date: 2019/8/26 21:17
      */
-    @RequestMapping("/cMorningExercises/{id}")
-    @RequiresPermissions("cMorningExercises:update")
-    @Operlog(modal = "早操检查",descr = "查询记录")
+    @RequestMapping("/yearSession/{id}")
+    @RequiresPermissions("yearSession:update")
+    @Operlog(modal = "应届管理",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
-        CheckMorningExercises record = iCheckMorningExercisesService.selectByPrimaryKey(id);
+        YearSessionInfo record = iYearSessionInfoService.selectByPrimaryKey(id);
         model.addAttribute("note", record);
         return prefix + "/edit";
     }
@@ -140,10 +133,10 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2019/8/1 21:01
      */
     @RequestMapping("/editSave")
-    @RequiresPermissions("cMorningExercises:update")
-    @Operlog(modal = "早操检查",descr = "修改记录")
+    @RequiresPermissions("yearSession:update")
+    @Operlog(modal = "应届管理",descr = "修改记录")
     @ResponseBody
-    public AjaxResult editSave(CheckMorningExercises record) {
-        return result(iCheckMorningExercisesService.updateByPrimaryKeySelective(record));
+    public AjaxResult editSave(YearSessionInfo record) {
+        return result(iYearSessionInfoService.updateByPrimaryKeySelective(record));
     }
 }
