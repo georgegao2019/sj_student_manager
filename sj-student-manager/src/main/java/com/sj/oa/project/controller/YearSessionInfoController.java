@@ -139,4 +139,18 @@ public class YearSessionInfoController extends BaseController{
     public AjaxResult editSave(YearSessionInfo record) {
         return result(iYearSessionInfoService.updateByPrimaryKeySelective(record));
     }
+
+    /**
+     *
+     * @描述 ajax请求的所有部门
+     *
+     * @date 2018/9/16 10:48
+     */
+    @RequestMapping("/ajaxlist")
+    @ResponseBody
+    public List<YearSessionInfo> list(YearSessionInfo dept)
+    {
+        List<YearSessionInfo> depts = iYearSessionInfoService.selectByYearSessionInfo(dept);
+        return depts;
+    }
 }

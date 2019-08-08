@@ -6,7 +6,13 @@ import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.Classall;
 import com.sj.oa.project.po.Major;
+import com.sj.oa.project.po.User;
+import com.sj.oa.project.po.YearSessionInfo;
 import com.sj.oa.project.service.classall.IClassService;
+import com.sj.oa.project.service.college.IYearSessionInfoService;
+import com.sj.oa.project.service.major.IMajorService;
+import org.activiti.engine.impl.util.CollectionUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,15 +27,18 @@ import java.util.*;
  * Created by dell on 2019-07-31.
  */
 @Controller
-@RequestMapping("/classall")
+@RequestMapping("/class")
 public class ClassController extends BaseController {
-    private String prefix = "system/classall/";
+    private String prefix = "system/college/";
 
     @Autowired
     IClassService iClassService;
 
-    //@Autowired
-  //  IMajorService iMajorService;
+    @Autowired
+    IYearSessionInfoService iYearSessionInfoService;
+
+    @Autowired
+    IMajorService iMajorService;
 
 
     /**
@@ -40,10 +49,17 @@ public class ClassController extends BaseController {
      */
 
     @RequestMapping("/tolist")
-    @RequiresPermissions("classall:list")
-    public String tolist()
+    @RequiresPermissions("class:list")
+    public String tolist(Model model)
     {
-        return prefix + "classall";
+        //携带所有应届年份 和 专业信息
+        List<YearSessionInfo> yearSessionInfos
+                = iYearSessionInfoService.selectByYearSessionInfo(new YearSessionInfo());
+        List<Major> majors
+                = iMajorService.selectMajorList(new Major());
+        model.addAttribute("yearSessions",yearSessionInfos);
+        model.addAttribute("majors",majors);
+        return prefix + "classInfo";
     }
 
 
@@ -84,7 +100,7 @@ public class ClassController extends BaseController {
      * @date 2018/9/16 11:53
      */
     @RequestMapping("/del")
-    @RequiresPermissions("classall:del")
+    @RequiresPermissions("class:del")
     @ResponseBody
     @Operlog(modal = "班级管理",descr = "删除班级")
     public AjaxResult del(Integer[] ids)
@@ -100,6 +116,25 @@ public class ClassController extends BaseController {
         return success();
     }
 
+    /**
+     *
+     * @描述: 添加页面
+     *
+     * @params:
+     * @return:
+     * @date: 2018/9/26 21:15
+     */
+    @RequestMapping("/toAdd")
+    public String toAdd(Model model) {
+        //携带所有应届年份 和 专业信息
+        List<YearSessionInfo> yearSessionInfos
+                = iYearSessionInfoService.selectByYearSessionInfo(new YearSessionInfo());
+        List<Major> majors
+                = iMajorService.selectMajorList(new Major());
+        model.addAttribute("yearSessions",yearSessionInfos);
+        model.addAttribute("majors",majors);
+        return prefix + "/classInfoAdd";
+    }
 
     /**
      *
@@ -110,10 +145,20 @@ public class ClassController extends BaseController {
 
     @RequestMapping("/addSave")
     @Operlog(modal = "班级管理",descr = "添加班级")
-    @RequiresPermissions("major:add")
+    @RequiresPermissions("class:add")
     @ResponseBody
     public AjaxResult addClassall(Classall classall)
     {
+        classall.setCreateTime(new Date());
+        User user = getUser();
+        classall.setCreateUser(user.getName());
+        //查询专业名称
+        Major major = new Major();
+        major.setMajorCode(classall.getMajorCode());
+        List<Major> majors = iMajorService.selectMajorList(major);
+        if(CollectionUtils.isNotEmpty(majors)){
+            classall.setMajor(majors.get(0).getMajorName());
+        }
         return  result(iClassService.insertSelective(classall));
     }
 
@@ -125,16 +170,18 @@ public class ClassController extends BaseController {
      * @date 2018/9/16 14:06
      */
     @RequestMapping("/edit/{id}")
-    @RequiresPermissions("classall:update")
+    @RequiresPermissions("class:update")
     public String edit(@PathVariable("id") Integer id, Model model)
     {
         Classall classall = iClassService.selectByPrimaryKey(id);
 
 
         model.addAttribute(" Classall", classall);
-        return prefix + "edit";
+        return prefix + "classInfoEdit";
 
     }
+
+
 
     /**
      *
@@ -143,7 +190,7 @@ public class ClassController extends BaseController {
      * @date 2018/9/16 16:12
      */
     @RequestMapping("/editSave")
-    @RequiresPermissions("classall:update")
+    @RequiresPermissions("class:update")
     @Operlog(modal = "班级管理",descr = "修改信息")
     @ResponseBody
     public AjaxResult save(Classall classall)

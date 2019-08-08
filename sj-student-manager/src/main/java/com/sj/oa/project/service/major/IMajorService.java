@@ -67,5 +67,4 @@ public interface IMajorService {
      */
     public String checkMajorCodeUnique(Major major);
 
-
 }

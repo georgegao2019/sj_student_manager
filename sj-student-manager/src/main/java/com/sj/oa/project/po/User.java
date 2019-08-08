@@ -25,6 +25,12 @@ public class User extends BasePo{
     private String cardNo;
     //专业
     private String major;
+    //专业名称
+    private String majorName;
+    //应届年份
+    private Integer grade;
+    //班级名称
+    private String className;
     //岗位
     private Integer position;
     //爱好
@@ -45,6 +51,30 @@ public class User extends BasePo{
     private String self_introduction;
     //角色ID
     private Integer role_ID;
+
+    public String getMajorName() {
+        return majorName;
+    }
+
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
     /**
      * 角色

@@ -14,6 +14,9 @@
         <result column="age" property="age" jdbcType="INTEGER"/>
         <result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
         <result column="major" property="major" jdbcType="VARCHAR" />
+        <result column="major_name" property="majorName" jdbcType="VARCHAR" />
+        <result column="grade" property="grade" jdbcType="INTEGER" />
+        <result column="class_name" property="className" jdbcType="VARCHAR" />
         <result column="dept" property="dept" jdbcType="VARCHAR"/>
         <result column="position" property="position" jdbcType="VARCHAR"/>
         <result column="self_introduction" property="self_introduction" jdbcType="VARCHAR"/>
@@ -58,7 +61,7 @@
       抽取公共字段
     -->
     <sql id="Base_Column_List">
-        uid, pwd,loginName,name, studentid, sex, age, card_no, major, dept, position, self_introduction,hobby, tel, email, u.createTime as uctime,
+        uid, pwd,loginName,name, studentid, sex, age, card_no, major, major_name, grade, class_name, dept, position, self_introduction,hobby, tel, email, u.createTime as uctime,
         avatar,u.status as ustatus, u.role_ID as uroleId,isdel
     </sql>
 
@@ -147,6 +150,15 @@ and ps.positionId =u.position
             <if test="status !=null and status !=''or status==0">
                 and u.status = #{status}
             </if>
+            <if test="major !=null and major !=''">
+                and u.major = #{major}
+            </if>
+            <if test="className !=null and className !=''">
+                and u.class_name = #{className}
+            </if>
+            <if test="grade !=null and grade !=''">
+                and u.grade = #{grade}
+            </if>
             and u.status &gt;= 0
         </where>
     </select>
@@ -213,6 +225,18 @@ and ps.positionId =u.position
             <if test="status != null">
                 status,
             </if>
+            <if test="major != null">
+                major,
+            </if>
+            <if test="majorName != null">
+                major_name,
+            </if>
+            <if test="grade != null">
+                grade,
+            </if>
+            <if test="className != null">
+                class_name,
+            </if>
 
             <if test="role_ID != null">
                 role_ID,
@@ -264,7 +288,18 @@ and ps.positionId =u.position
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
             </if>
-
+            <if test="major != null">
+                #{major,jdbcType=VARCHAR},
+            </if>
+            <if test="majorName != null">
+                #{majorName,jdbcType=VARCHAR},
+            </if>
+            <if test="grade != null">
+                #{grade,jdbcType=INTEGER},
+            </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
             <if test="role_ID != null">
                 #{role_ID},
             </if>
@@ -290,7 +325,6 @@ and ps.positionId =u.position
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
-
             <if test="sex != null">
                 sex = #{sex,jdbcType=VARCHAR},
             </if>
@@ -303,7 +337,6 @@ and ps.positionId =u.position
             <if test="position != null">
                 position = #{position,jdbcType=INTEGER},
             </if>
-
             <if test="hobby != null">
                 hobby = #{hobby,jdbcType=VARCHAR},
             </if>
@@ -322,7 +355,6 @@ and ps.positionId =u.position
             <if test="avatar != null">
                 avatar = #{avatar,jdbcType=VARCHAR},
             </if>
-
             <if test="isdel != null">
                 isdel = #{isdel,jdbcType=INTEGER},
             </if>
@@ -331,6 +363,18 @@ and ps.positionId =u.position
             </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="major != null">
+                major = #{major},
+            </if>
+            <if test="majorName != null">
+                major_name = #{majorName},
+            </if>
+            <if test="grade != null">
+                grade = #{grade},
+            </if>
+            <if test="className != null">
+                class_name = #{className},
             </if>
         </set>
         where uid = #{uid,jdbcType=VARCHAR}

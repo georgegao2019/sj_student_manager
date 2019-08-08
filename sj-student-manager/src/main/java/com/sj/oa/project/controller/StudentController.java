@@ -1,6 +1,7 @@
 package com.sj.oa.project.controller;
 
 import com.sj.oa.common.constant.CsEnum;
+import com.sj.oa.common.constant.DeptConstants;
 import com.sj.oa.common.exception.file.FileNameLengthException;
 import com.sj.oa.common.exception.file.FileSizeException;
 import com.sj.oa.common.utils.HttpHeaderUtil;
@@ -24,22 +25,30 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 永健
+ *
+ * 学生管理页面
  */
 
 @Controller
-@RequestMapping("/user")
-public class UserController extends BaseController{
+@RequestMapping("/student")
+public class StudentController extends BaseController{
 
-    private String prefix = "system/user/";
+    private String prefix = "system/student/";
 
     @Autowired
     IUserService iUserService;
@@ -53,20 +62,20 @@ public class UserController extends BaseController{
 
     /**
      *
-     * @描述 跳转到用户页面
+     * @描述 跳转到学生页面
      *
      * @date 2018/9/16 10:54
      */
     @RequestMapping("/tolist")
-    @RequiresPermissions("user:list")
+    @RequiresPermissions("student:list")
     public String toUserList()
     {
-        return prefix + "user";
+        return prefix + "student";
     }
 
 
     /**
-     * @描述 用户数据
+     * @描述 学生数据
      * @date 2018/9/15 12:30
      */
     @RequestMapping("/tableList")
@@ -74,6 +83,8 @@ public class UserController extends BaseController{
     public TableDataInfo list(User user)
     {
         startPage();
+        //默认查询所有学生部
+        user.setDept(DeptConstants.DEPT_STUDENT);
         List<User> users = iUserService.selectByUser(user);
 
         return getDataTable(users);
