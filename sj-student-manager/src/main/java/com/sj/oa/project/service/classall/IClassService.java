@@ -58,5 +58,11 @@ public interface IClassService {
      */
     List<Classall> selectClassAndMajor();
 
+    /**
+     * 校验班级名称
+     * @param record
+     * @return
+     */
+    String checkClassNameUnique(Classall record);
 
 }

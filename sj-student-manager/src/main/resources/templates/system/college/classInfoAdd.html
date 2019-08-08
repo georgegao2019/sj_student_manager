@@ -80,10 +80,30 @@
 
     $("#form-role-add").validate({
         rules: {
-            title: {required: true,maxlength:10}
-            , content: {
-                required: true,
-                maxlength:150,
+            className:{
+                required:true,
+                remote: {
+                    url: "/class/checkClassNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        className: function () {
+                            return $.trim($("#className").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            },
+            manNumber:{
+                required:true,
+                minValue:0,
+            },
+            womenNumber:{
+                required:true,
+                minValue:0
             }
         },
         submitHandler: function (form) {

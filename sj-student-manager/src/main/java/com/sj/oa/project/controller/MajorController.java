@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,7 +29,7 @@ public class MajorController extends BaseController {
     private String prefix = "system/college/";
 
     @Autowired
-    IMajorService majorService;
+    IMajorService iMajorService;
 
     @Autowired
     private IUserService iUserService;
@@ -57,7 +58,7 @@ public class MajorController extends BaseController {
     @ResponseBody
     public List<Major> list(Major major)
     {
-        List<Major> majors = majorService.selectMajorList(major);
+        List<Major> majors = iMajorService.selectMajorList(major);
         return majors;
     }
 
@@ -73,7 +74,7 @@ public class MajorController extends BaseController {
     {
         //开启分页
         startPage();
-        List<Major> majors = majorService.selectMajorList(major);
+        List<Major> majors = iMajorService.selectMajorList(major);
         return getDataTable(majors);
     }
 
@@ -91,7 +92,7 @@ public class MajorController extends BaseController {
     {
         try
         {
-            majorService.deleteByPrimaryKeys(ids);
+            iMajorService.deleteByPrimaryKeys(ids);
         }
         catch (Exception e)
         {
@@ -129,7 +130,7 @@ public class MajorController extends BaseController {
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
         major.setCreateUser(loginUser.getName());
         major.setCreateTime(new Date());
-        return  result(majorService.insertSelective(major));
+        return  result(iMajorService.insertSelective(major));
     }
 
     /**
@@ -142,8 +143,8 @@ public class MajorController extends BaseController {
     @RequiresPermissions("major:update")
     public String edit(@PathVariable("id") String id, Model model)
     {
-        Major major = majorService.selectByPrimaryKey(id);
-        model.addAttribute("Major", major);
+        Major major = iMajorService.selectByPrimaryKey(id);
+        model.addAttribute("major", major);
         return prefix + "majorInfoEdit";
 
     }
@@ -163,7 +164,7 @@ public class MajorController extends BaseController {
         int i = 0;
         try
         {
-            i = majorService.updateByPrimaryKeySelective(major);
+            i = iMajorService.updateByPrimaryKeySelective(major);
         }
         catch (Exception e)
         {
@@ -172,4 +173,33 @@ public class MajorController extends BaseController {
         return result(i);
     }
 
+    /**
+     * 校验专业编号
+     */
+    @PostMapping("/checkMajorCodeUnique")
+    @ResponseBody
+    public String checkMajorCodeUnique(Major record)
+    {
+        String uniqueFlag = "0";
+        if (record != null) {
+            uniqueFlag = iMajorService.checkMajorCodeUnique(record);
+        }
+        return uniqueFlag;
+    }
+
+    /**
+     * 校验专业名称
+     * @param record
+     * @return
+     */
+    @PostMapping("/checkMajorNameUnique")
+    @ResponseBody
+    public String checkMajorNameUnique(Major record)
+    {
+        String uniqueFlag = "0";
+        if (record != null) {
+            uniqueFlag = iMajorService.checkMajorNameUnique(record);
+        }
+        return uniqueFlag;
+    }
 }

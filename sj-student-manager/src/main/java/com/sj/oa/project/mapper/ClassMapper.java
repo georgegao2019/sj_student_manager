@@ -52,4 +52,6 @@ public interface ClassMapper {
      * @date: 2018/9/27 11:25
      */
     List<Classall> selectClassAndMajor();
+
+    Classall checkClassNameUnique(String className);
 }

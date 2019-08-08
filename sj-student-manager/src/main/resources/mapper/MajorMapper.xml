@@ -20,6 +20,13 @@
        id, major_code, major_name,status,create_time,create_user,update_time,update_user
     </sql>
 
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String">
+        select <include refid="Base_Column_List"/>
+        from t_major_info
+        where id = #{id};
+    </select>
+
     <!--
        检验专业代码唯一性
     -->

@@ -6,21 +6,21 @@ import com.sj.oa.framework.web.po.BasePo;
  * Created by dell on 2019-07-31.
  */
 public class Classall extends BasePo {
-    private int id;
+    private Integer id;
     private String className;
     private String major;
     private String grade;
-    private int totalNumber;
-    private int manNumber;
-    private int womenNumber;
+    private Integer totalNumber;
+    private Integer manNumber;
+    private Integer womenNumber;
     private String headmaster;
     private String majorCode;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -48,27 +48,27 @@ public class Classall extends BasePo {
         this.grade = grade;
     }
 
-    public int getTotalNumber() {
+    public Integer getTotalNumber() {
         return totalNumber;
     }
 
-    public void setTotalNumber(int totalNumber) {
+    public void setTotalNumber(Integer totalNumber) {
         this.totalNumber = totalNumber;
     }
 
-    public int getManNumber() {
+    public Integer getManNumber() {
         return manNumber;
     }
 
-    public void setManNumber(int manNumber) {
+    public void setManNumber(Integer manNumber) {
         this.manNumber = manNumber;
     }
 
-    public int getWomenNumber() {
+    public Integer getWomenNumber() {
         return womenNumber;
     }
 
-    public void setWomenNumber(int womenNumber) {
+    public void setWomenNumber(Integer womenNumber) {
         this.womenNumber = womenNumber;
     }
 

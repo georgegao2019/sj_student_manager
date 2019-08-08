@@ -1,5 +1,7 @@
 package com.sj.oa.project.service.classall;
 
+import com.sj.oa.common.constant.CsEnum;
+import com.sj.oa.common.utils.StringUtils;
 import com.sj.oa.project.mapper.ClassMapper;
 import com.sj.oa.project.po.Classall;
 import com.sj.oa.project.po.Dept;
@@ -58,5 +60,24 @@ public class IClassServiceImpl implements IClassService {
     {
         return classMapper.selectClassAndMajor();
     }
+
+    @Override
+    public String checkClassNameUnique(Classall record) {
+        if (record.getId() == null)
+        {
+            record.setId(-1);
+        }
+        Integer majorId = record.getId();
+        Classall info = classMapper.checkClassNameUnique(record.getClassName());
+
+//        判断查询出来的和传进来的是否相同
+        if (StringUtils.isNotNull(info) && StringUtils.isNotNull(info.getId())
+                && !info.getId().equals(majorId))
+        {
+            return CsEnum.unique.NOT_UNIQUE.getValue();
+        }
+        return CsEnum.unique.IS_UNIQUE.getValue();
+    }
+
 
 }

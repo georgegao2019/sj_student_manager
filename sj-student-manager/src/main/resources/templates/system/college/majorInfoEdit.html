@@ -7,23 +7,18 @@
       th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-    <form class="form-horizontal m" id="form-role-edit" th:object="${note}">
+    <form class="form-horizontal m" id="form-role-edit" th:object="${major}">
         <input class="form-control" th:value="*{id}" type="hidden" name="id" id="id"/>
-
         <div class="form-group">
-            <label class="col-sm-3 control-label ">标题：</label>
+            <label class="col-sm-3 control-label ">专业编号：</label>
             <div class="col-sm-8">
-                <input class="form-control" th:value="*{title}" type="text" name="title" id="title"/>
+                <input class="form-control" th:value="*{majorCode}" type="text" name="majorCode" id="majorCode"/>
             </div>
         </div>
-
-
-
         <div class="form-group">
-            <label class="col-sm-3 control-label">说明：</label>
+            <label class="col-sm-3 control-label ">专业名称：</label>
             <div class="col-sm-8">
-                <textarea rows="7" th:value="*{content}" th:text="*{content}" name="content" type="text" id="content"
-                          class="form-control"></textarea>
+                <input class="form-control" th:value="*{majorName}" type="text" name="majorName" id="majorName"/>
             </div>
         </div>
 
@@ -42,14 +37,46 @@
     // 表单校验
     $("#form-role-edit").validate({
         rules: {
-            title: {required: true}
-            , content: {required: true}
+            majorCode:{
+                required:true,
+                remote: {
+                    url: "/major/checkMajorCodeUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        majorCode: function () {
+                            return $.trim($("#majorCode").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            },
+            majorName:{
+                required:true,
+                remote: {
+                    url: "/major/checkMajorNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        majorName: function () {
+                            return $.trim($("#majorName").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            }
         },
         submitHandler: function (form) {
             $.ajax({
                 cache: true,
                 type: "POST",
-                url: "/note/editSave",
+                url: "/major/editSave",
                 data: $("form").serializeArray(),
                 async: false,
                 error: function (request) {

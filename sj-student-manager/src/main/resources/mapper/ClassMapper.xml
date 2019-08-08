@@ -55,11 +55,11 @@
         <include refid="Base_Column_List"/>
         FROM t_class_info cl
         <where>
-            <if test="className !=null and className !=''">
-                and className LIKE concat('%',#{className},'%')
+            <if test="grade !=null and grade !=''">
+                and grade = #{grade}
             </if>
-            <if test="major !=null and major !=''">
-                and belong_major LIKE concat('%',#{major},'%')
+            <if test="majorCode !=null and majorCode !=''">
+                and major_code = #{majorCode}
             </if>
         </where>
     </select>
@@ -207,4 +207,8 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <select id="checkClassNameUnique" parameterType="String" resultMap="BaseResultMap">
+        select * from t_class_info
+        where class_name = #{className}
+    </select>
 </mapper>

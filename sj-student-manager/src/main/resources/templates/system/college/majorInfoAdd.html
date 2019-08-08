@@ -39,10 +39,46 @@
 
     $("#form-role-add").validate({
         rules: {
-            title: {required: true,maxlength:10}
-            , content: {
+            title: {
+                required: true,maxlength:10
+            },
+            content: {
                 required: true,
                 maxlength:150,
+            },
+            majorCode:{
+                required:true,
+                remote: {
+                    url: "/major/checkMajorCodeUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        majorCode: function () {
+                            return $.trim($("#majorCode").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            },
+            majorName:{
+                required:true,
+                remote: {
+                    url: "/major/checkMajorNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        majorName: function () {
+                            return $.trim($("#majorName").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
             }
         },
         submitHandler: function (form) {
