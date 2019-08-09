@@ -13,7 +13,7 @@
         <result column="sex" property="sex" jdbcType="VARCHAR"/>
         <result column="age" property="age" jdbcType="INTEGER"/>
         <result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
-        <result column="major" property="major" jdbcType="VARCHAR" />
+        <result column="major_code" property="majorCode" jdbcType="VARCHAR" />
         <result column="major_name" property="majorName" jdbcType="VARCHAR" />
         <result column="grade" property="grade" jdbcType="INTEGER" />
         <result column="class_name" property="className" jdbcType="VARCHAR" />
@@ -61,7 +61,7 @@
       抽取公共字段
     -->
     <sql id="Base_Column_List">
-        uid, pwd,loginName,name, studentid, sex, age, card_no, major, major_name, grade, class_name, dept, position, self_introduction,hobby, tel, email, u.createTime as uctime,
+        uid, pwd,loginName,name, studentid, sex, age, card_no, major_code, major_name, grade, class_name, dept, position, self_introduction,hobby, tel, email, u.createTime as uctime,
         avatar,u.status as ustatus, u.role_ID as uroleId,isdel
     </sql>
 
@@ -150,8 +150,8 @@ and ps.positionId =u.position
             <if test="status !=null and status !=''or status==0">
                 and u.status = #{status}
             </if>
-            <if test="major !=null and major !=''">
-                and u.major = #{major}
+            <if test="majorCode !=null and majorCode !=''">
+                and u.major_code = #{majorCode}
             </if>
             <if test="className !=null and className !=''">
                 and u.class_name = #{className}
@@ -194,7 +194,9 @@ and ps.positionId =u.position
             <if test="loginName != null">
                 loginName,
             </if>
-
+            <if test="studentId != null">
+                studentid,
+            </if>
             <if test="sex != null">
                 sex,
             </if>
@@ -225,8 +227,8 @@ and ps.positionId =u.position
             <if test="status != null">
                 status,
             </if>
-            <if test="major != null">
-                major,
+            <if test="majorCode != null">
+                major_code,
             </if>
             <if test="majorName != null">
                 major_name,
@@ -237,7 +239,6 @@ and ps.positionId =u.position
             <if test="className != null">
                 class_name,
             </if>
-
             <if test="role_ID != null">
                 role_ID,
             </if>
@@ -257,6 +258,9 @@ and ps.positionId =u.position
             </if>
             <if test="loginName != null">
                 #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null">
+                #{studentId,jdbcType=VARCHAR},
             </if>
             <if test="sex != null">
                 #{sex,jdbcType=VARCHAR},
@@ -288,8 +292,8 @@ and ps.positionId =u.position
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
             </if>
-            <if test="major != null">
-                #{major,jdbcType=VARCHAR},
+            <if test="majorCode != null">
+                #{majorCode,jdbcType=VARCHAR},
             </if>
             <if test="majorName != null">
                 #{majorName,jdbcType=VARCHAR},
@@ -364,8 +368,8 @@ and ps.positionId =u.position
             <if test="status != null">
                 status = #{status},
             </if>
-            <if test="major != null">
-                major = #{major},
+            <if test="majorCode != null">
+                major_code = #{majorCode},
             </if>
             <if test="majorName != null">
                 major_name = #{majorName},
@@ -391,7 +395,9 @@ and ps.positionId =u.position
     <select id="checkLoginNameUnique" parameterType="String" resultType="User">
         select uid, loginName from t_user where loginName=#{loginName}
     </select>
-
+    <select id="checkStudentIdUnique" parameterType="String" resultType="User">
+        select uid, loginName from t_user where studentid=#{studentId}
+    </select>
 
     <!--
        查询最新id

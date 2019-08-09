@@ -23,8 +23,8 @@ public class User extends BasePo{
     private Integer dept;
     //身份证号
     private String cardNo;
-    //专业
-    private String major;
+    //专业code
+    private String majorCode;
     //专业名称
     private String majorName;
     //应届年份
@@ -205,12 +205,12 @@ public class User extends BasePo{
         this.cardNo = cardNo;
     }
 
-    public String getMajor() {
-        return major;
+    public String getMajorCode() {
+        return majorCode;
     }
 
-    public void setMajor(String major) {
-        this.major = major;
+    public void setMajorCode(String majorCode) {
+        this.majorCode = majorCode;
     }
 
     public Integer getDept()

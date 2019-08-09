@@ -74,6 +74,15 @@ public interface UserMapper{
      */
     User checkLoginNameUnique(String loginName);
 
+    /**
+     * 校验用户学号是否唯一
+     *
+     * @param studentid 学号
+     *
+     * @return 结果
+     */
+    User checkStudentIdUnique(String studentid);
+
     /** 查询最新的id*/
     Long selectUserMaxId();
 

@@ -14,13 +14,13 @@
         <div class="box box-main">
             <div class="box-header">
                 <div class="box-title">
-                    <i class="fa icon-grid"></i> 组织机构
+                    <i class="fa icon-grid"></i> 应届年份
                 </div>
                 <div class="box-tools pull-right">
-                    <a type="button" class="btn btn-box-tool menuItem" href="/dept/listPage" target="iframe0"
-                       title="管理机构"><i
+                    <a type="button" class="btn btn-box-tool menuItem" href="/yearSession/tolist" target="iframe0"
+                       title="管理应届年份"><i
                             class="fa fa-edit"></i></a>
-                    <button type="button" class="btn btn-box-tool" id="btnRefresh" title="刷新机构"><i
+                    <button type="button" class="btn btn-box-tool" id="btnRefresh" title="刷新应届年份"><i
                             class="fa fa-refresh"></i></button>
                 </div>
             </div>
@@ -46,20 +46,23 @@
                         <li>
                             手机号码：<input type="text" name="tel"/>
                         </li>
-
                         <li>
-                            用户状态：<select name="status"
-                        >
-                            <option value="">所有</option>
-                            <option th:value="0">正常</option>
-                            <option th:value="1">停用</option>
-                        </select>
+                            <label>专业： </label>
+                            <select name="majorCode">
+                                <option value="">- -</option>
+                                <option th:each="m:${majors}" th:value="${m.majorCode}"
+                                        th:text="${m.majorName}">
+                                </option>
+                            </select>
                         </li>
-                        <li class="select-time">
-                            <label>创建时间： </label>
-                            <input type="text" class="time-input" style="width: 150px" id="beginTime" placeholder="开始时间" name="beginTime" lay-key="1">
-                            <span>-</span>
-                            <input type="text" class="time-input" style="width: 150px" id="overTime" placeholder="结束时间" name="overTime" lay-key="2">
+                        <li>
+                            <label>所在班级： </label>
+                            <select name="majorCode">
+                                <option value="">- -</option>
+                                <option th:each="c:${classalls}" th:value="${c.className}"
+                                        th:text="${c.className}">
+                                </option>
+                            </select>
                         </li>
                         <li>
                             <a class="btn btn-primary btn-rounded btn-sm"
@@ -224,7 +227,7 @@
             $.table.init(options);
         },
         zTreeOnClick: function (event, treeId, treeNode) {
-            $.table.clickTree("dept", treeNode.value);
+            $.table.clickTree("grade", treeNode.value);
         }
     }
 

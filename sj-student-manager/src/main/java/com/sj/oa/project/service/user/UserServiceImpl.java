@@ -212,6 +212,32 @@ public class UserServiceImpl implements IUserService{
         return CsEnum.unique.IS_UNIQUE.getValue();
     }
 
+    /**
+     *
+     * @描述: 校验用户学号唯一性
+     *
+     * @params:
+     * @return:
+     * @date: 2018/10/2 17:03
+     */
+    @Override
+    public String checkStudentIdUnique(User user)
+    {
+        if (user.getUid() == null)
+        {
+            user.setUid("-1");
+        }
+        String userId = user.getUid();
+
+        User info = userMapper.checkStudentIdUnique(user.getStudentId());
+        if (StringUtils.isNotNull(info) && StringUtils.isNotNull(info.getUid())
+                && !info.getUid().equals(userId))
+        {
+            return CsEnum.unique.NOT_UNIQUE.getValue();
+        }
+        return CsEnum.unique.IS_UNIQUE.getValue();
+    }
+
     @Override
     public User selectByStudentId(String studentId) {
         return userMapper.selectByStudentId(studentId);

@@ -2,6 +2,8 @@ package com.sj.oa.project.controller;
 
 import com.sj.oa.common.constant.CsEnum;
 import com.sj.oa.common.constant.DeptConstants;
+import com.sj.oa.common.constant.PositionConstants;
+import com.sj.oa.common.constant.RoleConstants;
 import com.sj.oa.common.exception.file.FileNameLengthException;
 import com.sj.oa.common.exception.file.FileSizeException;
 import com.sj.oa.common.utils.HttpHeaderUtil;
@@ -13,14 +15,16 @@ import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
-import com.sj.oa.project.po.Dept;
-import com.sj.oa.project.po.Position;
-import com.sj.oa.project.po.Role;
-import com.sj.oa.project.po.User;
+import com.sj.oa.project.po.*;
+import com.sj.oa.project.service.classall.IClassService;
 import com.sj.oa.project.service.dept.IDeptService;
+import com.sj.oa.project.service.major.IMajorService;
+import com.sj.oa.project.service.major.IMajorServiceImpl;
 import com.sj.oa.project.service.position.IPositionService;
 import com.sj.oa.project.service.role.IRoleService;
 import com.sj.oa.project.service.user.IUserService;
+import org.activiti.engine.impl.util.CollectionUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,6 +62,10 @@ public class StudentController extends BaseController{
     IDeptService iDeptService;
     @Autowired
     IPositionService iPositionService;
+    @Autowired
+    IMajorService iMajorService;
+    @Autowired
+    IClassService iClassService;
 
 
     /**
@@ -68,8 +76,16 @@ public class StudentController extends BaseController{
      */
     @RequestMapping("/tolist")
     @RequiresPermissions("student:list")
-    public String toUserList()
+    public String toUserList(Model model)
     {
+        //专业
+        List<Major> majors
+                = iMajorService.selectMajorList(new Major());
+        model.addAttribute("majors",majors);
+        //班级
+        List<Classall> classalls
+                = iClassService.selectClassList(new Classall());
+        model.addAttribute("classalls",classalls);
         return prefix + "student";
     }
 
@@ -95,7 +111,7 @@ public class StudentController extends BaseController{
      *
      * 编辑用户 system/user/edit/20180914-1
      */
-    @RequiresPermissions("user:update")
+    @RequiresPermissions("student:update")
     @RequestMapping("/edit/{userId}")
     public String edit(@PathVariable("userId") String userId, Model model)
     {
@@ -119,7 +135,7 @@ public class StudentController extends BaseController{
      * @return
      */
     @RequestMapping("/info/{userId}")
-    @RequiresPermissions("user:info")
+    @RequiresPermissions("student:info")
     @Operlog(modal = "用户管理", descr = "查看用户信息详情")
     public String userInfo(@PathVariable("userId") String userId,Model model){
         //个人信息
@@ -135,7 +151,7 @@ public class StudentController extends BaseController{
      * @date 2018/9/15 18:53
      */
     @PostMapping("/editSave")
-    @RequiresPermissions("user:update")
+    @RequiresPermissions("student:update")
     @Operlog(modal = "用户管理", descr = "修改用户信息")
     @ResponseBody
     public AjaxResult save(User user)
@@ -153,7 +169,7 @@ public class StudentController extends BaseController{
      * @date 2018/9/15 18:46
      */
     @RequestMapping("/toAdd")
-    @RequiresPermissions("user:add")
+    @RequiresPermissions("student:add")
     public String toaddUser(Model model)
     {
         Map<String, Object> role_post_dept = getRole_Post_Dept();
@@ -161,7 +177,9 @@ public class StudentController extends BaseController{
         model.addAttribute("roles", role_post_dept.get("role"));
         model.addAttribute("positions", role_post_dept.get("position"));
         //查询班级信息
-
+        List<Classall> classalls
+                = iClassService.selectClassList(new Classall());
+        model.addAttribute("classalls",classalls);
         return prefix + "add";
     }
 
@@ -173,14 +191,28 @@ public class StudentController extends BaseController{
      */
 
     @RequestMapping("/addSave")
-    @RequiresPermissions("user:add")
+    @RequiresPermissions("student:add")
     @Operlog(modal = "用户管理", descr = "添加用户")
     @ResponseBody
     public AjaxResult addUser(User user)
     {
         user.setUid(createUID());
         user.setAvatar(CsEnum.avatar.USER_AVATAR.getValue());
+        //通过此路径添加的用户都属于学生
+        user.setDept(DeptConstants.DEPT_STUDENT);
+        user.setRole_ID(RoleConstants.ROLE_STUDENT);
+        user.setPosition(PositionConstants.POSITION_STUDENT);
         user.setCreateTime(new Date());
+        //查询学生班级所在的年纪和专业
+        Classall classall = new Classall();
+        classall.setClassName(user.getClassName());
+        List<Classall> classalls = iClassService.selectClassList(classall);
+        if(CollectionUtils.isNotEmpty(classalls)){
+            Classall result = classalls.get(0);
+            user.setGrade(Integer.parseInt(result.getGrade()));
+            user.setMajorCode(result.getMajorCode());
+            user.setMajorName(result.getClassName());
+        }
         return result(iUserService.insertSelective(user));
     }
 
@@ -191,7 +223,7 @@ public class StudentController extends BaseController{
      * @date 2018/9/16 9:31
      */
     @RequestMapping("/del")
-    @RequiresPermissions("user:del")
+    @RequiresPermissions("student:del")
     @Operlog(modal = "用户模块", descr = "删除用户")
     @ResponseBody
     public AjaxResult delByUserIds(String[] ids)
@@ -215,7 +247,7 @@ public class StudentController extends BaseController{
      * @date 2018/9/16 10:25
      */
     @RequestMapping("/resetPwd/{userId}")
-    @RequiresPermissions("user:update")
+    @RequiresPermissions("student:update")
     public String editPwd(@PathVariable("userId") String id, Model model)
     {
         model.addAttribute("uid", id);

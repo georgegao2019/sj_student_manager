@@ -100,6 +100,15 @@ public interface IUserService {
     String checkLoginNameUnique(User user);
 
     /**
+     * 校验用户学号是否唯一
+     *
+     * @param studentId 学号
+     *
+     * @return 结果
+     */
+    String checkStudentIdUnique(User user);
+
+    /**
      * 根据学号拿取学生信息
      *
      * @param studentId 学号

@@ -137,6 +137,7 @@ public class UserController extends BaseController{
     }
 
 
+
     /**
      * @描述 添加用户页面
      * @date 2018/9/15 18:46
@@ -279,6 +280,26 @@ public class UserController extends BaseController{
         return uniqueFlag;
     }
 
+    /**
+     *
+     * @描述: 校验学号唯一性
+     *
+     * @params:
+     * @return:
+     * @date: 2019/8/9 17:06
+     */
+    @PostMapping("/checkStudentIdUnique")
+    @ResponseBody
+    public String checkStudentIdUnique(User user)
+    {
+        String uniqueFlag = "0";
+        if (user != null)
+        {
+            uniqueFlag = iUserService.checkStudentIdUnique(user);
+        }
+        return uniqueFlag;
+    }
+
     @PostMapping("/getUserByStudentId")
     @ResponseBody
     public Object getUserByStudentId(User user){
@@ -328,6 +349,31 @@ public class UserController extends BaseController{
         return prefix + "profile/msg";
     }
 
+    /**
+     *
+     * @描述 保存用户
+     *
+     * @date 2018/9/15 18:53
+     */
+    @PostMapping("/editSaveMyMsg")
+    @Operlog(modal = "用户管理", descr = "修改个人用户信息")
+    @ResponseBody
+    public AjaxResult saveMyMsg(User user)
+    {
+        if (StringUtils.isNotNull(user.getUid()) && User.isBoss(user.getUid()))
+        {
+            return error("不允许修改管理员用户");
+        }
+        //获取登录用户
+        User loginUser = getUser();
+        if(loginUser != null && user != null
+            && loginUser.getUid().equals(user.getUid())){
+            return result(iUserService.updateByPrimaryKeySelective(user));
+        }else{
+            return error("你不能修改其他人的信息");
+        }
+
+    }
 
     /**
      * 密码修改页面
@@ -345,7 +391,6 @@ public class UserController extends BaseController{
      */
     @RequestMapping("/updateMyPwdSave")
     @ResponseBody
-    @RequiresPermissions("user:update")
     @Operlog(modal = "个人信息", descr = "修改密码")
     public AjaxResult updateMyPwdSave(String password)
     {
