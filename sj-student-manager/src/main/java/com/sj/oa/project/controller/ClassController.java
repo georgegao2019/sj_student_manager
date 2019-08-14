@@ -209,7 +209,7 @@ public class ClassController extends BaseController {
     }
 
     /**
-     * 校验专业名称
+     * 校验班级名称
      * @param record
      * @return
      */
