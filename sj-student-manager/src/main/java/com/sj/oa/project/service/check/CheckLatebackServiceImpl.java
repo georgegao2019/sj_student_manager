@@ -1,6 +1,6 @@
 package com.sj.oa.project.service.check;
 
-import com.sj.oa.project.mapper.CheckLatebackMapper;
+import com.sj.oa.project.mapper.check.CheckLatebackMapper;
 import com.sj.oa.project.po.check.CheckLateback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package com.sj.oa.project.service.dormitory;
 
 import com.sj.oa.common.constant.CsEnum;
 import com.sj.oa.common.utils.StringUtils;
-import com.sj.oa.project.mapper.DormitoryRoomMapper;
+import com.sj.oa.project.mapper.dormitory.DormitoryRoomMapper;
 import com.sj.oa.project.po.dormitory.DormitoryRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,28 +1,28 @@
-package com.sj.oa.project.mapper;
+package com.sj.oa.project.mapper.college;
 
-import com.sj.oa.project.po.check.CheckLateback;
+import com.sj.oa.project.po.college.YearSessionInfo;
 
 import java.util.List;
 
 /**
  * Created by gaojun on 2019/7/31.
  */
-public interface CheckLatebackMapper {
+public interface YearSessionInfoMapper {
 
     /**
      * 添加
      */
-    int insertSelective(CheckLateback record);
+    int insertSelective(YearSessionInfo record);
 
     /**
      * 根据Id主键查询单个用户 登录用此方法
      */
-    CheckLateback selectByPrimaryKey(Integer id);
+    YearSessionInfo selectByPrimaryKey(Integer id);
 
     /**
      * 更改用户
      */
-    int updateByPrimaryKeySelective(CheckLateback record);
+    int updateByPrimaryKeySelective(YearSessionInfo record);
 
 
     /*
@@ -35,5 +35,5 @@ public interface CheckLatebackMapper {
      *
      * 用户列表 以及 根据条件查询
      */
-    List<CheckLateback> selectByCheckLateBack(CheckLateback record);
+    List<YearSessionInfo> selectByYearSessionInfo(YearSessionInfo record);
 }

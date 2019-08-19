@@ -1,4 +1,4 @@
-package com.sj.oa.project.mapper;
+package com.sj.oa.project.mapper.dormitory;
 
 
 import com.sj.oa.project.po.dormitory.DormitorySteps;

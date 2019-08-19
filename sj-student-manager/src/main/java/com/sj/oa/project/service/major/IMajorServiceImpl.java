@@ -2,7 +2,7 @@ package com.sj.oa.project.service.major;
 
 import com.sj.oa.common.constant.CsEnum;
 import com.sj.oa.common.utils.StringUtils;
-import com.sj.oa.project.mapper.MajorMapper;
+import com.sj.oa.project.mapper.college.MajorMapper;
 import com.sj.oa.project.po.college.Major;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
