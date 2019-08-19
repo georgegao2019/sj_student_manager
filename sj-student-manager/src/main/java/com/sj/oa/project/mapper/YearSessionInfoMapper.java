@@ -1,6 +1,6 @@
 package com.sj.oa.project.mapper;
 
-import com.sj.oa.project.po.YearSessionInfo;
+import com.sj.oa.project.po.college.YearSessionInfo;
 
 import java.util.List;
 

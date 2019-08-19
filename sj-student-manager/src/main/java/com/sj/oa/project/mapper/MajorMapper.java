@@ -1,8 +1,7 @@
 package com.sj.oa.project.mapper;
 
 
-import com.sj.oa.project.po.Major;
-import org.activiti.engine.impl.jobexecutor.ManagedJobExecutor;
+import com.sj.oa.project.po.college.Major;
 
 import java.util.List;
 

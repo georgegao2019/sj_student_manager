@@ -1,7 +1,7 @@
 package com.sj.oa.project.service.college;
 
 import com.sj.oa.project.mapper.YearSessionInfoMapper;
-import com.sj.oa.project.po.YearSessionInfo;
+import com.sj.oa.project.po.college.YearSessionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

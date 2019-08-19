@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sj.oa.project.mapper.YearSessionInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.YearSessionInfo">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.college.YearSessionInfo">
         <result column="id" property="id" />
         <result column="year_session" property="yearSession" />
         <result column="student_numbers" property="studentNumbers" />
@@ -39,7 +39,7 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.YearSessionInfo">
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.college.YearSessionInfo">
         insert into t_year_session_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -95,7 +95,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.YearSessionInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.college.YearSessionInfo">
         update t_year_session_info
         <set>
             <if test="yearSession != null">
@@ -124,7 +124,7 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByYearSessionInfo" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.YearSessionInfo">
+    <select id="selectByYearSessionInfo" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.college.YearSessionInfo">
         select
         <include refid="Base_Column_List"></include>
         from t_year_session_info

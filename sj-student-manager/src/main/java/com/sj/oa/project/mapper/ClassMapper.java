@@ -1,7 +1,6 @@
 package com.sj.oa.project.mapper;
 
-import com.sj.oa.project.po.Classall;
-import com.sj.oa.project.po.Major;
+import com.sj.oa.project.po.college.Classall;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.sj.oa.project.service.major;
 
-import com.sj.oa.project.po.Major;
+import com.sj.oa.project.po.college.Major;
 
 import java.util.List;
 
