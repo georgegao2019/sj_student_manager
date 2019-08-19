@@ -1,7 +1,7 @@
 package com.sj.oa.project.service.check;
 
 import com.sj.oa.project.mapper.CheckLatelightoutMapper;
-import com.sj.oa.project.po.CheckLatelightout;
+import com.sj.oa.project.po.check.CheckLatelightout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

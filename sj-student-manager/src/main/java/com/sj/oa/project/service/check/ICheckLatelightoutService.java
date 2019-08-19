@@ -1,6 +1,6 @@
 package com.sj.oa.project.service.check;
 
-import com.sj.oa.project.po.CheckLatelightout;
+import com.sj.oa.project.po.check.CheckLatelightout;
 
 import java.util.List;
 

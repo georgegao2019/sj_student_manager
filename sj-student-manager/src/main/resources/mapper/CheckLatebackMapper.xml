@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sj.oa.project.mapper.CheckLatebackMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.CheckLateback">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.check.CheckLateback">
         <result column="id" property="id" />
         <result column="studentid" property="studentId" />
         <result column="name" property="name" />
@@ -43,7 +43,7 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.CheckLateback">
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.check.CheckLateback">
         insert into t_check_lateback
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -123,7 +123,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.CheckLateback">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.check.CheckLateback">
         update t_check_lateback
         <set>
             <if test="studentId != null">
@@ -161,7 +161,7 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByCheckLateBack" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.CheckLateback">
+    <select id="selectByCheckLateBack" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckLateback">
         select
         <include refid="Base_Column_List"></include>
         from t_check_lateback

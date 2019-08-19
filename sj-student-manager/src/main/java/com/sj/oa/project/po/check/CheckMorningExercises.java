@@ -1,4 +1,4 @@
-package com.sj.oa.project.po;
+package com.sj.oa.project.po.check;
 
 import com.sj.oa.framework.web.po.BasePo;
 

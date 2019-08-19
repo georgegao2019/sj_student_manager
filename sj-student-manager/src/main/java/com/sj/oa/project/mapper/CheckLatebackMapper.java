@@ -1,6 +1,6 @@
 package com.sj.oa.project.mapper;
 
-import com.sj.oa.project.po.CheckLateback;
+import com.sj.oa.project.po.check.CheckLateback;
 
 import java.util.List;
 

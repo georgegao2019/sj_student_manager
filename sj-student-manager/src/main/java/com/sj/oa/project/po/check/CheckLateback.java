@@ -1,19 +1,23 @@
-package com.sj.oa.project.po;
+package com.sj.oa.project.po.check;
 
 import com.sj.oa.framework.web.po.BasePo;
 
 import java.util.Date;
 
 /**
- * Created by gaojun on 2019/8/6.
+ * Created by gaojun on 2019/7/31.
  */
-public class CheckLatelightout extends BasePo {
+public class CheckLateback extends BasePo {
 
     private Integer id;
-    //宿舍号
-    private String dormitoryCode;
-    //晚熄灯时间
-    private Date lightoutTime;
+    //学号
+    private Integer studentId;
+    //违纪学生姓名
+    private String name;
+    //晚归理由
+    private String reason;
+    //晚归时间
+    private Date returnTime;
     //检查人
     private String checkPerson;
     //检查时间
@@ -29,20 +33,29 @@ public class CheckLatelightout extends BasePo {
         this.id = id;
     }
 
-    public String getDormitoryCode() {
-        return dormitoryCode;
+    public String getName() {
+
+        return name;
     }
 
-    public void setDormitoryCode(String dormitoryCode) {
-        this.dormitoryCode = dormitoryCode;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Date getLightoutTime() {
-        return lightoutTime;
+    public String getReason() {
+        return reason;
     }
 
-    public void setLightoutTime(Date lightoutTime) {
-        this.lightoutTime = lightoutTime;
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Date getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(Date returnTime) {
+        this.returnTime = returnTime;
     }
 
     public String getCheckPerson() {
@@ -59,6 +72,14 @@ public class CheckLatelightout extends BasePo {
 
     public void setCheckTime(Date checkTime) {
         this.checkTime = checkTime;
+    }
+
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
     }
 
     public Integer getStatus() {

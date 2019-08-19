@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sj.oa.project.mapper.CheckLatelightoutMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.CheckLatelightout">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.check.CheckLatelightout">
         <result column="id" property="id" />
         <result column="dormitory_code" property="dormitoryCode" />
         <result column="lightout_time" property="lightoutTime" />
@@ -41,7 +41,7 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.CheckLatelightout">
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.check.CheckLatelightout">
         insert into t_check_latelightout
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -109,7 +109,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.CheckLatelightout">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.check.CheckLatelightout">
         update t_check_latelightout
         <set>
             <if test="dormitoryCode != null">
@@ -144,7 +144,7 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByCheckLatelightout" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.CheckLatelightout">
+    <select id="selectByCheckLatelightout" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckLatelightout">
         select
         <include refid="Base_Column_List"></include>
         from t_check_latelightout

@@ -1,7 +1,7 @@
 package com.sj.oa.project.service.check;
 
 import com.sj.oa.project.mapper.CheckMorningExercisesMapper;
-import com.sj.oa.project.po.CheckMorningExercises;
+import com.sj.oa.project.po.check.CheckMorningExercises;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

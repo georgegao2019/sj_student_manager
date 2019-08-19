@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sj.oa.project.mapper.CheckMorningExercisesMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.CheckMorningExercises">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.check.CheckMorningExercises">
         <result column="id" property="id" />
         <result column="major_code" property="majorCode" />
         <result column="major_name" property="majorName" />
@@ -43,7 +43,7 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.CheckMorningExercises">
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.check.CheckMorningExercises">
         insert into t_check_morning_exercises
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -123,7 +123,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.CheckMorningExercises">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.check.CheckMorningExercises">
         update t_check_morning_exercises
         <set>
             <if test="majorCode != null">
@@ -164,7 +164,7 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByCheckMorningExercises" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.CheckMorningExercises">
+    <select id="selectByCheckMorningExercises" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckMorningExercises">
         select
         <include refid="Base_Column_List"></include>
         from t_check_morning_exercises

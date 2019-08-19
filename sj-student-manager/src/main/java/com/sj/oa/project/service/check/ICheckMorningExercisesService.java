@@ -1,6 +1,6 @@
 package com.sj.oa.project.service.check;
 
-import com.sj.oa.project.po.CheckMorningExercises;
+import com.sj.oa.project.po.check.CheckMorningExercises;
 
 import java.util.List;
 
