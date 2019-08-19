@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sj.oa.project.mapper.DormitoryStepsMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.DormitorySteps">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.dormitory.DormitorySteps">
         <result column="id" property="id" />
         <result column="building_code" property="buildingCode" />
         <result column="step_code" property="stepCode" />
@@ -41,7 +41,7 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.DormitorySteps">
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.dormitory.DormitorySteps">
         insert into t_dormitory_steps
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -115,7 +115,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.DormitorySteps">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.dormitory.DormitorySteps">
         update t_dormitory_steps
         <set>
             <if test="buildingCode != null">
@@ -153,7 +153,7 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByDormitorySteps" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitorySteps">
+    <select id="selectByDormitorySteps" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitorySteps">
         select
         <include refid="Base_Column_List"></include>
         from t_dormitory_steps
@@ -165,7 +165,7 @@
     </select>
 
     <!-- 校验宿舍楼code -->
-    <select id="checkStepUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitorySteps">
+    <select id="checkStepUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitorySteps">
         select * from t_dormitory_steps
         where step = #{step,jdbcType=INTEGER} and building_code = #{buildingCode,jdbcType=VARCHAR}
     </select>

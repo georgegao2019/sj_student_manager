@@ -1,6 +1,6 @@
 package com.sj.oa.project.service.dormitory;
 
-import com.sj.oa.project.po.DormitoryBuilding;
+import com.sj.oa.project.po.dormitory.DormitoryBuilding;
 
 import java.util.List;
 

@@ -1,11 +1,10 @@
 package com.sj.oa.project.controller.dormitory;
 
-import com.sj.oa.common.utils.DateUtils;
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
-import com.sj.oa.project.po.DormitoryBuilding;
+import com.sj.oa.project.po.dormitory.DormitoryBuilding;
 import com.sj.oa.project.po.User;
 import com.sj.oa.project.service.dormitory.IDormitoryBuildingService;
 import com.sj.oa.project.service.user.IUserService;

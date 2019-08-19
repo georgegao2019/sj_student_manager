@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sj.oa.project.mapper.DormitoryBuildingMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.DormitoryBuilding">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.dormitory.DormitoryBuilding">
         <result column="id" property="id" />
         <result column="building_code" property="buildingCode" />
         <result column="building_name" property="buildingName" />
@@ -48,7 +48,7 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.DormitoryBuilding">
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.dormitory.DormitoryBuilding">
         insert into t_dormitory_building
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -116,7 +116,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.DormitoryBuilding">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.dormitory.DormitoryBuilding">
         update t_dormitory_building
         <set>
             <if test="buildingCode != null">
@@ -151,7 +151,7 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByDormitoryBuilding" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitoryBuilding">
+    <select id="selectByDormitoryBuilding" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryBuilding">
         select
         <include refid="Base_Column_List"></include>
         from t_dormitory_building

@@ -1,7 +1,7 @@
 package com.sj.oa.project.mapper;
 
 
-import com.sj.oa.project.po.DormitorySteps;
+import com.sj.oa.project.po.dormitory.DormitorySteps;
 
 import java.util.List;
 

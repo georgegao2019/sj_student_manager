@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sj.oa.project.mapper.DormitoryRoomMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.DormitoryRoom">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.dormitory.DormitoryRoom">
         <result column="id" property="id" />
         <result column="building_code" property="buildingCode" />
         <result column="step_code" property="stepCode" />
@@ -42,7 +42,7 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.DormitoryRoom">
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
         insert into t_dormitory_room
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -122,7 +122,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.DormitoryRoom">
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
         update t_dormitory_room
         <set>
             <if test="buildingCode != null">
@@ -163,7 +163,7 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByDormitoryRoom" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitoryRoom">
+    <select id="selectByDormitoryRoom" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
         select
         <include refid="Base_Column_List"></include>
         from t_dormitory_room
@@ -184,13 +184,13 @@
     </select>
 
     <!-- 校验宿舍楼code是否存在 -->
-    <select id="checkRoomCodeUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitoryRoom">
+    <select id="checkRoomCodeUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
         select * from t_dormitory_room
         where dormitory_code = #{dormitoryCode,jdbcType=VARCHAR}
     </select>
 
     <!-- 校验宿舍楼name是否存在 -->
-    <select id="checkRoomNameUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitoryRoom">
+    <select id="checkRoomNameUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
         select * from t_dormitory_room
         where dormitory_name = #{dormitoryName,jdbcType=VARCHAR}
     </select>
