@@ -1,17 +1,16 @@
-package com.sj.oa.project.controller;
+package com.sj.oa.project.controller.college;
 
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
-import com.sj.oa.project.po.Classall;
-import com.sj.oa.project.po.Major;
+import com.sj.oa.project.po.college.Classall;
+import com.sj.oa.project.po.college.Major;
 import com.sj.oa.project.po.User;
-import com.sj.oa.project.po.YearSessionInfo;
-import com.sj.oa.project.service.classall.IClassService;
+import com.sj.oa.project.po.college.YearSessionInfo;
+import com.sj.oa.project.service.college.IClassService;
 import com.sj.oa.project.service.college.IYearSessionInfoService;
-import com.sj.oa.project.service.major.IMajorService;
-import org.activiti.engine.impl.util.CollectionUtil;
+import com.sj.oa.project.service.college.IMajorService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

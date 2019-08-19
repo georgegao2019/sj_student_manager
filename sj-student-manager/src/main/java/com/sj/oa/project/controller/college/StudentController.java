@@ -1,4 +1,4 @@
-package com.sj.oa.project.controller;
+package com.sj.oa.project.controller.college;
 
 import com.sj.oa.common.constant.CsEnum;
 import com.sj.oa.common.constant.DeptConstants;
@@ -16,14 +16,14 @@ import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.*;
-import com.sj.oa.project.service.classall.IClassService;
+import com.sj.oa.project.po.college.Classall;
+import com.sj.oa.project.po.college.Major;
+import com.sj.oa.project.service.college.IClassService;
 import com.sj.oa.project.service.dept.IDeptService;
-import com.sj.oa.project.service.major.IMajorService;
-import com.sj.oa.project.service.major.IMajorServiceImpl;
+import com.sj.oa.project.service.college.IMajorService;
 import com.sj.oa.project.service.position.IPositionService;
 import com.sj.oa.project.service.role.IRoleService;
 import com.sj.oa.project.service.user.IUserService;
-import org.activiti.engine.impl.util.CollectionUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

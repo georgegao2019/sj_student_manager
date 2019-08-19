@@ -1,15 +1,12 @@
-package com.sj.oa.project.controller;
+package com.sj.oa.project.controller.check;
 
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
-import com.sj.oa.project.po.CheckMorningExercises;
-import com.sj.oa.project.po.Major;
+import com.sj.oa.project.po.check.CheckLatelightout;
 import com.sj.oa.project.po.User;
-import com.sj.oa.project.service.check.ICheckMorningExercisesService;
-import com.sj.oa.project.service.check.ICheckMorningExercisesService;
-import com.sj.oa.project.service.major.IMajorService;
+import com.sj.oa.project.service.check.ICheckLatelightoutService;
 import com.sj.oa.project.service.user.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +22,17 @@ import java.util.List;
 /**
  * @author gaojun
  * @date 2019/8/1
- * 早操检查controller
+ * 晚熄灯检查controller
  */
 @Controller
-@RequestMapping("/cMorningExercises")
-public class CheckMorningExercisesController extends BaseController{
+@RequestMapping("/cLatelightout")
+public class CheckLatelightoutController extends BaseController{
     //前缀
-    private final static String prefix = "system/cMorningExercises";
+    private final static String prefix = "system/cLatelightout";
     @Autowired
-    ICheckMorningExercisesService iCheckMorningExercisesService;
+    ICheckLatelightoutService iCheckLatelightoutService;
     @Autowired
     IUserService iUserService;
-    @Autowired
-    private IMajorService iMajorService;
     /**
      *
      * @描述: 跳转到列表页
@@ -47,11 +42,9 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2018/9/26 21:13
      */
     @RequestMapping("/tolist")
-    @RequiresPermissions("cMorningExercises:list")
+    @RequiresPermissions("cLatelightout:list")
     public String toList(Model model) {
-        //查询全部专业
-        //List<Major> majors = iMajorService.selectMajorList();
-        return prefix + "/cMorningExercises";
+        return prefix + "/cLatelightout";
     }
     /**
      *
@@ -63,9 +56,9 @@ public class CheckMorningExercisesController extends BaseController{
      */
     @RequestMapping("/tableList")
     @ResponseBody
-    public TableDataInfo tableList(CheckMorningExercises record) {
+    public TableDataInfo tableList(CheckLatelightout record) {
         startPage();
-        List<CheckMorningExercises> records = iCheckMorningExercisesService.selectByCheckMorningExercises(record);
+        List<CheckLatelightout> records = iCheckLatelightoutService.selectByCheckLatelightout(record);
         return getDataTable(records);
     }
     /**
@@ -89,16 +82,16 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2018/9/26 21:16
      */
     @RequestMapping("/addSave")
-    @RequiresPermissions("cMorningExercises:add")
-    @Operlog(modal = "早操检查",descr = "添加记录")
+    @RequiresPermissions("cLatelightout:add")
+    @Operlog(modal = "晚熄灯检查",descr = "添加记录")
     @ResponseBody
-    public AjaxResult addSave(CheckMorningExercises record) throws Exception {
+    public AjaxResult addSave(CheckLatelightout record) throws Exception {
         record.setCreateTime(new Date());
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
         record.setCreateUser(loginUser.getName());
-        //新增的早操检查记录默认是 有效 状态
+        //新增的晚熄灯检查记录默认是 有效 状态
         record.setStatus(0);
-        return result(iCheckMorningExercisesService.insertSelective(record));
+        return result(iCheckLatelightoutService.insertSelective(record));
     }
     /**
      *
@@ -109,11 +102,11 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2019/8/1 22:02
      */
     @RequestMapping("/del")
-    @RequiresPermissions("cMorningExercises:del")
-    @Operlog(modal = "早操检查",descr = "删除记录")
+    @RequiresPermissions("cLatelightout:del")
+    @Operlog(modal = "晚熄灯检查",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
-        return result(iCheckMorningExercisesService.deleteByPrimaryKeys(ids));
+        return result(iCheckLatelightoutService.deleteByPrimaryKeys(ids));
     }
     /**
      *
@@ -123,11 +116,11 @@ public class CheckMorningExercisesController extends BaseController{
      * @return:
      * @date: 2019/8/26 21:17
      */
-    @RequestMapping("/cMorningExercises/{id}")
-    @RequiresPermissions("cMorningExercises:update")
-    @Operlog(modal = "早操检查",descr = "查询记录")
+    @RequestMapping("/cLatelightout/{id}")
+    @RequiresPermissions("cLatelightout:update")
+    @Operlog(modal = "晚熄灯检查",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
-        CheckMorningExercises record = iCheckMorningExercisesService.selectByPrimaryKey(id);
+        CheckLatelightout record = iCheckLatelightoutService.selectByPrimaryKey(id);
         model.addAttribute("note", record);
         return prefix + "/edit";
     }
@@ -140,10 +133,10 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2019/8/1 21:01
      */
     @RequestMapping("/editSave")
-    @RequiresPermissions("cMorningExercises:update")
-    @Operlog(modal = "早操检查",descr = "修改记录")
+    @RequiresPermissions("cLatelightout:update")
+    @Operlog(modal = "晚熄灯检查",descr = "修改记录")
     @ResponseBody
-    public AjaxResult editSave(CheckMorningExercises record) {
-        return result(iCheckMorningExercisesService.updateByPrimaryKeySelective(record));
+    public AjaxResult editSave(CheckLatelightout record) {
+        return result(iCheckLatelightoutService.updateByPrimaryKeySelective(record));
     }
 }

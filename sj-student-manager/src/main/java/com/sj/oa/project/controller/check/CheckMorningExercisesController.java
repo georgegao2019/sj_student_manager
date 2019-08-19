@@ -1,12 +1,13 @@
-package com.sj.oa.project.controller;
+package com.sj.oa.project.controller.check;
 
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
-import com.sj.oa.project.po.CheckLateback;
+import com.sj.oa.project.po.check.CheckMorningExercises;
 import com.sj.oa.project.po.User;
-import com.sj.oa.project.service.check.ICheckLatebackService;
+import com.sj.oa.project.service.check.ICheckMorningExercisesService;
+import com.sj.oa.project.service.college.IMajorService;
 import com.sj.oa.project.service.user.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,19 @@ import java.util.List;
 /**
  * @author gaojun
  * @date 2019/8/1
- * 晚归检查controller
+ * 早操检查controller
  */
 @Controller
-@RequestMapping("/cLateback")
-public class CheckLatebackController extends BaseController{
+@RequestMapping("/cMorningExercises")
+public class CheckMorningExercisesController extends BaseController{
     //前缀
-    private final static String prefix = "system/cLateback";
+    private final static String prefix = "system/cMorningExercises";
     @Autowired
-    ICheckLatebackService iCheckLatebackService;
+    ICheckMorningExercisesService iCheckMorningExercisesService;
     @Autowired
     IUserService iUserService;
+    @Autowired
+    private IMajorService iMajorService;
     /**
      *
      * @描述: 跳转到列表页
@@ -42,9 +45,11 @@ public class CheckLatebackController extends BaseController{
      * @date: 2018/9/26 21:13
      */
     @RequestMapping("/tolist")
-    @RequiresPermissions("cLateback:list")
+    @RequiresPermissions("cMorningExercises:list")
     public String toList(Model model) {
-        return prefix + "/cLateback";
+        //查询全部专业
+        //List<Major> majors = iMajorService.selectMajorList();
+        return prefix + "/cMorningExercises";
     }
     /**
      *
@@ -56,10 +61,10 @@ public class CheckLatebackController extends BaseController{
      */
     @RequestMapping("/tableList")
     @ResponseBody
-    public TableDataInfo tableList(CheckLateback checkLateback) {
+    public TableDataInfo tableList(CheckMorningExercises record) {
         startPage();
-        List<CheckLateback> checkLatebacks = iCheckLatebackService.selectByCheckLateback(checkLateback);
-        return getDataTable(checkLatebacks);
+        List<CheckMorningExercises> records = iCheckMorningExercisesService.selectByCheckMorningExercises(record);
+        return getDataTable(records);
     }
     /**
      *
@@ -82,16 +87,16 @@ public class CheckLatebackController extends BaseController{
      * @date: 2018/9/26 21:16
      */
     @RequestMapping("/addSave")
-    @RequiresPermissions("cLateback:add")
-    @Operlog(modal = "晚归检查",descr = "添加记录")
+    @RequiresPermissions("cMorningExercises:add")
+    @Operlog(modal = "早操检查",descr = "添加记录")
     @ResponseBody
-    public AjaxResult addSave(CheckLateback checkLateback) throws Exception {
-        checkLateback.setCreateTime(new Date());
+    public AjaxResult addSave(CheckMorningExercises record) throws Exception {
+        record.setCreateTime(new Date());
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
-        checkLateback.setCreateUser(loginUser.getName());
-        //新增的晚归检查记录默认是 有效 状态
-        checkLateback.setStatus(0);
-        return result(iCheckLatebackService.insertSelective(checkLateback));
+        record.setCreateUser(loginUser.getName());
+        //新增的早操检查记录默认是 有效 状态
+        record.setStatus(0);
+        return result(iCheckMorningExercisesService.insertSelective(record));
     }
     /**
      *
@@ -102,11 +107,11 @@ public class CheckLatebackController extends BaseController{
      * @date: 2019/8/1 22:02
      */
     @RequestMapping("/del")
-    @RequiresPermissions("cLateback:del")
-    @Operlog(modal = "晚归检查",descr = "删除记录")
+    @RequiresPermissions("cMorningExercises:del")
+    @Operlog(modal = "早操检查",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
-        return result(iCheckLatebackService.deleteByPrimaryKeys(ids));
+        return result(iCheckMorningExercisesService.deleteByPrimaryKeys(ids));
     }
     /**
      *
@@ -116,12 +121,12 @@ public class CheckLatebackController extends BaseController{
      * @return:
      * @date: 2019/8/26 21:17
      */
-    @RequestMapping("/cLateback/{id}")
-    @RequiresPermissions("cLateback:update")
-    @Operlog(modal = "晚归检查",descr = "查询记录")
+    @RequestMapping("/cMorningExercises/{id}")
+    @RequiresPermissions("cMorningExercises:update")
+    @Operlog(modal = "早操检查",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
-        CheckLateback checkLateback = iCheckLatebackService.selectByPrimaryKey(id);
-        model.addAttribute("note", checkLateback);
+        CheckMorningExercises record = iCheckMorningExercisesService.selectByPrimaryKey(id);
+        model.addAttribute("note", record);
         return prefix + "/edit";
     }
     /**
@@ -133,10 +138,10 @@ public class CheckLatebackController extends BaseController{
      * @date: 2019/8/1 21:01
      */
     @RequestMapping("/editSave")
-    @RequiresPermissions("cLateback:update")
-    @Operlog(modal = "晚归检查",descr = "修改记录")
+    @RequiresPermissions("cMorningExercises:update")
+    @Operlog(modal = "早操检查",descr = "修改记录")
     @ResponseBody
-    public AjaxResult editSave(CheckLateback checkLateback) {
-        return result(iCheckLatebackService.updateByPrimaryKeySelective(checkLateback));
+    public AjaxResult editSave(CheckMorningExercises record) {
+        return result(iCheckMorningExercisesService.updateByPrimaryKeySelective(record));
     }
 }

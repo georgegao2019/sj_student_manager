@@ -1,12 +1,12 @@
-package com.sj.oa.project.controller;
+package com.sj.oa.project.controller.check;
 
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
-import com.sj.oa.project.po.CheckLatelightout;
+import com.sj.oa.project.po.check.CheckLateback;
 import com.sj.oa.project.po.User;
-import com.sj.oa.project.service.check.ICheckLatelightoutService;
+import com.sj.oa.project.service.check.ICheckLatebackService;
 import com.sj.oa.project.service.user.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,15 @@ import java.util.List;
 /**
  * @author gaojun
  * @date 2019/8/1
- * 晚熄灯检查controller
+ * 晚归检查controller
  */
 @Controller
-@RequestMapping("/cLatelightout")
-public class CheckLatelightoutController extends BaseController{
+@RequestMapping("/cLateback")
+public class CheckLatebackController extends BaseController{
     //前缀
-    private final static String prefix = "system/cLatelightout";
+    private final static String prefix = "system/cLateback";
     @Autowired
-    ICheckLatelightoutService iCheckLatelightoutService;
+    ICheckLatebackService iCheckLatebackService;
     @Autowired
     IUserService iUserService;
     /**
@@ -42,9 +42,9 @@ public class CheckLatelightoutController extends BaseController{
      * @date: 2018/9/26 21:13
      */
     @RequestMapping("/tolist")
-    @RequiresPermissions("cLatelightout:list")
+    @RequiresPermissions("cLateback:list")
     public String toList(Model model) {
-        return prefix + "/cLatelightout";
+        return prefix + "/cLateback";
     }
     /**
      *
@@ -56,10 +56,10 @@ public class CheckLatelightoutController extends BaseController{
      */
     @RequestMapping("/tableList")
     @ResponseBody
-    public TableDataInfo tableList(CheckLatelightout record) {
+    public TableDataInfo tableList(CheckLateback checkLateback) {
         startPage();
-        List<CheckLatelightout> records = iCheckLatelightoutService.selectByCheckLatelightout(record);
-        return getDataTable(records);
+        List<CheckLateback> checkLatebacks = iCheckLatebackService.selectByCheckLateback(checkLateback);
+        return getDataTable(checkLatebacks);
     }
     /**
      *
@@ -82,16 +82,16 @@ public class CheckLatelightoutController extends BaseController{
      * @date: 2018/9/26 21:16
      */
     @RequestMapping("/addSave")
-    @RequiresPermissions("cLatelightout:add")
-    @Operlog(modal = "晚熄灯检查",descr = "添加记录")
+    @RequiresPermissions("cLateback:add")
+    @Operlog(modal = "晚归检查",descr = "添加记录")
     @ResponseBody
-    public AjaxResult addSave(CheckLatelightout record) throws Exception {
-        record.setCreateTime(new Date());
+    public AjaxResult addSave(CheckLateback checkLateback) throws Exception {
+        checkLateback.setCreateTime(new Date());
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
-        record.setCreateUser(loginUser.getName());
-        //新增的晚熄灯检查记录默认是 有效 状态
-        record.setStatus(0);
-        return result(iCheckLatelightoutService.insertSelective(record));
+        checkLateback.setCreateUser(loginUser.getName());
+        //新增的晚归检查记录默认是 有效 状态
+        checkLateback.setStatus(0);
+        return result(iCheckLatebackService.insertSelective(checkLateback));
     }
     /**
      *
@@ -102,11 +102,11 @@ public class CheckLatelightoutController extends BaseController{
      * @date: 2019/8/1 22:02
      */
     @RequestMapping("/del")
-    @RequiresPermissions("cLatelightout:del")
-    @Operlog(modal = "晚熄灯检查",descr = "删除记录")
+    @RequiresPermissions("cLateback:del")
+    @Operlog(modal = "晚归检查",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
-        return result(iCheckLatelightoutService.deleteByPrimaryKeys(ids));
+        return result(iCheckLatebackService.deleteByPrimaryKeys(ids));
     }
     /**
      *
@@ -116,12 +116,12 @@ public class CheckLatelightoutController extends BaseController{
      * @return:
      * @date: 2019/8/26 21:17
      */
-    @RequestMapping("/cLatelightout/{id}")
-    @RequiresPermissions("cLatelightout:update")
-    @Operlog(modal = "晚熄灯检查",descr = "查询记录")
+    @RequestMapping("/cLateback/{id}")
+    @RequiresPermissions("cLateback:update")
+    @Operlog(modal = "晚归检查",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
-        CheckLatelightout record = iCheckLatelightoutService.selectByPrimaryKey(id);
-        model.addAttribute("note", record);
+        CheckLateback checkLateback = iCheckLatebackService.selectByPrimaryKey(id);
+        model.addAttribute("note", checkLateback);
         return prefix + "/edit";
     }
     /**
@@ -133,10 +133,10 @@ public class CheckLatelightoutController extends BaseController{
      * @date: 2019/8/1 21:01
      */
     @RequestMapping("/editSave")
-    @RequiresPermissions("cLatelightout:update")
-    @Operlog(modal = "晚熄灯检查",descr = "修改记录")
+    @RequiresPermissions("cLateback:update")
+    @Operlog(modal = "晚归检查",descr = "修改记录")
     @ResponseBody
-    public AjaxResult editSave(CheckLatelightout record) {
-        return result(iCheckLatelightoutService.updateByPrimaryKeySelective(record));
+    public AjaxResult editSave(CheckLateback checkLateback) {
+        return result(iCheckLatebackService.updateByPrimaryKeySelective(checkLateback));
     }
 }
