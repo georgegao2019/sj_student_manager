@@ -1,4 +1,4 @@
-package com.sj.oa.project.controller;
+package com.sj.oa.project.controller.dormitory;
 
 import com.sj.oa.common.utils.DateUtils;
 import com.sj.oa.framework.annotation.Operlog;

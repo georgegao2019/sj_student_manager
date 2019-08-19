@@ -1,13 +1,14 @@
-package com.sj.oa.project.controller;
+package com.sj.oa.project.controller.dormitory;
 
-import com.sj.oa.common.utils.DateUtils;
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.DormitoryBuilding;
+import com.sj.oa.project.po.DormitorySteps;
 import com.sj.oa.project.po.User;
 import com.sj.oa.project.service.dormitory.IDormitoryBuildingService;
+import com.sj.oa.project.service.dormitory.IDormitoryStepsService;
 import com.sj.oa.project.service.user.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,16 @@ import java.util.List;
 
 /**
  * @author gaojun
- * @date 2019/8/1
- * 宿舍楼管理controller
+ * @date 2019/8/19
+ * 宿舍管理 controller
  */
 @Controller
-@RequestMapping("/dmb")
-public class DormitoryBuildingController extends BaseController{
+@RequestMapping("/dmr")
+public class DormitoryRoomController extends BaseController{
     //前缀
-    private final static String prefix = "system/dormitory/dmb";
+    private final static String prefix = "system/dormitory/dmr";
+    @Autowired
+    IDormitoryStepsService iDormitoryStepsService;
     @Autowired
     IDormitoryBuildingService iDormitoryBuildingService;
     @Autowired
@@ -41,12 +44,15 @@ public class DormitoryBuildingController extends BaseController{
      *
      * @params:
      * @return:
-     * @date: 2018/9/26 21:13
+     * @date: 2019/9/18 11:00
      */
     @RequestMapping("/tolist")
-    @RequiresPermissions("dmb:list")
+    @RequiresPermissions("dmr:list")
     public String toList(Model model) {
-        return prefix + "/dmbList";
+        List<DormitoryBuilding> dormitoryBuildings
+                = iDormitoryBuildingService.selectByDormitoryBuilding(new DormitoryBuilding());
+        model.addAttribute("dormitoryBuildings",dormitoryBuildings);
+        return prefix + "/dmrList";
     }
     /**
      *
@@ -58,12 +64,9 @@ public class DormitoryBuildingController extends BaseController{
      */
     @RequestMapping("/tableList")
     @ResponseBody
-    public TableDataInfo tableList(DormitoryBuilding record) {
+    public TableDataInfo tableList(DormitorySteps record) {
         startPage();
-        if(record.getBuildingName() != null && record.getBuildingName().equals("")){
-            record.setBuildingName(null);
-        }
-        List<DormitoryBuilding> records = iDormitoryBuildingService.selectByDormitoryBuilding(record);
+        List<DormitorySteps> records = iDormitoryStepsService.selectByDormitorySteps(record);
         return getDataTable(records);
     }
     /**
@@ -76,6 +79,9 @@ public class DormitoryBuildingController extends BaseController{
      */
     @RequestMapping("/toAdd")
     public String toAdd(Model model) {
+        List<DormitoryBuilding> dormitoryBuildings
+                = iDormitoryBuildingService.selectByDormitoryBuilding(new DormitoryBuilding());
+        model.addAttribute("dormitoryBuildings",dormitoryBuildings);
         return prefix + "/add";
     }
     /**
@@ -87,20 +93,22 @@ public class DormitoryBuildingController extends BaseController{
      * @date: 2018/9/26 21:16
      */
     @RequestMapping("/addSave")
-    @RequiresPermissions("dmb:add")
-    @Operlog(modal = "宿舍楼管理",descr = "添加记录")
+    @RequiresPermissions("dmr:add")
+    @Operlog(modal = "宿舍管理",descr = "添加记录")
     @ResponseBody
-    public AjaxResult addSave(DormitoryBuilding record) throws Exception {
-        //设置更新时间
+    public AjaxResult addSave(DormitorySteps record) throws Exception {
         Date date = new Date();
         record.setCreateTime(date);
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
         record.setCreateUser(loginUser.getName());
-        //新增的宿舍楼管理记录默认是 有效 状态
-        record.setStatus(0);
-        //设置buildingCode
-        record.setBuildingCode("b"+ createUID());
-        return result(iDormitoryBuildingService.insertSelective(record));
+        record.setAlreadyNumbers(0);
+        //查询宿舍楼名称
+        DormitoryBuilding dormitoryBuilding
+                = iDormitoryBuildingService.selectByBuildingCode(record.getBuildingCode());
+        record.setBuildingName(dormitoryBuilding.getBuildingName());
+        //设置stepCode
+        record.setStepCode("s" + createUID());
+        return result(iDormitoryStepsService.insertSelective(record));
     }
     /**
      *
@@ -111,11 +119,11 @@ public class DormitoryBuildingController extends BaseController{
      * @date: 2019/8/1 22:02
      */
     @RequestMapping("/del")
-    @RequiresPermissions("dmb:del")
-    @Operlog(modal = "宿舍楼管理",descr = "删除记录")
+    @RequiresPermissions("dmr:del")
+    @Operlog(modal = "宿舍管理",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
-        return result(iDormitoryBuildingService.deleteByPrimaryKeys(ids));
+        return result(iDormitoryStepsService.deleteByPrimaryKeys(ids));
     }
     /**
      *
@@ -126,10 +134,10 @@ public class DormitoryBuildingController extends BaseController{
      * @date: 2019/8/26 21:17
      */
     @RequestMapping("/edit/{id}")
-    @RequiresPermissions("dmb:update")
-    @Operlog(modal = "宿舍楼管理",descr = "查询记录")
+    @RequiresPermissions("dmr:update")
+    @Operlog(modal = "宿舍管理",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
-        DormitoryBuilding record = iDormitoryBuildingService.selectByPrimaryKey(id);
+        DormitorySteps record = iDormitoryStepsService.selectByPrimaryKey(id);
         model.addAttribute("note", record);
         return prefix + "/edit";
     }
@@ -142,11 +150,11 @@ public class DormitoryBuildingController extends BaseController{
      * @date: 2019/8/1 21:01
      */
     @RequestMapping("/editSave")
-    @RequiresPermissions("dmb:update")
-    @Operlog(modal = "宿舍楼管理",descr = "修改记录")
+    @RequiresPermissions("dmr:update")
+    @Operlog(modal = "宿舍管理",descr = "修改记录")
     @ResponseBody
-    public AjaxResult editSave(DormitoryBuilding record) {
-        return result(iDormitoryBuildingService.updateByPrimaryKeySelective(record));
+    public AjaxResult editSave(DormitorySteps record) {
+        return result(iDormitoryStepsService.updateByPrimaryKeySelective(record));
     }
 
     /**
@@ -154,29 +162,13 @@ public class DormitoryBuildingController extends BaseController{
      * @param record
      * @return
      */
-    @PostMapping("/checkDmCodeUnique")
+    @PostMapping("/checkStepUnique")
     @ResponseBody
-    public String checkDmCodeUnique(DormitoryBuilding record)
+    public String checkStepUnique(DormitorySteps record)
     {
         String uniqueFlag = "0";
         if (record != null) {
-            uniqueFlag = iDormitoryBuildingService.checkDmCodeUnique(record);
-        }
-        return uniqueFlag;
-    }
-
-    /**
-     * 校验宿舍楼名称
-     * @param record
-     * @return
-     */
-    @PostMapping("/checkDmNameUnique")
-    @ResponseBody
-    public String checkDmNameUnique(DormitoryBuilding record)
-    {
-        String uniqueFlag = "0";
-        if (record != null) {
-            uniqueFlag = iDormitoryBuildingService.checkDmNameUnique(record);
+            uniqueFlag = iDormitoryStepsService.checkStepUnique(record);
         }
         return uniqueFlag;
     }
