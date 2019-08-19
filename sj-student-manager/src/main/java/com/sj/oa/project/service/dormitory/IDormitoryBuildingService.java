@@ -13,6 +13,8 @@ public interface IDormitoryBuildingService {
 
     DormitoryBuilding selectByPrimaryKey(Integer id);
 
+    DormitoryBuilding selectByBuildingCode(String buildingCode);
+
     int updateByPrimaryKeySelective(DormitoryBuilding record);
 
     int deleteByPrimaryKeys(Integer[] id);

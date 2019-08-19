@@ -30,6 +30,10 @@ public class DormitoryBuildingServiceImpl implements IDormitoryBuildingService {
     public DormitoryBuilding selectByPrimaryKey(Integer id) {
         return dormitoryBuildingMapper.selectByPrimaryKey(id);
     }
+    @Override
+    public DormitoryBuilding selectByBuildingCode(String buildingCode) {
+        return dormitoryBuildingMapper.selectByBuildingCode(buildingCode);
+    }
 
     @Override
     public int updateByPrimaryKeySelective(DormitoryBuilding record) {

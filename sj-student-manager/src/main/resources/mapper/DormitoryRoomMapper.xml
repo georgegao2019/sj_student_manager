@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sj.oa.project.mapper.DormitoryStepsMapper">
+<mapper namespace="com.sj.oa.project.mapper.DormitoryRoomMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.DormitorySteps">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.DormitoryRoom">
         <result column="id" property="id" />
         <result column="building_code" property="buildingCode" />
         <result column="step_code" property="stepCode" />
-        <result column="building_name" property="buildingName" />
-        <result column="step" property="step" />
-        <result column="all_numbers" property="allNumbers" />
-        <result column="already_numbers" property="alreadyNumbers" />
+        <result column="room_code" property="roomCode" />
+        <result column="room_name" property="roomName" />
+        <result column="canin_number" property="caninNumber" />
+        <result column="income_number" property="incomeNumber" />
+        <result column="leader_studentid" property="leaderStudentid" />
         <result column="create_time" property="createTime" />
         <result column="create_user" property="createUser" />
         <result column="update_time" property="updateTime" />
@@ -17,21 +18,21 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,building_code,step_code,building_name,step,all_numbers,already_numbers,
+        id,building_code,step_code,room_code,room_name,canin_number,income_number,leader_studentid
         create_time,create_user,update_time,update_user
     </sql>
 
     <!--主键查找-->
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
         select <include refid="Base_Column_List"/>
-        from t_dormitory_steps
+        from t_dormitory_room
         where id = #{id};
     </select>
 
     <!--批量删除-->
     <delete id="deleteByPrimaryKeys" parameterType="int">
         delete from
-        t_dormitory_steps
+        t_dormitory_room
         WHERE id IN
         <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
             #{id}
@@ -41,8 +42,8 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.DormitorySteps">
-        insert into t_dormitory_steps
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.DormitoryRoom">
+        insert into t_dormitory_room
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -53,17 +54,20 @@
             <if test="stepCode != null">
                 step_code,
             </if>
-            <if test="buildingName != null">
-                building_name,
+            <if test="roomCode != null">
+                room_code,
             </if>
-            <if test="step != null">
-                step,
+            <if test="roomName != null">
+                room_name,
             </if>
-            <if test="allNumbers != null">
-                all_numbers,
+            <if test="caninNumber != null">
+                canin_number,
             </if>
-            <if test="alreadyNumbers != null">
-                already_numbers,
+            <if test="incomeNumber != null">
+                income_number,
+            </if>
+            <if test="leaderStudentid != null">
+                leader_studentid,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -88,17 +92,20 @@
             <if test="stepCode != null">
                 #{stepCode,jdbcType=VARCHAR},
             </if>
-            <if test="buildingName != null">
-                #{buildingName,jdbcType=VARCHAR},
+            <if test="roomCode != null">
+                #{roomCode,jdbcType=VARCHAR},
             </if>
-            <if test="step != null">
-                #{step,jdbcType=INTEGER},
+            <if test="roomName != null">
+                #{roomName,jdbcType=VARCHAR},
             </if>
-            <if test="allNumbers != null">
-                #{allNumbers,jdbcType=INTEGER},
+            <if test="caninNumber != null">
+                #{caninNumber,jdbcType=INTEGER},
             </if>
-            <if test="alreadyNumbers != null">
-                #{alreadyNumbers,jdbcType=INTEGER},
+            <if test="incomeNumber != null">
+                #{incomeNumber,jdbcType=INTEGER},
+            </if>
+            <if test="leaderStudentid != null">
+                #{leaderStudentid,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -115,8 +122,8 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.DormitorySteps">
-        update t_dormitory_steps
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.DormitoryRoom">
+        update t_dormitory_room
         <set>
             <if test="buildingCode != null">
                 building_code = #{buildingCode,jdbcType=VARCHAR},
@@ -124,17 +131,20 @@
             <if test="stepCode != null">
                 step_code = #{stepCode,jdbcType=VARCHAR},
             </if>
-            <if test="buildingName != null">
-                building_name = #{buildingName,jdbcType=VARCHAR},
+            <if test="roomCode != null">
+                room_code = #{roomCode,jdbcType=VARCHAR},
             </if>
-            <if test="step != null">
-                step = #{step,jdbcType=INTEGER},
+            <if test="roomName != null">
+                room_name = #{roomName,jdbcType=VARCHAR},
             </if>
-            <if test="allNumbers != null">
-                all_numbers = #{allNumbers,jdbcType=INTEGER},
+            <if test="caninNumber != null">
+                canin_number = #{caninNumber,jdbcType=INTEGER},
             </if>
-            <if test="alreadyNumbers != null">
-                already_numbers = #{alreadyNumbers,jdbcType=VARCHAR},
+            <if test="incomeNumber != null">
+                income_number = #{incomeNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="leaderStudentid != null">
+                leader_studentid = #{leaderStudentid,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=VARCHAR},
@@ -153,21 +163,36 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByDormitorySteps" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitorySteps">
+    <select id="selectByDormitoryRoom" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitoryRoom">
         select
         <include refid="Base_Column_List"></include>
-        from t_dormitory_steps
+        from t_dormitory_room
         <where>
-            <if test="buildingName !=null">
-                and building_name = #{buildingName,jdbcType=VARCHAR}
+            <if test="buildingCode !=null">
+                and building_code = #{buildingCode,jdbcType=VARCHAR}
+            </if>
+            <if test="stepCode !=null">
+                and step_code = #{stepCode,jdbcType=VARCHAR}
+            </if>
+            <if test="roomCode !=null">
+                and room_code = #{roomCode,jdbcType=VARCHAR}
+            </if>
+            <if test="roomName !=null">
+                and room_name = #{roomName,jdbcType=VARCHAR}
             </if>
         </where>
     </select>
 
-    <!-- 校验宿舍楼code -->
-    <select id="checkStepUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitorySteps">
-        select * from t_dormitory_steps
-        where step = #{step,jdbcType=INTEGER} and building_code = #{buildingCode,jdbcType=VARCHAR}
+    <!-- 校验宿舍楼code是否存在 -->
+    <select id="checkRoomCodeUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitoryRoom">
+        select * from t_dormitory_room
+        where dormitory_code = #{dormitoryCode,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 校验宿舍楼name是否存在 -->
+    <select id="checkRoomNameUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.DormitoryRoom">
+        select * from t_dormitory_room
+        where dormitory_name = #{dormitoryName,jdbcType=VARCHAR}
     </select>
 
 </mapper>

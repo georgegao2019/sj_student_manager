@@ -27,6 +27,13 @@
         where id = #{id};
     </select>
 
+    <!--buildingCode查找-->
+    <select id="selectByBuildingCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List"/>
+        from t_dormitory_building
+        where building_code = #{buildingCode};
+    </select>
+
     <!--批量删除-->
     <delete id="deleteByPrimaryKeys" parameterType="int">
         UPDATE

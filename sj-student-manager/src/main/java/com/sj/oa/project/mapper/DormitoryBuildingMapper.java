@@ -21,6 +21,11 @@ public interface DormitoryBuildingMapper {
     DormitoryBuilding selectByPrimaryKey(Integer id);
 
     /**
+     * 根据buildingCode查询单个用户
+     */
+    DormitoryBuilding selectByBuildingCode(String buildingCode);
+
+    /**
      * 更改用户
      */
     int updateByPrimaryKeySelective(DormitoryBuilding record);

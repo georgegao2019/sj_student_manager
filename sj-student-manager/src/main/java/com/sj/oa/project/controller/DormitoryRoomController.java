@@ -1,6 +1,5 @@
 package com.sj.oa.project.controller;
 
-import com.sj.oa.common.utils.DateUtils;
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
@@ -25,14 +24,14 @@ import java.util.List;
 
 /**
  * @author gaojun
- * @date 2019/8/1
- * 宿舍楼层管理controller
+ * @date 2019/8/19
+ * 宿舍管理 controller
  */
 @Controller
-@RequestMapping("/dms")
-public class DormitoryStepsController extends BaseController{
+@RequestMapping("/dmr")
+public class DormitoryRoomController extends BaseController{
     //前缀
-    private final static String prefix = "system/dormitory/dms";
+    private final static String prefix = "system/dormitory/dmr";
     @Autowired
     IDormitoryStepsService iDormitoryStepsService;
     @Autowired
@@ -45,15 +44,15 @@ public class DormitoryStepsController extends BaseController{
      *
      * @params:
      * @return:
-     * @date: 2018/9/26 21:13
+     * @date: 2019/9/18 11:00
      */
     @RequestMapping("/tolist")
-    @RequiresPermissions("dms:list")
+    @RequiresPermissions("dmr:list")
     public String toList(Model model) {
         List<DormitoryBuilding> dormitoryBuildings
                 = iDormitoryBuildingService.selectByDormitoryBuilding(new DormitoryBuilding());
         model.addAttribute("dormitoryBuildings",dormitoryBuildings);
-        return prefix + "/dmsList";
+        return prefix + "/dmrList";
     }
     /**
      *
@@ -94,8 +93,8 @@ public class DormitoryStepsController extends BaseController{
      * @date: 2018/9/26 21:16
      */
     @RequestMapping("/addSave")
-    @RequiresPermissions("dms:add")
-    @Operlog(modal = "宿舍楼层管理",descr = "添加记录")
+    @RequiresPermissions("dmr:add")
+    @Operlog(modal = "宿舍管理",descr = "添加记录")
     @ResponseBody
     public AjaxResult addSave(DormitorySteps record) throws Exception {
         Date date = new Date();
@@ -120,8 +119,8 @@ public class DormitoryStepsController extends BaseController{
      * @date: 2019/8/1 22:02
      */
     @RequestMapping("/del")
-    @RequiresPermissions("dms:del")
-    @Operlog(modal = "宿舍楼层管理",descr = "删除记录")
+    @RequiresPermissions("dmr:del")
+    @Operlog(modal = "宿舍管理",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
         return result(iDormitoryStepsService.deleteByPrimaryKeys(ids));
@@ -135,8 +134,8 @@ public class DormitoryStepsController extends BaseController{
      * @date: 2019/8/26 21:17
      */
     @RequestMapping("/edit/{id}")
-    @RequiresPermissions("dms:update")
-    @Operlog(modal = "宿舍楼层管理",descr = "查询记录")
+    @RequiresPermissions("dmr:update")
+    @Operlog(modal = "宿舍管理",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
         DormitorySteps record = iDormitoryStepsService.selectByPrimaryKey(id);
         model.addAttribute("note", record);
@@ -151,8 +150,8 @@ public class DormitoryStepsController extends BaseController{
      * @date: 2019/8/1 21:01
      */
     @RequestMapping("/editSave")
-    @RequiresPermissions("dms:update")
-    @Operlog(modal = "宿舍楼层管理",descr = "修改记录")
+    @RequiresPermissions("dmr:update")
+    @Operlog(modal = "宿舍管理",descr = "修改记录")
     @ResponseBody
     public AjaxResult editSave(DormitorySteps record) {
         return result(iDormitoryStepsService.updateByPrimaryKeySelective(record));

@@ -11,9 +11,9 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">宿舍楼名称：</label>
             <div class="col-sm-8">
-                <select name="buildingId" class="form-control select2-hidden-accessible" id="buildingId">
+                <select name="buildingCode" class="form-control select2-hidden-accessible" id="buildingCode">
                     <option value="">- -</option>
-                    <option th:each="d:${dormitoryBuildings}" th:value="${d.id}"
+                    <option th:each="d:${dormitoryBuildings}" th:value="${d.buildingCode}"
                             th:text="${d.buildingName}">
 
                     </option>
@@ -61,8 +61,8 @@
                         step: function () {
                             return $.trim($("#step").val());
                         },
-                        buildingId:function () {
-                            return $.trim($("#buildingId").find("option:selected").val());
+                        buildingCode:function () {
+                            return $.trim($("#buildingCode").find("option:selected").val());
                         }
                     },
                     dataFilter: function (data, type) {

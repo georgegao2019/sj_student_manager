@@ -1,5 +1,6 @@
 package com.sj.oa.project.controller;
 
+import com.sj.oa.common.utils.DateUtils;
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * @author gaojun
  * @date 2019/8/1
- * 晚熄灯检查controller
+ * 宿舍楼管理controller
  */
 @Controller
 @RequestMapping("/dmb")
@@ -87,14 +88,18 @@ public class DormitoryBuildingController extends BaseController{
      */
     @RequestMapping("/addSave")
     @RequiresPermissions("dmb:add")
-    @Operlog(modal = "晚熄灯检查",descr = "添加记录")
+    @Operlog(modal = "宿舍楼管理",descr = "添加记录")
     @ResponseBody
     public AjaxResult addSave(DormitoryBuilding record) throws Exception {
-        record.setCreateTime(new Date());
+        //设置更新时间
+        Date date = new Date();
+        record.setCreateTime(date);
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
         record.setCreateUser(loginUser.getName());
-        //新增的晚熄灯检查记录默认是 有效 状态
+        //新增的宿舍楼管理记录默认是 有效 状态
         record.setStatus(0);
+        //设置buildingCode
+        record.setBuildingCode("b"+ createUID());
         return result(iDormitoryBuildingService.insertSelective(record));
     }
     /**
@@ -107,7 +112,7 @@ public class DormitoryBuildingController extends BaseController{
      */
     @RequestMapping("/del")
     @RequiresPermissions("dmb:del")
-    @Operlog(modal = "晚熄灯检查",descr = "删除记录")
+    @Operlog(modal = "宿舍楼管理",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
         return result(iDormitoryBuildingService.deleteByPrimaryKeys(ids));
@@ -122,7 +127,7 @@ public class DormitoryBuildingController extends BaseController{
      */
     @RequestMapping("/edit/{id}")
     @RequiresPermissions("dmb:update")
-    @Operlog(modal = "晚熄灯检查",descr = "查询记录")
+    @Operlog(modal = "宿舍楼管理",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
         DormitoryBuilding record = iDormitoryBuildingService.selectByPrimaryKey(id);
         model.addAttribute("note", record);
@@ -138,7 +143,7 @@ public class DormitoryBuildingController extends BaseController{
      */
     @RequestMapping("/editSave")
     @RequiresPermissions("dmb:update")
-    @Operlog(modal = "晚熄灯检查",descr = "修改记录")
+    @Operlog(modal = "宿舍楼管理",descr = "修改记录")
     @ResponseBody
     public AjaxResult editSave(DormitoryBuilding record) {
         return result(iDormitoryBuildingService.updateByPrimaryKeySelective(record));

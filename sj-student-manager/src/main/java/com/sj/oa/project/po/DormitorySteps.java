@@ -8,8 +8,10 @@ import com.sj.oa.framework.web.po.BasePo;
 public class DormitorySteps extends BasePo {
 
     private Integer id;
-    //宿舍楼id
-    private Integer buildingId;
+    //楼层code
+    private String stepCode;
+    //宿舍楼code
+    private String buildingCode;
     //宿舍楼名称
     private String buildingName;
     //层数
@@ -27,12 +29,20 @@ public class DormitorySteps extends BasePo {
         this.id = id;
     }
 
-    public Integer getBuildingId() {
-        return buildingId;
+    public String getStepCode() {
+        return stepCode;
     }
 
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
+    public void setStepCode(String stepCode) {
+        this.stepCode = stepCode;
+    }
+
+    public String getBuildingCode() {
+        return buildingCode;
+    }
+
+    public void setBuildingCode(String buildingCode) {
+        this.buildingCode = buildingCode;
     }
 
     public String getBuildingName() {
