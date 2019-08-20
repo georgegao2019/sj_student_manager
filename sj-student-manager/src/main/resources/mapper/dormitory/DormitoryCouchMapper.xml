@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.dormitory.DormitoryCouchMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.dormitory.DormitoryCouch">
+        <result column="id" property="id" />
+        <result column="room_code" property="roomCode" />
+        <result column="couch_code" property="couchCode" />
+        <result column="couch_number" property="couchNumber" />
+        <result column="is_berth" property="isBerth" />
+        <result column="studentid" property="studentid" />
+        <result column="student_name" property="studentName" />
+        <result column="move_in_date" property="moveInDate" />
+        <result column="end_date" property="endDate" />
+        <result column="is_president" property="isPresident" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,room_code,couch_code,couch_number,is_berth,studentid,student_name,move_in_date,end_date,is_president
+        create_time,create_user,update_time,update_user
+    </sql>
+
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        select <include refid="Base_Column_List"/>
+        from t_dormitory_couch
+        where id = #{id};
+    </select>
+
+    <!--CouchCode查找-->
+    <select id="selectByCouchCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List"/>
+        from t_dormitory_couch
+        where couch_code = #{couchCode};
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteByPrimaryKeys" parameterType="int">
+        UPDATE
+        t_dormitory_couch
+        set status = 1
+        WHERE id IN
+        <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--
+     添加
+    -->
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.dormitory.DormitoryCouch">
+        insert into t_dormitory_couch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roomCode != null">
+                room_code,
+            </if>
+            <if test="couchCode != null">
+                couch_code,
+            </if>
+            <if test="couchNumber != null">
+                couch_number,
+            </if>
+            <if test="isBerth != null">
+                is_berth,
+            </if>
+            <if test="studentid != null">
+                studentid,
+            </if>
+            <if test="studentName != null">
+                student_name,
+            </if>
+            <if test="moveInDate != null">
+                move_in_date,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="isPresident != null">
+                is_president,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="roomCode != null">
+                #{roomCode,jdbcType=VARCHAR},
+            </if>
+            <if test="couchCode != null">
+                #{couchCode,jdbcType=VARCHAR},
+            </if>
+            <if test="couchNumber != null">
+                #{couchNumber,jdbcType=INTEGER},
+            </if>
+            <if test="isBerth != null">
+                #{isBerth,jdbcType=INTEGER},
+            </if>
+            <if test="studentid != null">
+                #{studentid,jdbcType=VARCHAR},
+            </if>
+            <if test="studentName != null">
+                #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="moveInDate != null">
+                #{moveInDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isPresident != null">
+                #{isPresident,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.dormitory.DormitoryCouch">
+        update t_dormitory_couch
+        <set>
+            <if test="roomCode != null">
+                room_code = #{roomCode,jdbcType=VARCHAR},
+            </if>
+            <if test="couchCode != null">
+                couch_code = #{couchCode,jdbcType=VARCHAR},
+            </if>
+            <if test="couchNumber != null">
+                couch_number = #{couchNumber,jdbcType=INTEGER},
+            </if>
+            <if test="isBerth != null">
+                is_berth = #{isBerth,jdbcType=INTEGER},
+            </if>
+            <if test="studentid != null">
+                studentid = #{studentid,jdbcType=VARCHAR},
+            </if>
+            <if test="studentName != null">
+                student_name = #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="moveInDate != null">
+                move_in_date = #{moveInDate,jdbcType=VARCHAR},
+            </if>
+            <if test="endDate != null">
+                student_name = #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="isPresident != null">
+                is_president = #{isPresident,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_time = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 用户列表 根据不同条件查询-->
+    <select id="selectByDormitoryCouch" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryCouch">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_dormitory_couch
+        <where>
+            <if test="couchCode !=null">
+                and couch_code = #{couchCode,jdbcType=VARCHAR}
+            </if>
+            <if test="roomCode !=null">
+                and room_code = #{roomCode,jdbcType=VARCHAR}
+            </if>
+            <if test="studentid !=null">
+                and studentid = #{studentid,jdbcType=VARCHAR}
+            </if>
+            <if test="studentName !=null">
+                and student_name = #{studentName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!-- 校验宿舍床位唯一性 -->
+    <select id="checkCouchNumberUnique" parameterType="com.sj.oa.project.po.dormitory.DormitoryCouch" resultMap="BaseResultMap">
+        select * from t_dormitory_couch
+        where couch_number = #{couchNumber} and room_number = #{roomNumber}
+    </select>
+</mapper>

@@ -1,4 +1,4 @@
-package com.sj.oa.project.service.classall;
+package com.sj.oa.project.service.college;
 
 import com.sj.oa.common.constant.CsEnum;
 import com.sj.oa.common.utils.StringUtils;
