@@ -439,5 +439,30 @@ public interface CsEnum{
             return msg;
         }
     }
+    enum onesStatus{
+        ONES_ACTIVE("ACTIVE", "活跃"),
+        ONES_INACTIVE("INACTIVE","非活跃"),
+        ONES_EXPLUSION("EXPLUSION","开除学籍"),
+        ONES__HOLDBACK("HOLDBACK","保留学籍");
+        private String value;
+        private String msg;
+
+        onesStatus(String value, String msg)
+        {
+            this.value = value;
+            this.msg = msg;
+        }
+
+        public String getValue()
+        {
+            return value;
+        }
+
+        public String getMsg()
+        {
+            return msg;
+        }
+    }
+
 
 }

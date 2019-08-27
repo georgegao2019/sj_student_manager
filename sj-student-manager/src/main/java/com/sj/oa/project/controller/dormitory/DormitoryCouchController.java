@@ -5,6 +5,7 @@ import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.User;
+import com.sj.oa.project.po.college.YearSessionInfo;
 import com.sj.oa.project.po.dormitory.DormitoryCouch;
 import com.sj.oa.project.service.dormitory.IDormitoryCouchService;
 import com.sj.oa.project.service.user.IUserService;
@@ -180,4 +181,18 @@ public class DormitoryCouchController extends BaseController{
         }
         return uniqueFlag;
     }
+
+    /**
+     *
+     * @描述 ajax宿舍楼+宿舍楼层树状结构
+     *
+     * @date 2018/9/16 10:48
+     */
+    /*@RequestMapping("/ajaxlist")
+    @ResponseBody
+    public List<> list(YearSessionInfo dept)
+    {
+        List<YearSessionInfo> depts = iYearSessionInfoService.selectByYearSessionInfo(dept);
+        return depts;
+    }*/
 }
