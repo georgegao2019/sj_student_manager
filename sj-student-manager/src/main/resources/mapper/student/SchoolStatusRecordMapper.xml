@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.student.SchoolStatusRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.student.SchoolStatusRecord">
+        <result column="id" property="id" />
+        <result column="school_status_id" property="schoolStatusId" />
+        <result column="previous_status" property="previousStatus" />
+        <result column="previous_msg" property="previousMsg" />
+        <result column="after_status" property="afterStatus" />
+        <result column="after_msg" property="afterMsg" />
+        <result column="reason" property="reason" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,school_status_id,previous_status,previous_msg,after_status,after_msg,reason,create_time,create_user,update_time,update_user
+    </sql>
+
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        select <include refid="Base_Column_List"/>
+        from t_school_status_record
+        where id = #{id};
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteByPrimaryKeys" parameterType="int">
+        delete from
+        t_school_status_record
+        WHERE id IN
+        <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--
+     添加
+    -->
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.student.SchoolStatusRecord">
+        insert into t_school_status_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="schoolStatusId != null">
+                school_status_id,
+            </if>
+            <if test="previousStatus != null">
+                previous_status,
+            </if>
+            <if test="previousMsg != null">
+                previous_msg,
+            </if>
+            <if test="afterStatus != null">
+                after_status,
+            </if>
+            <if test="afterMsg != null">
+                after_msg,
+            </if>
+            <if test="reason != null">
+                reason,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="schoolStatusId != null">
+                #{schoolStatusId,jdbcType=INTEGER},
+            </if>
+            <if test="previousStatus != null">
+                #{previousStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="previousMsg != null">
+                #{previousMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="afterStatus != null">
+                #{afterStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="afterMsg != null">
+                #{afterMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.student.SchoolStatusRecord">
+        update t_school_status_record
+        <set>
+            <if test="schoolStatusId != null">
+                school_status_id = #{schoolStatusId,jdbcType=INTEGER},
+            </if>
+            <if test="previousStatus != null">
+                previous_status = #{previousStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="previousMsg != null">
+                previous_msg = #{previousMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="afterStatus != null">
+                after_status = #{afterStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="afterMsg != null">
+                after_msg = #{afterMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_time = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 用户列表 根据不同条件查询-->
+    <select id="selectByDormitoryRoom" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.student.SchoolStatusRecord">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_school_status_record
+        <where>
+            <if test="schoolStatusId !=null">
+                and school_status_id = #{schoolStatusId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>
