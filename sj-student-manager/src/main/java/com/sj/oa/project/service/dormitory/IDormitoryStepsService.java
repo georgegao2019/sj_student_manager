@@ -1,6 +1,8 @@
 package com.sj.oa.project.service.dormitory;
 
 import com.sj.oa.project.po.dormitory.DormitorySteps;
+import com.sj.oa.project.po.dto.DormitoryBuildingTree;
+import com.sj.oa.project.po.dto.DormitoryStepsTree;
 
 import java.util.List;
 
@@ -26,4 +28,6 @@ public interface IDormitoryStepsService {
      * @return
      */
     String checkStepUnique(DormitorySteps record);
+
+    List<DormitoryStepsTree> selectByBuildingCode(String buildingCode);
 }

@@ -2,6 +2,8 @@ package com.sj.oa.project.mapper.dormitory;
 
 
 import com.sj.oa.project.po.dormitory.DormitorySteps;
+import com.sj.oa.project.po.dto.DormitoryBuildingTree;
+import com.sj.oa.project.po.dto.DormitoryStepsTree;
 
 import java.util.List;
 
@@ -33,12 +35,14 @@ public interface DormitoryStepsMapper {
     int deleteByPrimaryKeys(Integer[] ids);
 
     /*
-     *
-     * 用户列表 以及 根据条件查询
+     * 宿舍楼层列表
      */
     List<DormitorySteps> selectByDormitorySteps(DormitorySteps record);
 
     /* 校验宿舍楼code */
     DormitorySteps checkStepUnique(DormitorySteps record);
 
+    List<DormitoryBuildingTree> selectDormitoryBuildingTree();
+
+    List<DormitoryStepsTree> selectByBuildingCode(String buildingCode);
 }

@@ -5,10 +5,12 @@ import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.User;
-import com.sj.oa.project.po.college.YearSessionInfo;
 import com.sj.oa.project.po.dormitory.DormitoryCouch;
+import com.sj.oa.project.po.dormitory.DormitoryRoom;
 import com.sj.oa.project.service.dormitory.IDormitoryCouchService;
+import com.sj.oa.project.service.dormitory.IDormitoryRoomService;
 import com.sj.oa.project.service.user.IUserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,10 +32,13 @@ import java.util.List;
 @RequestMapping("/dmc")
 public class DormitoryCouchController extends BaseController{
     //前缀
-    private final static String prefix = "system/dormitory/dmc";
+    private final static String prefix = "system/dormitory/dmc/";
 
     @Autowired
     IDormitoryCouchService iDormitoryCouchService;
+
+    @Autowired
+    IDormitoryRoomService iDormitoryRoomService;
 
     @Autowired
     IUserService iUserService;
@@ -183,16 +188,25 @@ public class DormitoryCouchController extends BaseController{
     }
 
     /**
+     * 查看用户详情
+     * system/user/info
      *
-     * @描述 ajax宿舍楼+宿舍楼层树状结构
-     *
-     * @date 2018/9/16 10:48
+     * @param roomCode
+     * @param model
+     * @return
      */
-    /*@RequestMapping("/ajaxlist")
-    @ResponseBody
-    public List<> list(YearSessionInfo dept)
-    {
-        List<YearSessionInfo> depts = iYearSessionInfoService.selectByYearSessionInfo(dept);
-        return depts;
-    }*/
+    @RequestMapping("/couchInfo/{roomCode}")
+    /*@RequiresPermissions("couch:info")*/
+    @Operlog(modal = "床位管理", descr = "查看房间详情")
+    public String couchInfo(@PathVariable("roomCode") String roomCode,Model model){
+        model.addAttribute("roomCode", roomCode);
+        //查询房间名称
+        DormitoryRoom param = new DormitoryRoom();
+        param.setRoomCode(roomCode);
+        List<DormitoryRoom> dormitoryRooms = iDormitoryRoomService.selectByDormitoryRoom(param);
+        if(CollectionUtils.isNotEmpty(dormitoryRooms)){
+            model.addAttribute("roomName",dormitoryRooms.get(0).getRoomName());
+        }
+        return prefix + "dmcList";
+    }
 }

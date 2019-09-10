@@ -164,6 +164,18 @@
         </where>
     </select>
 
+
+    <resultMap id="BuildingStepsTreeResultMap" type="com.sj.oa.project.po.dto.DormitoryStepsTree">
+        <result column="step_code" property="id" />
+        <result column="step" property="name" />
+    </resultMap>
+    <select id="selectByBuildingCode" resultMap="BuildingStepsTreeResultMap">
+        select
+        step_code,concat('第',step,'层') as step
+        from t_dormitory_steps
+        where building_code = #{buildingCode,jdbcType=VARCHAR}
+    </select>
+
     <!-- 校验宿舍楼code -->
     <select id="checkStepUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitorySteps">
         select * from t_dormitory_steps

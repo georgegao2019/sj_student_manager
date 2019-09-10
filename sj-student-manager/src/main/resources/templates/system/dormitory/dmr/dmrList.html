@@ -18,9 +18,9 @@
                 </div>
                 <div class="box-tools pull-right">
                     <a type="button" class="btn btn-box-tool menuItem" href="/yearSession/tolist" target="iframe0"
-                       title="管理应届年份"><i
+                       title="宿舍楼管理"><i
                             class="fa fa-edit"></i></a>
-                    <button type="button" class="btn btn-box-tool" id="btnRefresh" title="刷新应届年份"><i
+                    <button type="button" class="btn btn-box-tool" id="btnRefresh" title="刷新宿舍楼表"><i
                             class="fa fa-refresh"></i></button>
                 </div>
             </div>
@@ -36,42 +36,6 @@
         <div class="col-sm-12 select-info">
             <form id="operlog-form">
                 <div class="select-list gd">
-                    <ul>
-                        <li>
-                            用户ID：<input type="text" name="studentId"/>
-                        </li>
-                        <li>
-                            姓名：<input type="text" name="name"/>
-                        </li>
-                        <li>
-                            手机号码：<input type="text" name="tel"/>
-                        </li>
-                        <li>
-                            <label>专业： </label>
-                            <select name="majorCode">
-                                <option value="">- -</option>
-                                <option th:each="m:${majors}" th:value="${m.majorCode}"
-                                        th:text="${m.majorName}">
-                                </option>
-                            </select>
-                        </li>
-                        <li>
-                            <label>所在班级： </label>
-                            <select name="majorCode">
-                                <option value="">- -</option>
-                                <option th:each="c:${classalls}" th:value="${c.className}"
-                                        th:text="${c.className}">
-                                </option>
-                            </select>
-                        </li>
-                        <li>
-                            <a class="btn btn-primary btn-rounded btn-sm"
-                               onclick="$.table.search($('form').attr('id'))"><i class="fa fa-search"></i>&nbsp;搜索</a>
-
-                            <a class="btn btn-warning btn-rounded btn-sm"
-                               onclick="$.form.reset($('form').attr('id'))"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                        </li>
-                    </ul>
                 </div>
             </form>
         </div>
@@ -95,9 +59,9 @@
 <script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
 <script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
 <script th:inline="javascript">
-    var updateFlag = [[${@permission.hasPermi('user:update')}]];
-    var delFlag = [[${@permission.hasPermi('user:del')}]];
-    var detailFlag = [[${@permission.hasPermi('user:info')}]];
+    var updateFlag = [[${@permission.hasPermi('dmr:update')}]];
+    var delFlag = [[${@permission.hasPermi('dmr:del')}]];
+    var detailFlag = [[${@permission.hasPermi('dmr:info')}]];
     $(document).ready(function () {
 
         //layuout布局
@@ -138,19 +102,19 @@
                 },
                 zTreeNodes = [
                     {
-                        "name": "应届年份", open: true, children: initDeptData()
+                        "name": "宿舍楼信息", open: true, children:initDeptData()
                     }
                 ];
 
             function initDeptData() {
                 var arr = new Array();
                 $.ajaxSettings.async = false;
-                $.post("/yearSession/ajaxlist", {}, function (data) {
+                $.post("/dmr/ajaxlist", {}, function (data) {
                     for (var i = 0; i < data.length; i++) {
                         var treeData = {
-                            "name": data[i].yearSession,
-                            "value": data[i].yearSession
-
+                            "name":data[i].name,
+                            "id": data[i].value,
+                            "children":data[i].children
                         }
                         arr.push(treeData);
                     }
@@ -163,13 +127,11 @@
         },
         queryUserList: function () {
             var options = {
-                url: "/student/tableList",
-                createUrl: "/student/toAdd",
-                updateUrl: "/student/edit/{id}",
-                removeUrl: "/student/del",
+                url: "/dmr/tableList",
+                createUrl: "/dmr/toAdd",
+                updateUrl: "/dmr/edit/{id}",
+                removeUrl: "/dmr/del",
                 // exportUrl: prefix + "/export",
-                sortName: "createTime",
-                sortOrder: "desc",
                 modalName: "用户",
                 search: false,
                 showExport: true,
@@ -177,38 +139,26 @@
                     checkbox: true
                 },
                     {
-                        field: 'studentId',
-                        title: '用户ID',
+                        field: 'roomCode',
+                        title: '房间编号',
                         sortable: true
                     },
 
                     {
-                        field: 'name',
-                        title: '姓名'
+                        field: 'roomName',
+                        title: '房间名称'
                     },
                     {
-                        field:'majorName',
-                        title:'专业全称'
+                        field:'incomeNumber',
+                        title:'已入住人数'
                     },
                     {
-                        field:'className',
-                        title:'所在班级'
+                        field:'caninNumber',
+                        title:'可入住人数'
                     },
                     {
-                        field: 'tel',
-                        title: '手机'
-                    },
-                    {
-                        field: 'status',
-                        title: '状态',
-                        align: 'center',
-                        formatter: function (value, row, index) {
-                            if (value == 0) {
-                                return '<span class="badge badge-primary">正常</span>';
-                            } else {
-                                return '<span class="badge badge-danger">停用</span>';
-                            }
-                        }
+                        field: 'leaderStudentid',
+                        title: '社长学号'
                     },
                     {
                         field: 'createTime',
@@ -223,10 +173,10 @@
                         formatter: function (value, row, index) {
                             //alert(JSON.stringify(row));
                             var actions = [];
-                            actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="#" onclick="userInfo(\'' + row.uid + '\')"><i class="fa fa-search"></i>详细</a> ');
+                            actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="#" onclick="roomInfo(\'' + row.roomCode + '\')"><i class="fa fa-search"></i>查看入住信息</a> ');
                             /*actions.push('<a class="btn btn-success btn-xs '+updateFlag+'" href="#" onclick="$.operate.editFull(\'' + row.uid + '\')"><i class="fa fa-edit"></i>编辑</a> ');*/
                             actions.push('<a class="btn btn-danger btn-xs '+delFlag+'" href="#" onclick="$.operate.remove(\'' + row.uid + '\')"><i class="fa fa-remove"></i>删除</a> ');
-                            actions.push('<a class="btn btn-info btn-xs '+delFlag+'" href="#" onclick="resetPwd(\'' + row.uid + '\')"><i class="fa fa-key"></i>重置</a>');
+                            /*actions.push('<a class="btn btn-info btn-xs '+delFlag+'" href="#" onclick="resetPwd(\'' + row.uid + '\')"><i class="fa fa-key"></i>重置</a>');*/
 
                             return actions.join('');
                         }
@@ -235,19 +185,13 @@
             $.table.init(options);
         },
         zTreeOnClick: function (event, treeId, treeNode) {
-            $.table.clickTree("grade", treeNode.value);
+            $.table.clickTree("stepCode", treeNode.id);
         }
     }
 
-    /*用户管理-重置密码*/
-    function resetPwd(userId) {
-        var url =  '/user/resetPwd/' + userId;
-        $.modal.open("重置密码", url, '800', '300');
-    }
-
-    function userInfo(userId){
-        var url = '/user/info/' + userId;
-        $.modal.open("学生详情",url);
+    function roomInfo(roomCode){
+        var url = '/dmc/couchInfo/' + roomCode;
+        $.modal.open("入住详情",url);
     }
 
 </script>

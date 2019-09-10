@@ -8,15 +8,35 @@ import java.util.List;
 /**
  * Created by gaojun on 2019/8/20.
  */
-public class DormitoryBuildingTree extends DormitoryBuilding {
+public class DormitoryBuildingTree {
 
-    private List<DormitorySteps> steps;
+    private String id;
 
-    public List<DormitorySteps> getSteps() {
-        return steps;
+    private String name;
+
+    private List<DormitoryStepsTree> children;
+
+    public List<DormitoryStepsTree> getChildren() {
+        return children;
     }
 
-    public void setSteps(List<DormitorySteps> steps) {
-        this.steps = steps;
+    public void setChildren(List<DormitoryStepsTree> children) {
+        this.children = children;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

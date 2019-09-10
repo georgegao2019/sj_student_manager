@@ -98,7 +98,7 @@ public class DormitoryBuildingController extends BaseController{
         //新增的宿舍楼管理记录默认是 有效 状态
         record.setStatus(0);
         //设置buildingCode
-        record.setBuildingCode("b"+ createUID());
+        //record.setBuildingCode("b"+ createUID());
         return result(iDormitoryBuildingService.insertSelective(record));
     }
     /**

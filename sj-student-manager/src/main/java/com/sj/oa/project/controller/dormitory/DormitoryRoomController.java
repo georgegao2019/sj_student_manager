@@ -5,11 +5,18 @@ import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.dormitory.DormitoryBuilding;
+import com.sj.oa.project.po.dormitory.DormitoryRoom;
 import com.sj.oa.project.po.dormitory.DormitorySteps;
 import com.sj.oa.project.po.User;
+import com.sj.oa.project.po.dto.DormitoryBuildingTree;
+import com.sj.oa.project.po.dto.DormitoryStepsTree;
 import com.sj.oa.project.service.dormitory.IDormitoryBuildingService;
+import com.sj.oa.project.service.dormitory.IDormitoryCouchService;
+import com.sj.oa.project.service.dormitory.IDormitoryRoomService;
 import com.sj.oa.project.service.dormitory.IDormitoryStepsService;
 import com.sj.oa.project.service.user.IUserService;
+import org.activiti.engine.impl.util.CollectionUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +44,8 @@ public class DormitoryRoomController extends BaseController{
     IDormitoryStepsService iDormitoryStepsService;
     @Autowired
     IDormitoryBuildingService iDormitoryBuildingService;
+    @Autowired
+    IDormitoryRoomService iDormitoryRoomService;
     @Autowired
     IUserService iUserService;
     /**
@@ -64,9 +74,9 @@ public class DormitoryRoomController extends BaseController{
      */
     @RequestMapping("/tableList")
     @ResponseBody
-    public TableDataInfo tableList(DormitorySteps record) {
+    public TableDataInfo tableList(DormitoryRoom record) {
         startPage();
-        List<DormitorySteps> records = iDormitoryStepsService.selectByDormitorySteps(record);
+        List<DormitoryRoom> records = iDormitoryRoomService.selectByDormitoryRoom(record);
         return getDataTable(records);
     }
     /**
@@ -171,5 +181,34 @@ public class DormitoryRoomController extends BaseController{
             uniqueFlag = iDormitoryStepsService.checkStepUnique(record);
         }
         return uniqueFlag;
+    }
+
+    /**
+     *
+     * @描述 ajax宿舍楼+宿舍楼层树状结构
+     *
+     * @date 2018/9/16 10:48
+     */
+    @RequestMapping("/ajaxlist")
+    @ResponseBody
+    public List<DormitoryBuildingTree> list()
+    {
+        List<DormitoryBuildingTree> resultTree = new ArrayList<>();
+
+        List<DormitoryBuilding> buildings
+                = iDormitoryBuildingService.selectByDormitoryBuilding(new DormitoryBuilding());
+        if(CollectionUtils.isNotEmpty(buildings)){
+            for(DormitoryBuilding building : buildings){
+                DormitoryBuildingTree dormitoryBuildingTree = new DormitoryBuildingTree();
+                dormitoryBuildingTree.setId(building.getBuildingCode());
+                //查询宿舍楼下的全部楼层
+                List<DormitoryStepsTree> steps
+                        = iDormitoryStepsService.selectByBuildingCode(building.getBuildingCode());
+                dormitoryBuildingTree.setChildren(steps);
+                dormitoryBuildingTree.setName(building.getBuildingName());
+                resultTree.add(dormitoryBuildingTree);
+            }
+        }
+        return resultTree;
     }
 }

@@ -142,7 +142,7 @@ public class YearSessionInfoController extends BaseController{
 
     /**
      *
-     * @描述 ajax请求的所有部门
+     * @描述 ajax请求所有年级列表
      *
      * @date 2018/9/16 10:48
      */

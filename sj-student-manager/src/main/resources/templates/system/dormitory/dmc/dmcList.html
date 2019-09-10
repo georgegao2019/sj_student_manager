@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<form class="form-horizontal m" id="roomCode">
+    <div class="form-group">
+        <label class="col-sm-3 control-label ">宿舍名称：</label>
+        <div class="col-sm-8">
+            <input class="form-control" type="text" readonly="true" th:field="${roomName}"/>
+        </div>
+    </div>
+</form>
+<div class="container-div">
+    <div class="row">
+        <div class="btn-group hidden-xs" id="toolbar" role="group">
+            <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add()" shiro:hasPermission="dmc:add">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+            <a class="btn btn-outline btn-danger btn-rounded" onclick="$.operate.batRemove()"
+               shiro:hasPermission="dmc:del">
+                <i class="fa fa-trash-o"></i> 删除
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-info order-table">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script th:inline="javascript">
+    var prefix = "/dmc";
+    var updateFlag = [[${@permission.hasPermi('"dmc:update')}]];
+    var delFlag = [[${@permission.hasPermi('"dmc:del')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/tableList",
+            createUrl: prefix + "/toAdd",
+            modalName: "便签",
+            search: false,
+            showExport: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'roomCode',
+                    title: '房间编号',
+                },
+                {
+                    field: 'couchCode',
+                    title: '宿舍楼名称',
+                },
+                {
+                    field: 'couchNumber',
+                    title: '地址',
+                },
+                {
+                    field: 'isBerth',
+                    title: '上下层',
+                    formatter: function (value, row, index) {
+                        if(value == 1){
+                            return "上铺";
+                        }else{
+                            return "下铺";
+                        }
+                    }
+                },
+                {
+                    field: 'studentid',
+                    title: '入住学生id',
+                },
+                {
+                    field: 'studentName',
+                    title: '入住学生姓名',
+                },
+                {
+                    field: 'moveInDate',
+                    title: '入住时间',
+                    formatter: function (value, row, index) {
+                        return $.common.dateFormat(value);
+                    }
+                },
+                {
+                    field: 'isPresident',
+                    title: '是否是舍长',
+                    formatter: function (value, row, index) {
+                        if(value == 1){
+                            return "是";
+                        }else{
+                            return "否";
+                        }
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="' + updateFlag + 'btn btn-success btn-xs" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="' + delFlag + 'btn btn-danger btn-xs"  href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>
