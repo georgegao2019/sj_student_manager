@@ -1,5 +1,6 @@
 package com.sj.oa.project.controller.dormitory;
 
+import com.sj.oa.common.utils.DateUtils;
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
@@ -7,6 +8,7 @@ import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.User;
 import com.sj.oa.project.po.dormitory.DormitoryCouch;
 import com.sj.oa.project.po.dormitory.DormitoryRoom;
+import com.sj.oa.project.po.dto.DormitoryModel;
 import com.sj.oa.project.service.dormitory.IDormitoryCouchService;
 import com.sj.oa.project.service.dormitory.IDormitoryRoomService;
 import com.sj.oa.project.service.user.IUserService;
@@ -52,9 +54,19 @@ public class DormitoryCouchController extends BaseController{
      * @return:
      * @date: 2019/8/20 21:13
      */
-    @RequestMapping("/tolist")
+    @RequestMapping("/tolist/{roomCode}")
     @RequiresPermissions("dmc:list")
-    public String toList(Model model) {
+    public String toList(@PathVariable("roomCode") String roomCode,Model model) {
+        DormitoryModel modelParam = new DormitoryModel();
+        //查询房间名称
+        DormitoryRoom param = new DormitoryRoom();
+        param.setRoomCode(roomCode);
+        List<DormitoryRoom> dormitoryRooms = iDormitoryRoomService.selectByDormitoryRoom(param);
+        if(CollectionUtils.isNotEmpty(dormitoryRooms)){
+            modelParam.setRoomCode(roomCode);
+            modelParam.setRoomName(dormitoryRooms.get(0).getRoomName());
+            model.addAttribute("roomInfo",modelParam);
+        }
         return prefix + "/dmcList";
     }
     /**
@@ -84,8 +96,11 @@ public class DormitoryCouchController extends BaseController{
      * @return:
      * @date: 2019/8/20 21:15
      */
-    @RequestMapping("/toAdd")
-    public String toAdd(Model model) {
+    @RequestMapping("/toAdd/{roomCode}")
+    public String toAdd(@PathVariable("roomCode") String roomCode,Model model) {
+        DormitoryModel modelParam = new DormitoryModel();
+        modelParam.setRoomCode(roomCode);
+        model.addAttribute("roomInfo",modelParam);
         return prefix + "/add";
     }
     /**
@@ -106,6 +121,10 @@ public class DormitoryCouchController extends BaseController{
         record.setCreateTime(date);
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
         record.setCreateUser(loginUser.getName());
+        //生成couchCode
+        record.setCouchCode(record.getRoomCode() + "-c" + record.getCouchNumber());
+        //设置入住时间
+        record.setMoveInDate(date);
         return result(iDormitoryCouchService.insertSelective(record));
     }
     /**
@@ -188,8 +207,7 @@ public class DormitoryCouchController extends BaseController{
     }
 
     /**
-     * 查看用户详情
-     * system/user/info
+     * 查看宿舍床位详情
      *
      * @param roomCode
      * @param model

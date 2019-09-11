@@ -12,7 +12,7 @@
             <label class="col-sm-3 control-label">宿舍楼名称：</label>
             <div class="col-sm-8">
                 <select name="buildingCode" class="form-control select2-hidden-accessible" id="buildingCode">
-                    <option value="">- -</option>
+                    <option value="">-- 请选择宿舍楼 --</option>
                     <option th:each="d:${dormitoryBuildings}" th:value="${d.buildingCode}"
                             th:text="${d.buildingName}">
 

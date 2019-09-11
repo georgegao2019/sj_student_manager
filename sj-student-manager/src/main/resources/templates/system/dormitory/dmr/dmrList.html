@@ -190,8 +190,8 @@
     }
 
     function roomInfo(roomCode){
-        var url = '/dmc/couchInfo/' + roomCode;
-        $.modal.open("入住详情",url);
+        var url = '/dmc/tolist/' + roomCode;
+        $.modal.openFull("入住详情",url);
     }
 
 </script>

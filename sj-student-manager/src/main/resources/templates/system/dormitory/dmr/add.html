@@ -8,28 +8,36 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-role-add">
+        <input name="buildingCode"  type="hidden"  th:field="*{stepInfo.buildingCode}" />
+        <input name="stepCode"  type="hidden"  th:field="*{stepInfo.stepCode}" />
         <div class="form-group">
-            <label class="col-sm-3 control-label">宿舍楼编号：</label>
+            <label class="col-sm-3 control-label ">宿舍楼名称：</label>
             <div class="col-sm-8">
-                <input class="form-control" type="text" name="buildingCode" id="buildingCode" placeholder="编号格式:字母'b'+数字">
+                <input class="form-control" type="text" name="buildingName" id="buildingName" readonly="true" th:field="*{stepInfo.buildingName}"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label">宿舍楼名称：</label>
+            <label class="col-sm-3 control-label ">楼层：</label>
             <div class="col-sm-8">
-                <input class="form-control" type="text" name="buildingName" id="buildingName" placeholder="请输入宿舍楼名称">
+                <input class="form-control" type="text" readonly="true" th:field="*{stepInfo.step}"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label">宿舍楼地址：</label>
+            <label class="col-sm-3 control-label">房间号：</label>
             <div class="col-sm-8">
-                <input class="form-control" type="text" name="buildingAddress" id="buildingAddress" placeholder="请输入宿舍楼详细地址">
+                <input class="form-control" type="text" name="roomNumber" id="roomNumber" placeholder="请输入房间编号" onblur="createRoomName()">
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label">层数：</label>
+            <label class="col-sm-3 control-label ">房间名称：</label>
             <div class="col-sm-8">
-                <input class="form-control" type="text" name="buildingSteps" id="buildingSteps" placeholder="请输入宿舍楼层数">
+                <input class="form-control" type="text" name="roomName" id="roomName" readonly="true" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">可入住人数：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="caninNumber" id="caninNumber" placeholder="请输入本房间可入住人数">
             </div>
         </div>
         <div class="form-group">
@@ -45,38 +53,20 @@
 <script th:src="@{/ajax/libs/select/select2.js}"></script>
 <script type="text/javascript">
 
-    layui.use('laydate', function () {
-        var laydate = layui.laydate;
-    })
-
     $("#form-role-add").validate({
         rules:{
-            buildingCode:{
+            roomNumber:{
                 required:true,
                 remote: {
-                    url: "/dmb/checkDmCodeUnique",
+                    url: "/dmr/checkRoomNumberUnique",
                     type: "post",
                     dataType: "json",
                     data: {
                         buildingCode: function () {
                             return $.trim($("#buildingCode").val());
-                        }
-                    },
-                    dataFilter: function (data, type) {
-                        if (data == "0") return true;
-                        else return false;
-                    }
-                }
-            },
-            buildingName:{
-                required:true,
-                remote: {
-                    url: "/dmb/checkDmNameUnique",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        buildingName: function () {
-                            return $.trim($("#buildingName").val());
+                        },
+                        roomNumber:function(){
+                            return $.trim($("#roomNumber").val());
                         }
                     },
                     dataFilter: function (data, type) {
@@ -87,18 +77,15 @@
             }
         },
         messages: {
-            "buildingCode": {
-                remote: "宿舍楼编号已经存在"
-            },
-            "buildingName":{
-                remote: "宿舍楼名称已经存在"
+            "roomNumber": {
+                remote: "房间号已存在"
             }
         },
         submitHandler: function (form) {
             $.ajax({
                 cache: true,
                 type: "POST",
-                url: "/dmb/addSave",
+                url: "/dmr/addSave",
                 data: $("form").serializeArray(),
                 async: false,
                 error: function (request) {
@@ -110,6 +97,16 @@
             });
         }
     });
+
+    //自动生成房间名称
+    function createRoomName() {
+        var roomNumber = $("#roomNumber").val();
+        var buildingName = $("#buildingName").val();
+
+        if(roomNumber != "" & buildingName != ""){
+            $("#roomName").val(buildingName+roomNumber);
+        }
+    }
 </script>
 </body>
 </html>

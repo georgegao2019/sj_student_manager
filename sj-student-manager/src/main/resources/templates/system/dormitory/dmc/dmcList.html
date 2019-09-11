@@ -4,18 +4,25 @@
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <body class="gray-bg">
-<form class="form-horizontal m" id="roomCode">
-    <div class="form-group">
-        <label class="col-sm-3 control-label ">宿舍名称：</label>
-        <div class="col-sm-8">
-            <input class="form-control" type="text" readonly="true" th:field="${roomName}"/>
-        </div>
-    </div>
-</form>
 <div class="container-div">
     <div class="row">
+        <div class="col-sm-12 select-info">
+            <form id="operlog-form">
+                <div class="select-list gd">
+                    <ul>
+                        <li>
+                            <label>宿舍名称： </label>
+                            <input type="text" name="roomName" readonly="true" id="roomName" th:field="*{roomInfo.roomName}"/>
+                        </li>
+                        <li>
+                            <input type="hidden" name="roomCode" id="roomCode" th:field="*{roomInfo.roomCode}" />
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
         <div class="btn-group hidden-xs" id="toolbar" role="group">
-            <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add()" shiro:hasPermission="dmc:add">
+            <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add('*{roomInfo.roomCode}')" shiro:hasPermission="dmc:add">
                 <i class="fa fa-plus"></i> 新增
             </a>
             <a class="btn btn-outline btn-danger btn-rounded" onclick="$.operate.batRemove()"
@@ -38,9 +45,12 @@
     $(function () {
         var options = {
             url: prefix + "/tableList",
-            createUrl: prefix + "/toAdd",
+            createUrl: prefix + "/toAdd/{id}",
             modalName: "便签",
             search: false,
+            queryParams:{
+              roomCode:$("#roomCode").val()
+            },
             showExport: false,
             columns: [{
                 checkbox: true
@@ -106,6 +116,7 @@
                 }]
         };
         $.table.init(options);
+
     });
 </script>
 </body>

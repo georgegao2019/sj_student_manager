@@ -7,6 +7,7 @@
         <result column="building_code" property="buildingCode" />
         <result column="step_code" property="stepCode" />
         <result column="room_code" property="roomCode" />
+        <result column="room_number" property="roomNumber" />
         <result column="room_name" property="roomName" />
         <result column="canin_number" property="caninNumber" />
         <result column="income_number" property="incomeNumber" />
@@ -18,7 +19,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,building_code,step_code,room_code,room_name,canin_number,income_number,leader_studentid
+        id,building_code,step_code,room_code,room_number,room_name,canin_number,income_number,leader_studentid
         create_time,create_user,update_time,update_user
     </sql>
 
@@ -56,6 +57,9 @@
             </if>
             <if test="roomCode != null">
                 room_code,
+            </if>
+            <if test="roomNumber != null">
+                room_number,
             </if>
             <if test="roomName != null">
                 room_name,
@@ -95,6 +99,9 @@
             <if test="roomCode != null">
                 #{roomCode,jdbcType=VARCHAR},
             </if>
+            <if test="roomNumber != null">
+                #{roomNumber,jdbcType=VARCHAR},
+            </if>
             <if test="roomName != null">
                 #{roomName,jdbcType=VARCHAR},
             </if>
@@ -133,6 +140,9 @@
             </if>
             <if test="roomCode != null">
                 room_code = #{roomCode,jdbcType=VARCHAR},
+            </if>
+            <if test="roomNumber != null">
+                room_number = #{roomNumber,jdbcType=VARCHAR},
             </if>
             <if test="roomName != null">
                 room_name = #{roomName,jdbcType=VARCHAR},
@@ -183,16 +193,9 @@
         </where>
     </select>
 
-    <!-- 校验宿舍楼code是否存在 -->
-    <select id="checkRoomCodeUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
+    <!-- 校验宿舍编号是否存在-->
+    <select id="checkRoomNumberUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
         select * from t_dormitory_room
-        where dormitory_code = #{dormitoryCode,jdbcType=VARCHAR}
+        where room_number = #{roomNumber,jdbcType=VARCHAR} and building_code = #{buildingCode,jdbcType=VARCHAR}
     </select>
-
-    <!-- 校验宿舍楼name是否存在 -->
-    <select id="checkRoomNameUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
-        select * from t_dormitory_room
-        where dormitory_name = #{dormitoryName,jdbcType=VARCHAR}
-    </select>
-
 </mapper>

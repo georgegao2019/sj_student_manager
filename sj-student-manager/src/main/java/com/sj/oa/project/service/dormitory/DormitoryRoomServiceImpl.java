@@ -48,13 +48,13 @@ public class DormitoryRoomServiceImpl implements IDormitoryRoomService {
 
 
     @Override
-    public String checkRoomCodeUnique(DormitoryRoom record) {
+    public String checkRoomNumberUnique(DormitoryRoom record) {
         if (record.getId() == null)
         {
             record.setId(-1);
         }
         Integer dsId = record.getId();
-        DormitoryRoom info = dormitoryRoomMapper.checkRoomCodeUnique(record);
+        DormitoryRoom info = dormitoryRoomMapper.checkRoomNumberUnique(record);
 
         //判断查询出来的和传进来的是否相同
         if (StringUtils.isNotNull(info) && StringUtils.isNotNull(info.getId())
@@ -64,23 +64,4 @@ public class DormitoryRoomServiceImpl implements IDormitoryRoomService {
         }
         return CsEnum.unique.IS_UNIQUE.getValue();
     }
-
-    @Override
-    public String checkRoomNameUnique(DormitoryRoom record) {
-        if (record.getId() == null)
-        {
-            record.setId(-1);
-        }
-        Integer dsId = record.getId();
-        DormitoryRoom info = dormitoryRoomMapper.checkRoomNameUnique(record);
-
-        //判断查询出来的和传进来的是否相同
-        if (StringUtils.isNotNull(info) && StringUtils.isNotNull(info.getId())
-                && !info.getId().equals(dsId))
-        {
-            return CsEnum.unique.NOT_UNIQUE.getValue();
-        }
-        return CsEnum.unique.IS_UNIQUE.getValue();
-    }
-
 }

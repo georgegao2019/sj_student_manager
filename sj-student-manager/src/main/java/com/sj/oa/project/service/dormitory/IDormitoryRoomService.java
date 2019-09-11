@@ -25,16 +25,9 @@ public interface IDormitoryRoomService {
     List<DormitoryRoom> selectByDormitoryRoom(DormitoryRoom record);
 
     /**
-     * 校验宿舍code是否存在
+     * 校验房间编号是否存在
      * @param record
      * @return
      */
-    String checkRoomCodeUnique(DormitoryRoom record);
-
-    /**
-     * 校验宿舍name是否存在
-     * @param record
-     * @return
-     */
-    String checkRoomNameUnique(DormitoryRoom record);
+    String checkRoomNumberUnique(DormitoryRoom record);
 }

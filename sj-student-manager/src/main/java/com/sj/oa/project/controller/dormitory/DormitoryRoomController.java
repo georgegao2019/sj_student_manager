@@ -15,7 +15,6 @@ import com.sj.oa.project.service.dormitory.IDormitoryCouchService;
 import com.sj.oa.project.service.dormitory.IDormitoryRoomService;
 import com.sj.oa.project.service.dormitory.IDormitoryStepsService;
 import com.sj.oa.project.service.user.IUserService;
-import org.activiti.engine.impl.util.CollectionUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ import java.util.List;
 /**
  * @author gaojun
  * @date 2019/8/19
- * 宿舍管理 controller
+ * 宿舍房间管理 controller
  */
 @Controller
 @RequestMapping("/dmr")
@@ -87,11 +86,13 @@ public class DormitoryRoomController extends BaseController{
      * @return:
      * @date: 2018/9/26 21:15
      */
-    @RequestMapping("/toAdd")
-    public String toAdd(Model model) {
-        List<DormitoryBuilding> dormitoryBuildings
-                = iDormitoryBuildingService.selectByDormitoryBuilding(new DormitoryBuilding());
-        model.addAttribute("dormitoryBuildings",dormitoryBuildings);
+    @RequestMapping("/toAdd/{stepCode}")
+    public String toAdd(@PathVariable("stepCode") String stepCode,Model model) {
+        //查询楼层信息
+        DormitorySteps dormitorySteps
+                = iDormitoryStepsService.selectByStepCode(stepCode);
+        //携带楼层信息返回
+        model.addAttribute("stepInfo",dormitorySteps);
         return prefix + "/add";
     }
     /**
@@ -104,21 +105,18 @@ public class DormitoryRoomController extends BaseController{
      */
     @RequestMapping("/addSave")
     @RequiresPermissions("dmr:add")
-    @Operlog(modal = "宿舍管理",descr = "添加记录")
+    @Operlog(modal = "宿舍房间管理",descr = "添加记录")
     @ResponseBody
-    public AjaxResult addSave(DormitorySteps record) throws Exception {
+    public AjaxResult addSave(DormitoryRoom record) throws Exception {
         Date date = new Date();
         record.setCreateTime(date);
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
         record.setCreateUser(loginUser.getName());
-        record.setAlreadyNumbers(0);
-        //查询宿舍楼名称
-        DormitoryBuilding dormitoryBuilding
-                = iDormitoryBuildingService.selectByBuildingCode(record.getBuildingCode());
-        record.setBuildingName(dormitoryBuilding.getBuildingName());
-        //设置stepCode
-        record.setStepCode("s" + createUID());
-        return result(iDormitoryStepsService.insertSelective(record));
+        //默认已入住人数为0
+        record.setIncomeNumber(0);
+        //设置roomCode
+        record.setRoomCode(record.getStepCode() + "-r" + record.getRoomNumber());
+        return result(iDormitoryRoomService.insertSelective(record));
     }
     /**
      *
@@ -130,7 +128,7 @@ public class DormitoryRoomController extends BaseController{
      */
     @RequestMapping("/del")
     @RequiresPermissions("dmr:del")
-    @Operlog(modal = "宿舍管理",descr = "删除记录")
+    @Operlog(modal = "宿舍房间管理",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
         return result(iDormitoryStepsService.deleteByPrimaryKeys(ids));
@@ -145,7 +143,7 @@ public class DormitoryRoomController extends BaseController{
      */
     @RequestMapping("/edit/{id}")
     @RequiresPermissions("dmr:update")
-    @Operlog(modal = "宿舍管理",descr = "查询记录")
+    @Operlog(modal = "宿舍房间管理",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
         DormitorySteps record = iDormitoryStepsService.selectByPrimaryKey(id);
         model.addAttribute("note", record);
@@ -161,24 +159,24 @@ public class DormitoryRoomController extends BaseController{
      */
     @RequestMapping("/editSave")
     @RequiresPermissions("dmr:update")
-    @Operlog(modal = "宿舍管理",descr = "修改记录")
+    @Operlog(modal = "宿舍房间管理",descr = "修改记录")
     @ResponseBody
     public AjaxResult editSave(DormitorySteps record) {
         return result(iDormitoryStepsService.updateByPrimaryKeySelective(record));
     }
 
     /**
-     * 校验宿舍楼code
+     * 校验房间编号唯一性
      * @param record
      * @return
      */
-    @PostMapping("/checkStepUnique")
+    @PostMapping("/checkRoomNumberUnique")
     @ResponseBody
-    public String checkStepUnique(DormitorySteps record)
+    public String checkRoomNumberUnique(DormitoryRoom record)
     {
         String uniqueFlag = "0";
         if (record != null) {
-            uniqueFlag = iDormitoryStepsService.checkStepUnique(record);
+            uniqueFlag = iDormitoryRoomService.checkRoomNumberUnique(record);
         }
         return uniqueFlag;
     }

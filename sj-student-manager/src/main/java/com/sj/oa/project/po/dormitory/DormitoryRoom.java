@@ -14,6 +14,8 @@ public class DormitoryRoom extends BasePo {
     private String stepCode;
     //宿舍code
     private String roomCode;
+    //房间号
+    private String roomNumber;
     //宿舍名
     private String roomName;
     //可入住人数
@@ -85,5 +87,13 @@ public class DormitoryRoom extends BasePo {
 
     public void setLeaderStudentid(String leaderStudentid) {
         this.leaderStudentid = leaderStudentid;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

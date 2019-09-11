@@ -45,4 +45,9 @@ public interface DormitoryStepsMapper {
     List<DormitoryBuildingTree> selectDormitoryBuildingTree();
 
     List<DormitoryStepsTree> selectByBuildingCode(String buildingCode);
+
+    /**
+     * 根据stepCode 查询楼层信息
+     */
+    DormitorySteps selectByStepCode(String stepCode);
 }

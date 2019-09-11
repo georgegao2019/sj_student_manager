@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class DormitoryStepsServiceImpl implements IDormitoryStepsService {
+public class DormitoryStepsServiceImpl implements IDormitoryStepsService  {
 
     @Autowired
     private DormitoryStepsMapper dormitoryStepsMapper;
@@ -70,6 +70,11 @@ public class DormitoryStepsServiceImpl implements IDormitoryStepsService {
     @Override
     public List<DormitoryStepsTree> selectByBuildingCode(String buildingCode) {
         return dormitoryStepsMapper.selectByBuildingCode(buildingCode);
+    }
+
+    @Override
+    public DormitorySteps selectByStepCode(String stepCode) {
+        return dormitoryStepsMapper.selectByStepCode(stepCode);
     }
 
 }

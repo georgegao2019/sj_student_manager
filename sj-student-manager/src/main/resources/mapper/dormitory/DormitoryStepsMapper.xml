@@ -182,4 +182,10 @@
         where step = #{step,jdbcType=INTEGER} and building_code = #{buildingCode,jdbcType=VARCHAR}
     </select>
 
+    <!--主键查找-->
+    <select id="selectByStepCode" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from t_dormitory_steps
+        where step_code = #{stepCode};
+    </select>
 </mapper>

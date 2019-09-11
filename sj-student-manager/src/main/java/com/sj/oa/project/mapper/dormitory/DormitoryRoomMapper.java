@@ -32,22 +32,13 @@ public interface DormitoryRoomMapper {
      */
     int updateByPrimaryKeySelective(DormitoryRoom record);
 
-    /*
-     *
-     * 批量删除用户
-     */
+    /* 批量删除用户 */
     int deleteByPrimaryKeys(Integer[] ids);
 
-    /*
-     *
-     * 用户列表 以及 根据条件查询
-     */
+    /* 用户列表 以及 根据条件查询 */
     List<DormitoryRoom> selectByDormitoryRoom(DormitoryRoom record);
 
-    /* 校验宿舍楼code */
-    DormitoryRoom checkRoomCodeUnique(DormitoryRoom record);
-
-    /* 校验宿舍楼名称 */
-    DormitoryRoom checkRoomNameUnique(DormitoryRoom record);
+    /* 校验房间编号 */
+    DormitoryRoom checkRoomNumberUnique(DormitoryRoom record);
 
 }

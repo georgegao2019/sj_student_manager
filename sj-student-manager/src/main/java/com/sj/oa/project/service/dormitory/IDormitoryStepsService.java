@@ -29,5 +29,17 @@ public interface IDormitoryStepsService {
      */
     String checkStepUnique(DormitorySteps record);
 
+    /**
+     * 查询宿舍楼树
+     * @param buildingCode
+     * @return
+     */
     List<DormitoryStepsTree> selectByBuildingCode(String buildingCode);
+
+    /**
+     * 根据stepCode 查询楼层信息
+     * @param stepCode
+     * @return
+     */
+    DormitorySteps selectByStepCode(String stepCode);
 }

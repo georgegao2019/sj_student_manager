@@ -107,7 +107,7 @@ public class DormitoryStepsController extends BaseController{
                 = iDormitoryBuildingService.selectByBuildingCode(record.getBuildingCode());
         record.setBuildingName(dormitoryBuilding.getBuildingName());
         //设置stepCode
-        record.setStepCode("s" + createUID());
+        record.setStepCode(record.getBuildingCode() + "-s" + record.getStep());
         return result(iDormitoryStepsService.insertSelective(record));
     }
     /**
