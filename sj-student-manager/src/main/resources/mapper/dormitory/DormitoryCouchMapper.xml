@@ -13,6 +13,7 @@
         <result column="move_in_date" property="moveInDate" />
         <result column="end_date" property="endDate" />
         <result column="is_president" property="isPresident" />
+        <result column="status" property="status" />
         <result column="create_time" property="createTime" />
         <result column="create_user" property="createUser" />
         <result column="update_time" property="updateTime" />
@@ -20,7 +21,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,room_code,couch_code,couch_number,is_berth,studentid,student_name,move_in_date,end_date,is_president
+        id,room_code,couch_code,couch_number,is_berth,studentid,student_name,move_in_date,end_date,is_president,status,
         create_time,create_user,update_time,update_user
     </sql>
 
@@ -42,7 +43,7 @@
     <delete id="deleteByPrimaryKeys" parameterType="int">
         UPDATE
         t_dormitory_couch
-        set status = 1
+        set status = 0,studentid='',student_name='',move_in_date=NULL
         WHERE id IN
         <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
             #{id}
@@ -84,6 +85,9 @@
             </if>
             <if test="isPresident != null">
                 is_president,
+            </if>
+            <if test="status != null">
+                status,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -128,6 +132,9 @@
             </if>
             <if test="isPresident != null">
                 #{isPresident,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -174,6 +181,9 @@
             <if test="isPresident != null">
                 is_president = #{isPresident,jdbcType=INTEGER},
             </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -209,11 +219,12 @@
                 and student_name = #{studentName,jdbcType=VARCHAR}
             </if>
         </where>
+        order by couch_number
     </select>
 
     <!-- 校验宿舍床位唯一性 -->
     <select id="checkCouchNumberUnique" parameterType="com.sj.oa.project.po.dormitory.DormitoryCouch" resultMap="BaseResultMap">
         select * from t_dormitory_couch
-        where couch_number = #{couchNumber} and room_number = #{roomNumber}
+        where couch_number = #{couchNumber} and room_Code = #{roomCode}
     </select>
 </mapper>

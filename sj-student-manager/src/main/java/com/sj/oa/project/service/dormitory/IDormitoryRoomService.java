@@ -30,4 +30,12 @@ public interface IDormitoryRoomService {
      * @return
      */
     String checkRoomNumberUnique(DormitoryRoom record);
+
+    /**
+     * 更新已入住人数
+     * @param roomCode
+     * @param number
+     * @return
+     */
+    int updateIncomeNumberByRoomCode(String roomCode,Integer number);
 }

@@ -3,6 +3,7 @@ package com.sj.oa.project.mapper.dormitory;
 
 
 import com.sj.oa.project.po.dormitory.DormitoryRoom;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -40,5 +41,10 @@ public interface DormitoryRoomMapper {
 
     /* 校验房间编号 */
     DormitoryRoom checkRoomNumberUnique(DormitoryRoom record);
+
+    /* 更新已入住人数 */
+    int updateIncomeNumberByRoomCode(
+            @Param(value = "roomCode") String roomCode,
+            @Param(value = "number") Integer number);
 
 }

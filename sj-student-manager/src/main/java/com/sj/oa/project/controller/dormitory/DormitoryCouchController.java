@@ -1,6 +1,5 @@
 package com.sj.oa.project.controller.dormitory;
 
-import com.sj.oa.common.utils.DateUtils;
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * @author gaojun
  * @date 2019/8/1
- * 宿舍管理controller
+ * 床位管理controller
  */
 @Controller
 @RequestMapping("/dmc")
@@ -113,7 +112,7 @@ public class DormitoryCouchController extends BaseController{
      */
     @RequestMapping("/addSave")
     @RequiresPermissions("dmc:add")
-    @Operlog(modal = "宿舍管理",descr = "添加记录")
+    @Operlog(modal = "床位管理",descr = "添加记录")
     @ResponseBody
     public AjaxResult addSave(DormitoryCouch record) throws Exception {
         //设置更新时间
@@ -123,9 +122,11 @@ public class DormitoryCouchController extends BaseController{
         record.setCreateUser(loginUser.getName());
         //生成couchCode
         record.setCouchCode(record.getRoomCode() + "-c" + record.getCouchNumber());
-        //设置入住时间
-        record.setMoveInDate(date);
-        return result(iDormitoryCouchService.insertSelective(record));
+        //设置床位为未入住
+        record.setStatus(0);
+        //新增床位信息
+        Integer addResult = iDormitoryCouchService.insertSelective(record);
+        return result(addResult);
     }
     /**
      *
@@ -137,10 +138,21 @@ public class DormitoryCouchController extends BaseController{
      */
     @RequestMapping("/del")
     @RequiresPermissions("dmc:del")
-    @Operlog(modal = "宿舍管理",descr = "删除记录")
+    @Operlog(modal = "床位管理",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
-        return result(iDormitoryCouchService.deleteByPrimaryKeys(ids));
+        Integer delResult = iDormitoryCouchService.deleteByPrimaryKeys(ids);
+        String roomCode = "";
+        if(ids.length > 0){
+            //查询床位信息
+            DormitoryCouch couch = iDormitoryCouchService.selectByPrimaryKey(ids[0]);
+            roomCode = couch.getRoomCode();
+        }
+        if(delResult >= 1){
+            //更新已入住人数
+            iDormitoryRoomService.updateIncomeNumberByRoomCode(roomCode,-ids.length);
+        }
+        return result(delResult);
     }
     /**
      *
@@ -152,10 +164,10 @@ public class DormitoryCouchController extends BaseController{
      */
     @RequestMapping("/edit/{id}")
     @RequiresPermissions("dmc:update")
-    @Operlog(modal = "宿舍管理",descr = "查询记录")
+    @Operlog(modal = "床位管理",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
         DormitoryCouch record = iDormitoryCouchService.selectByPrimaryKey(id);
-        model.addAttribute("note", record);
+        model.addAttribute("couchInfo", record);
         return prefix + "/edit";
     }
     /**
@@ -168,9 +180,18 @@ public class DormitoryCouchController extends BaseController{
      */
     @RequestMapping("/editSave")
     @RequiresPermissions("dmc:update")
-    @Operlog(modal = "宿舍管理",descr = "修改记录")
+    @Operlog(modal = "床位管理",descr = "修改记录")
     @ResponseBody
     public AjaxResult editSave(DormitoryCouch record) {
+        //设置搬入时间
+        record.setMoveInDate(new Date());
+        //设置床位状态为已入住
+        record.setStatus(1);
+        Integer editResult = iDormitoryCouchService.updateByPrimaryKeySelective(record);
+        if(editResult >= 1){
+            //更新宿舍表中已入住人数
+            iDormitoryRoomService.updateIncomeNumberByRoomCode(record.getRoomCode(),1);
+        }
         return result(iDormitoryCouchService.updateByPrimaryKeySelective(record));
     }
 

@@ -198,4 +198,10 @@
         select * from t_dormitory_room
         where room_number = #{roomNumber,jdbcType=VARCHAR} and building_code = #{buildingCode,jdbcType=VARCHAR}
     </select>
+
+    <!-- 更新已入住人数 -->
+    <update id="updateIncomeNumberByRoomCode">
+        update t_dormitory_room set income_number = (income_number + #{number,jdbcType=INTEGER})
+        where room_code = #{roomCode,jdbcType=VARCHAR}
+    </update>
 </mapper>

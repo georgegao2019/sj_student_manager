@@ -38,7 +38,7 @@ public class DormitoryCouchServiceImpl implements IDormitoryCouchService {
 
     @Override
     public int updateByPrimaryKeySelective(DormitoryCouch record) {
-        return 0;
+        return dormitoryCouchMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DormitoryCouchServiceImpl implements IDormitoryCouchService {
             record.setId(-1);
         }
         Integer dmId = record.getId();
-        DormitoryCouch info = dormitoryCouchMapper.checkCouchNumberUnique(record.getCouchNumber());
+        DormitoryCouch info = dormitoryCouchMapper.checkCouchNumberUnique(record.getCouchNumber(),record.getRoomCode());
 
 //        判断查询出来的和传进来的是否相同
         if (StringUtils.isNotNull(info) && StringUtils.isNotNull(info.getId())

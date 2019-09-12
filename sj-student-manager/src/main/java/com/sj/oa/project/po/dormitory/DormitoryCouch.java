@@ -39,6 +39,8 @@ public class DormitoryCouch extends BasePo {
     //是否是舍长 0 不是  1 是
     private Integer isPresident;
 
+    private Integer status;
+
     public Integer getId() {
         return id;
     }
@@ -117,5 +119,13 @@ public class DormitoryCouch extends BasePo {
 
     public void setIsPresident(Integer isPresident) {
         this.isPresident = isPresident;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

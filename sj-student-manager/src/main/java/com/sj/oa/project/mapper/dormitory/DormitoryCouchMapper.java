@@ -2,6 +2,7 @@ package com.sj.oa.project.mapper.dormitory;
 
 
 import com.sj.oa.project.po.dormitory.DormitoryCouch;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -38,5 +39,7 @@ public interface DormitoryCouchMapper {
     List<DormitoryCouch> selectByDormitoryCouch(DormitoryCouch record);
 
     /* 校验宿舍楼code */
-    DormitoryCouch checkCouchNumberUnique(Integer couchNumber);
+    DormitoryCouch checkCouchNumberUnique(
+            @Param(value = "couchNumber") Integer couchNumber,
+            @Param(value = "roomCode") String roomCode);
 }

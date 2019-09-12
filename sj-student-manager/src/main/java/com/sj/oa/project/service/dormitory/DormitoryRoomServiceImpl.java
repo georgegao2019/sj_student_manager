@@ -64,4 +64,9 @@ public class DormitoryRoomServiceImpl implements IDormitoryRoomService {
         }
         return CsEnum.unique.IS_UNIQUE.getValue();
     }
+
+    @Override
+    public int updateIncomeNumberByRoomCode(String roomCode, Integer number) {
+        return dormitoryRoomMapper.updateIncomeNumberByRoomCode(roomCode,number);
+    }
 }
