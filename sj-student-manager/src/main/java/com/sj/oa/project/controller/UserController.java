@@ -306,6 +306,7 @@ public class UserController extends BaseController{
         AjaxResult result = null;
         if(!StringUtils.isEmpty(user.getStudentId())){
             User userInfo = iUserService.selectByStudentId(user.getStudentId());
+
             if(userInfo != null){
                 result = AjaxResult.success("操作成功");
                 result.put("user",userInfo);

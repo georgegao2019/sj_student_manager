@@ -12,8 +12,12 @@
                 <div class="select-list gd">
                     <ul>
                         <li>
-                            <label>专业编号： </label>
-                            <input type="text" name="majorCode" />
+                            <label>学生姓名： </label>
+                            <input type="text" name="studentName" />
+                        </li>
+                        <li>
+                            <label>学号： </label>
+                            <input type="text" name="studentid" />
                         </li>
                         <li class="select-time">
                             <label>检查时间： </label>
@@ -35,11 +39,11 @@
         </div>
 
         <div class="btn-group hidden-xs" id="toolbar" role="group">
-            <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add()" shiro:hasPermission="cLatelightout:add">
+            <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add()" shiro:hasPermission="cMorningExercises:add">
                 <i class="fa fa-plus"></i> 新增
             </a>
             <a class="btn btn-outline btn-danger btn-rounded" onclick="$.operate.batRemove()"
-               shiro:hasPermission="cLatelightout:del">
+               shiro:hasPermission="cMorningExercises:del">
                 <i class="fa fa-trash-o"></i> 删除
             </a>
         </div>
@@ -52,9 +56,9 @@
 <div th:include="include :: footer"></div>
 <script th:src="@{/ajax/libs/select/select2.js}"></script>
 <script th:inline="javascript">
-    var prefix = "/cLatelightout";
-    var updateFlag = [[${@permission.hasPermi('"cLatelightout:update')}]];
-    var delFlag = [[${@permission.hasPermi('"cLatelightout:del')}]];
+    var prefix = "/cMorningExercises";
+    var updateFlag = [[${@permission.hasPermi('"cMorningExercises:update')}]];
+    var delFlag = [[${@permission.hasPermi('"cMorningExercises:del')}]];
     $(function () {
         var options = {
             url: prefix + "/tableList",
@@ -74,15 +78,20 @@
                     title: '编号',
                 },
                 {
-                    field: 'dormitoryCode',
-                    title: '违纪宿舍号',
+                    field: 'studentName',
+                    title: '缺勤人姓名',
                 },
                 {
-                    field: 'lightoutTime',
-                    title: '熄灯时间',
-                    formatter: function (value, row, index) {
-                        return $.common.dateFormat(value);
-                    }
+                    field: 'studentid',
+                    title: '缺勤人学号',
+                },
+                {
+                    field: 'majorName',
+                    title: '所属专业',
+                },
+                {
+                    field: 'className',
+                    title: '所在班级',
                 },
                 {
                     field: 'checkPerson',

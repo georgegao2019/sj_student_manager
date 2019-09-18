@@ -5,46 +5,47 @@ import com.sj.oa.framework.web.po.BasePo;
 import java.util.Date;
 
 /**
- * Created by gaojun on 2019/8/6.
+ * Created by gaojun on 2019/7/31.
  */
-public class CheckMorningExercises extends BasePo {
+public class CheckLateSelfstudy extends BasePo {
 
     private Integer id;
 
-    //专业代号
+    //专业code
     private String majorCode;
 
     //专业名称
     private String majorName;
 
-    //班级id
-    private Integer classId;
-
     //班级名称
     private String className;
 
-    //应到人数
-    private Integer totalNumber;
+    //教师
+    private String classRoom;
 
-    //实到人数
-    private Integer alreadNumber;
+    //违纪学生学号
+    private String studentid;
+
+    //违纪学生姓名
+    private String studentName;
+
+    //是否已经请假 0未请假  1已请假
+    private Integer isAsk;
+
+    //请假方式
+    private String askType;
+
+    //理由
+    private String reason;
 
     //检查人
     private String checkPerson;
-
     //检查时间
     private Date checkTime;
-
-    //状态 0有效  1失效
+    //状态 0有效 1失效
     private Integer status;
 
-    //缺勤学生学号
-    private String studentid;
-
-    //缺勤学生姓名
-    private String studentName;
-
-  public Integer getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -68,14 +69,6 @@ public class CheckMorningExercises extends BasePo {
         this.majorName = majorName;
     }
 
-    public Integer getClassId() {
-        return classId;
-    }
-
-    public void setClassId(Integer classId) {
-        this.classId = classId;
-    }
-
     public String getClassName() {
         return className;
     }
@@ -84,20 +77,52 @@ public class CheckMorningExercises extends BasePo {
         this.className = className;
     }
 
-    public Integer getTotalNumber() {
-        return totalNumber;
+    public String getClassRoom() {
+        return classRoom;
     }
 
-    public void setTotalNumber(Integer totalNumber) {
-        this.totalNumber = totalNumber;
+    public void setClassRoom(String classRoom) {
+        this.classRoom = classRoom;
     }
 
-    public Integer getAlreadNumber() {
-        return alreadNumber;
+    public String getStudentid() {
+        return studentid;
     }
 
-    public void setAlreadNumber(Integer alreadNumber) {
-        this.alreadNumber = alreadNumber;
+    public void setStudentid(String studentid) {
+        this.studentid = studentid;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public Integer getIsAsk() {
+        return isAsk;
+    }
+
+    public void setIsAsk(Integer isAsk) {
+        this.isAsk = isAsk;
+    }
+
+    public String getAskType() {
+        return askType;
+    }
+
+    public void setAskType(String askType) {
+        this.askType = askType;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public String getCheckPerson() {
@@ -122,21 +147,5 @@ public class CheckMorningExercises extends BasePo {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getStudentid() {
-        return studentid;
-    }
-
-    public void setStudentid(String studentid) {
-        this.studentid = studentid;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
     }
 }

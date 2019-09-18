@@ -6,13 +6,16 @@
         <result column="id" property="id" />
         <result column="major_code" property="majorCode" />
         <result column="major_name" property="majorName" />
-        <result column="class_id" property="classId" />
         <result column="class_name" property="className" />
+        <result column="class_room" property="classRoom" />
         <result column="check_person" property="checkPerson" />
         <result column="check_time" property="checkTime" />
-        <result column="status" property="status" />
         <result column="studentid" property="studentid" />
         <result column="student_name" property="studentName" />
+        <result column="is_ask" property="isAsk" />
+        <result column="ask_type" property="askType" />
+        <result column="reason" property="reason" />
+        <result column="status" property="status" />
         <result column="create_time" property="createTime" />
         <result column="create_user" property="createUser" />
         <result column="update_time" property="updateTime" />
@@ -20,21 +23,21 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,major_code,major_name,class_id,class_name,check_person,check_time,status,studentid,student_name,
-        create_time,create_user,update_time,update_user
+        id,major_code,major_name,class_name,class_room,check_person,check_time,studentid,student_name,is_ask,
+        ask_type,reason,status,create_time,create_user,update_time,update_user
     </sql>
 
     <!--主键查找-->
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String">
         select <include refid="Base_Column_List"/>
-        from t_check_morning_exercises
+        from t_check_late_selfstudy
         where id = #{id};
     </select>
 
     <!--批量删除-->
     <delete id="deleteByPrimaryKeys" parameterType="int">
         UPDATE
-        t_check_morning_exercises
+        t_check_late_selfstudy
         set status = 1
         WHERE id IN
         <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
@@ -46,7 +49,7 @@
      添加
     -->
     <insert id="insertSelective" parameterType="com.sj.oa.project.po.check.CheckMorningExercises">
-        insert into t_check_morning_exercises
+        insert into t_check_late_selfstudy
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -57,11 +60,11 @@
             <if test="majorName != null">
                 major_name,
             </if>
-            <if test="classId != null">
-                class_id,
-            </if>
             <if test="className != null">
                 class_name,
+            </if>
+            <if test="classRoom != null">
+                class_room,
             </if>
             <if test="checkPerson != null">
                 check_person,
@@ -69,14 +72,23 @@
             <if test="checkTime != null">
                 check_time,
             </if>
-            <if test="status != null">
-                status,
-            </if>
             <if test="studentid != null">
                 studentid,
             </if>
             <if test="studentName != null">
                 student_name,
+            </if>
+            <if test="isAsk != null">
+                is_ask,
+            </if>
+            <if test="ask_type != null">
+                askType,
+            </if>
+            <if test="reason != null">
+                reason,
+            </if>
+            <if test="status != null">
+                status,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -101,11 +113,11 @@
             <if test="majorName != null">
                 #{majorName,jdbcType=VARCHAR},
             </if>
-            <if test="classId != null">
-                #{classId,jdbcType=VARCHAR},
-            </if>
             <if test="className != null">
                 #{className,jdbcType=TIMESTAMP},
+            </if>
+            <if test="classRoom != null">
+                #{classRoom,jdbcType=VARCHAR},
             </if>
             <if test="checkPerson != null">
                 #{checkPerson,jdbcType=VARCHAR},
@@ -113,14 +125,23 @@
             <if test="checkTime != null">
                 #{checkTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="status != null">
-                #{status,jdbcType=INTEGER},
-            </if>
             <if test="studentid != null">
                 #{studentid,jdbcType=VARCHAR},
             </if>
             <if test="studentName != null">
                 #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="isAsk != null">
+                #{isAsk,jdbcType=INTEGER},
+            </if>
+            <if test="askType != null">
+                #{askType,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -138,7 +159,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.check.CheckMorningExercises">
-        update t_check_morning_exercises
+        update t_check_late_selfstudy
         <set>
             <if test="majorCode != null">
                 major_code = #{majorCode,jdbcType=VARCHAR},
@@ -146,11 +167,11 @@
             <if test="majorName != null">
                 major_name = #{majorName,jdbcType=VARCHAR},
             </if>
-            <if test="classId != null">
-                class_id = #{classId,jdbcType=INTEGER},
-            </if>
             <if test="className != null">
                 class_name = #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="classRoom != null">
+                class_room = #{classRoom,jdbcType=VARCHAR},
             </if>
             <if test="checkTime != null">
                 check_time = #{checkTime,jdbcType=TIMESTAMP},
@@ -158,14 +179,23 @@
             <if test="checkPerson != null">
                 check_person = #{checkPerson,jdbcType=VARCHAR},
             </if>
-            <if test="status != null">
-                status = #{status,jdbcType=INTEGER},
-            </if>
             <if test="studentid != null">
-                studentid = #{studentid,jdbcType=INTEGER},
+                studentid = #{studentid,jdbcType=VARCHAR},
             </if>
             <if test="studentName != null">
-                student_name = #{studentName,jdbcType=INTEGER},
+                student_name = #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="isAsk != null">
+                is_ask = #{isAsk,jdbcType=INTEGER},
+            </if>
+            <if test="askType != null">
+                ask_type = #{askType,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=VARCHAR},
@@ -187,13 +217,13 @@
     <select id="selectByCheckMorningExercises" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckMorningExercises">
         select
         <include refid="Base_Column_List"></include>
-        from t_check_morning_exercises
+        from t_check_late_selfstudy
         <where>
             <if test="majorCode !=null and majorCode != ''">
                 and major_code = #{majorCode}
             </if>
-            <if test="classId !=null and classId != '' ">
-                and class_id = #{classId}
+            <if test="className !=null and className != '' ">
+                and class_name = #{className}
             </if>
             <if test="studentid !=null and studentid != '' ">
                 and studentid = #{studentid}
