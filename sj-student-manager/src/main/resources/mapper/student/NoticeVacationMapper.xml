@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.student.NoticeVacationMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.student.NoticeVacation">
+        <result column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,content,status,create_time,create_user,update_time,update_user
+    </sql>
+
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        select <include refid="Base_Column_List"/>
+        from t_notice_vacation
+        where id = #{id};
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteByPrimaryKeys" parameterType="int">
+        update t_notice_vacation
+        set status=1
+        WHERE id IN
+        <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--
+     添加
+    -->
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.student.NoticeVacation" useGeneratedKeys="true" keyProperty="id">
+        insert into t_notice_vacation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.student.NoticeVacation">
+        update t_notice_vacation
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_time = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 用户列表 根据不同条件查询-->
+    <select id="selectByNoticeVacation" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.student.NoticeVacation">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_notice_vacation
+        <where>
+            <if test="title !=null">
+                and title like CONCAT('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

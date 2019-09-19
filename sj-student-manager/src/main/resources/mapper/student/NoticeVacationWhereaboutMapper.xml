@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.student.NoticeVacationWhereaboutsMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.student.NoticeVacationWhereabouts">
+        <result column="id" property="id" />
+        <result column="noticeId" property="noticeId" />
+        <result column="title" property="title" />
+        <result column="student_id" property="studentId" />
+        <result column="student_name" property="studentName" />
+        <result column="whereabouts" property="whereabouts" />
+        <result column="leave_date" property="leaveDate" />
+        <result column="return_date" property="returnDate" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,noticeId,title,student_id,student_name,whereabouts,leave_date,return_date,status,create_time,create_user,update_time,update_user
+    </sql>
+
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+        select <include refid="Base_Column_List"/>
+        from t_notice_vacation_whereabouts
+        where id = #{id};
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteByPrimaryKeys" parameterType="int">
+        delete from
+        t_notice_vacation_whereabouts
+        WHERE id IN
+        <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteByNoticeId" parameterType="int">
+        delete from
+        t_notice_vacation_whereabouts
+        WHERE notice_id IN
+        <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--
+     添加
+    -->
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.student.NoticeVacationWhereabouts">
+        insert into t_notice_vacation_whereabouts
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="noticeId != null">
+                notice_id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="studentId != null">
+                student_id,
+            </if>
+            <if test="studentName != null">
+                student_name,
+            </if>
+            <if test="whereabouts != null">
+                whereabouts,
+            </if>
+            <if test="leaveDate != null">
+                leave_date,
+            </if>
+            <if test="returnDate != null">
+                return_date,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="noticeId != null">
+                #{noticeId,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null">
+                #{studentId,jdbcType=VARCHAR},
+            </if>
+            <if test="studentName != null">
+                #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="whereabouts != null">
+                #{whereabouts,jdbcType=INTEGER},
+            </if>
+            <if test="leaveDate != null">
+                #{leaveDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnDate != null">
+                #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" parameterType="com.sj.oa.project.po.student.NoticeVacationWhereabouts">
+        insert into t_notice_vacation_whereabouts(id,notice_id,student_id,student_name,status,create_time,create_user)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (null,#{noticeId},#{item.studentId},#{item.studentName},0,#{item.createTime},#{item.createUser})
+        </foreach>
+
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.student.NoticeVacationWhereabouts">
+        update t_notice_vacation_whereabouts
+        <set>
+            <if test="studentId != null">
+                student_id = #{studentId,jdbcType=VARCHAR},
+            </if>
+            <if test="studentName != null">
+                student_name = #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="whereabouts != null">
+                whereabouts = #{whereabouts,jdbcType=VARCHAR},
+            </if>
+            <if test="leaveDate != null">
+                leave_date = #{leaveDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnDate != null">
+                return_date = #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_time = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 用户列表 根据不同条件查询-->
+    <select id="selectByNoticeVacationWhereabouts" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.student.NoticeVacationWhereabouts">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_notice_vacation_whereabouts
+        <where>
+            <if test="title !=null">
+                and title like CONCAT('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+</mapper>
