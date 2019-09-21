@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/iCheck/custom.css}" rel="stylesheet"/>
+
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-notice-edit" th:object="${notice}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">公告标题：</label>
+                <div class="col-sm-8">
+                    <input id="title" name="title" th:field="*{title}" class="form-control" type="text" readonly="true">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">学号：</label>
+                <div class="col-sm-8">
+                    <input id="studentId" name="studentId" th:field="*{studentId}" class="form-control" type="text" readonly="true">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">学生姓名：</label>
+                <div class="col-sm-8">
+                    <input id="studentName" name="studentName" th:field="*{studentName}" class="form-control" type="text" readonly="true">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">假期去向：</label>
+                <div class="col-sm-8">
+                    <select name="whereabouts" class="form-control m-b">
+                        <option value="">--请选择假期去向--</option>
+                        <option th:field="*{whereabouts}" th:value="留校">留校</option>
+                        <option th:field="*{whereabouts}" th:value="回家">回家</option>
+                        <option th:field="*{whereabouts}" th:value="外出">外出</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label ">离校日期：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" th:value="*{#dates.format(leaveDate,'yyyy-MM-dd')}"
+                           type="text"
+                           name="leaveDate" id="leaveDate"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label ">返校日期：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" th:value="*{#dates.format(returnDate,'yyyy-MM-dd')}"
+                           type="text"
+                           name="returnDate" id="returnDate"/>
+                </div>
+            </div>
+			<div class="form-group">
+				<div class="form-control-static col-sm-offset-9">
+					<button type="submit" class="btn btn-primary">提交</button>
+					<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+    <script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+    <script type="text/javascript">
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            //时间选择器
+            laydate.render({
+                elem: '#leaveDate'
+                , type: 'date'
+            });
+            //时间选择器
+            laydate.render({
+                elem: '#returnDate'
+                , type: 'date'
+            });
+        });
+
+		var prefix =  "/whereabouts"
+		$("#form-notice-edit").validate({
+            rules:{
+                whereabouts:{
+                    required:true,
+                },
+                leaveDate:{
+                    required:true,
+                },
+                returnDate:{
+                    required:true,
+                },
+            },
+			submitHandler: function(form) {
+				$.operate.save(prefix + "/editSave", $('#form-notice-edit').serialize());
+			}
+		});
+	</script>
+</body>
+</html>

@@ -207,4 +207,18 @@ public class NoticeVacationController extends BaseController {
         }
         return result(i);
     }
+
+    /**
+     *
+     * @描述 查看公告详情
+     *
+     * @date 2018/9/16 14:06
+     */
+    @RequestMapping("/noticeInfo/{id}")
+    public String editNotice(@PathVariable("id") Integer id, Model model)
+    {
+        NoticeVacation vacationNoticeInfo = iNoticeVacationService.selectByPrimaryKey(id);
+        model.addAttribute("vacationNoticeInfo", vacationNoticeInfo);
+        return prefix + "vacationNoticeInfo";
+    }
 }

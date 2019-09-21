@@ -4,7 +4,7 @@
 
     <resultMap id="BaseResultMap" type="com.sj.oa.project.po.student.NoticeVacationWhereabouts">
         <result column="id" property="id" />
-        <result column="noticeId" property="noticeId" />
+        <result column="notice_id" property="noticeId" />
         <result column="title" property="title" />
         <result column="student_id" property="studentId" />
         <result column="student_name" property="studentName" />
@@ -19,7 +19,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,noticeId,title,student_id,student_name,whereabouts,leave_date,return_date,status,create_time,create_user,update_time,update_user
+        id,notice_id,title,student_id,student_name,whereabouts,leave_date,return_date,status,create_time,create_user,update_time,update_user
     </sql>
 
     <!--主键查找-->
@@ -189,8 +189,11 @@
         <include refid="Base_Column_List"></include>
         from t_notice_vacation_whereabouts
         <where>
-            <if test="title !=null">
+            <if test="title !=null and title != ''">
                 and title like CONCAT('%',#{title},'%')
+            </if>
+            <if test="studentId !=null and studentId != ''">
+                and student_id=#{studentId}
             </if>
         </where>
     </select>

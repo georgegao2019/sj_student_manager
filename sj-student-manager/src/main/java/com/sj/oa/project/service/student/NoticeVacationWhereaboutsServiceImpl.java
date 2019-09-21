@@ -37,7 +37,7 @@ public class NoticeVacationWhereaboutsServiceImpl implements INoticeVacationWher
 
     @Override
     public int updateByPrimaryKeySelective(NoticeVacationWhereabouts record) {
-        return 0;
+        return noticeVacationWhereaboutsMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override

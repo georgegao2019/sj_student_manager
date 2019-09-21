@@ -144,11 +144,13 @@ public class NoticeVacationWhereaboutsController extends BaseController {
      */
     @RequestMapping("/edit/{id}")
     @RequiresPermissions("whereabouts:update")
+    @Operlog(modal = "假期去向管理",descr = "更新")
     public String edit(@PathVariable("id") Integer id, Model model)
     {
-        NoticeVacationWhereabouts records = iNoticeVacationWhereaboutsService.selectByPrimaryKey(id);
-        model.addAttribute(" noticeVacation", records);
-        return prefix + "classInfoEdit";
+        NoticeVacationWhereabouts notice
+                = iNoticeVacationWhereaboutsService.selectByPrimaryKey(id);
+        model.addAttribute("notice",notice);
+        return prefix + "edit";
     }
 
 
@@ -168,10 +170,12 @@ public class NoticeVacationWhereaboutsController extends BaseController {
         int i = 0;
         try
         {
+            record.setStatus(1);
             i = iNoticeVacationWhereaboutsService.updateByPrimaryKeySelective(record);
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return error(e.getMessage());
         }
         return result(i);
