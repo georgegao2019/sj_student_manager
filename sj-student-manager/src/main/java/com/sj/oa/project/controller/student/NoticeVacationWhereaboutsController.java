@@ -59,7 +59,8 @@ public class NoticeVacationWhereaboutsController extends BaseController {
         startPage();
         //查询登录用户
         User user = getUser();
-        if(user != null && !StringUtils.isEmpty(user.getStudentId())){
+        if(user != null && !StringUtils.isEmpty(user.getStudentId())
+            && user.getDept() == 14){
             record.setStudentId(user.getStudentId());
         }
         List<NoticeVacationWhereabouts> resultList

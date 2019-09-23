@@ -1,6 +1,7 @@
 package com.sj.oa.project.controller.student;
 
 import com.sj.oa.common.constant.DeptConstants;
+import com.sj.oa.common.utils.shiro.Encryption;
 import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
@@ -8,6 +9,7 @@ import com.sj.oa.framework.web.po.AjaxResult;
 import com.sj.oa.project.po.User;
 import com.sj.oa.project.po.student.NoticeVacation;
 import com.sj.oa.project.po.student.NoticeVacationWhereabouts;
+import com.sj.oa.project.po.student.NoticeVacationWhereaboutsInfo;
 import com.sj.oa.project.service.student.INoticeVacationService;
 import com.sj.oa.project.service.student.INoticeVacationWhereaboutsService;
 import com.sj.oa.project.service.user.IUserService;
@@ -40,6 +42,7 @@ public class NoticeVacationController extends BaseController {
 
     @Autowired
     IUserService iUserService;
+
 
     /**
      *
@@ -153,6 +156,8 @@ public class NoticeVacationController extends BaseController {
             if(CollectionUtils.isNotEmpty(users)){
                 for(User u : users){
                     NoticeVacationWhereabouts nv = new NoticeVacationWhereabouts();
+                    nv.setTitle(record.getTitle());
+                    nv.setNoticeId(noticeVacationId);
                     nv.setStudentId(u.getStudentId());
                     nv.setStudentName(u.getName());
                     nv.setCreateTime(new Date());
@@ -221,4 +226,53 @@ public class NoticeVacationController extends BaseController {
         model.addAttribute("vacationNoticeInfo", vacationNoticeInfo);
         return prefix + "vacationNoticeInfo";
     }
+
+    /**
+     *
+     * @描述 查看公告详情
+     *
+     * @date 2018/9/16 14:06
+     */
+    @RequestMapping("/totalInfo/{id}")
+    public String totalCountInfo(@PathVariable("id") Integer id, Model model)
+    {
+        NoticeVacationWhereabouts param = new NoticeVacationWhereabouts();
+        param.setNoticeId(id);
+        List<NoticeVacationWhereabouts> list
+                = iNoticeVacationWhereaboutsService.selectByNoticeVacationWhereabouts(param);
+        NoticeVacationWhereaboutsInfo result = new NoticeVacationWhereaboutsInfo();
+        Integer totalNumbers = 0;
+        Integer alreadyInNumbers = 0;
+        Integer atSchoolNumbers = 0;
+        Integer atHomeNumbers = 0;
+        Integer goOutNumbers = 0;
+        if(CollectionUtils.isNotEmpty(list)){
+            //总人数
+            totalNumbers = list.size();
+            for(NoticeVacationWhereabouts n : list){
+                if(n.getStatus() == 1){
+                    //已填写人数+1
+                    alreadyInNumbers += 1;
+                }
+                if("留校".equals(n.getWhereabouts())){
+                    atSchoolNumbers += 1;
+                }
+                if("回家".equals(n.getWhereabouts())){
+                    atHomeNumbers += 1;
+                }
+                if("外出".equals(n.getWhereabouts())){
+                    goOutNumbers += 1;
+                }
+
+            }
+            result.setTotalNumbers(totalNumbers);
+            result.setAlreadyInNumbers(alreadyInNumbers);
+            result.setAtHomeNumbers(atHomeNumbers);
+            result.setAtSchoolNumbers(atSchoolNumbers);
+            result.setGoOutNumbers(goOutNumbers);
+        }
+        model.addAttribute("whereaboutsInfo", result);
+        return prefix + "noticeVacationWhereaboutsInfo";
+    }
+
 }
