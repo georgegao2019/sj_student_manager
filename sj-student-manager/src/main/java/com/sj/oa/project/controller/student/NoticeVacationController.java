@@ -125,7 +125,7 @@ public class NoticeVacationController extends BaseController {
      */
     @RequestMapping("/toAdd")
     public String toAdd(Model model) {
-        return prefix + "/noticeVacationAdd";
+        return prefix + "noticeVacationAdd";
     }
 
     /**
@@ -160,6 +160,7 @@ public class NoticeVacationController extends BaseController {
                     nv.setNoticeId(noticeVacationId);
                     nv.setStudentId(u.getStudentId());
                     nv.setStudentName(u.getName());
+                    nv.setClassName(u.getClassName());
                     nv.setCreateTime(new Date());
                     nv.setCreateUser(user.getName());
                     list.add(nv);
@@ -270,6 +271,7 @@ public class NoticeVacationController extends BaseController {
             result.setAtHomeNumbers(atHomeNumbers);
             result.setAtSchoolNumbers(atSchoolNumbers);
             result.setGoOutNumbers(goOutNumbers);
+            result.setNotInNumbers(totalNumbers-alreadyInNumbers);
         }
         model.addAttribute("whereaboutsInfo", result);
         return prefix + "noticeVacationWhereaboutsInfo";

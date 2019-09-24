@@ -23,8 +23,14 @@ public class NoticeVacationWhereabouts extends BasePo {
     //姓名
     private String studentName;
 
+    //所在班级
+    private String className;
+
     //去向
     private String whereabouts;
+
+    //去向地址
+    private String address;
 
     //离校日期
     private Date leaveDate;
@@ -76,6 +82,14 @@ public class NoticeVacationWhereabouts extends BasePo {
         this.studentName = studentName;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
     public String getWhereabouts() {
         return whereabouts;
     }
@@ -106,5 +120,13 @@ public class NoticeVacationWhereabouts extends BasePo {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

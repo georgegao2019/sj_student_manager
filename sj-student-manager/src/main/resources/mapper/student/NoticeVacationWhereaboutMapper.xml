@@ -8,7 +8,9 @@
         <result column="title" property="title" />
         <result column="student_id" property="studentId" />
         <result column="student_name" property="studentName" />
+        <result column="class_name" property="className" />
         <result column="whereabouts" property="whereabouts" />
+        <result column="address" property="address" />
         <result column="leave_date" property="leaveDate" />
         <result column="return_date" property="returnDate" />
         <result column="status" property="status" />
@@ -19,7 +21,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,notice_id,title,student_id,student_name,whereabouts,leave_date,return_date,status,create_time,create_user,update_time,update_user
+        id,notice_id,title,student_id,student_name,class_name,whereabouts,address,leave_date,return_date,status,create_time,create_user,update_time,update_user
     </sql>
 
     <!--主键查找-->
@@ -70,8 +72,14 @@
             <if test="studentName != null">
                 student_name,
             </if>
+            <if test="className != null">
+                class_name,
+            </if>
             <if test="whereabouts != null">
                 whereabouts,
+            </if>
+            <if test="address != null">
+                address,
             </if>
             <if test="leaveDate != null">
                 leave_date,
@@ -111,8 +119,14 @@
             <if test="studentName != null">
                 #{studentName,jdbcType=VARCHAR},
             </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
             <if test="whereabouts != null">
-                #{whereabouts,jdbcType=INTEGER},
+                #{whereabouts,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
             </if>
             <if test="leaveDate != null">
                 #{leaveDate,jdbcType=TIMESTAMP},
@@ -139,10 +153,10 @@
     </insert>
 
     <insert id="insertBatch" parameterType="com.sj.oa.project.po.student.NoticeVacationWhereabouts">
-        insert into t_notice_vacation_whereabouts(id,notice_id,title,student_id,student_name,status,create_time,create_user)
+        insert into t_notice_vacation_whereabouts(id,notice_id,title,student_id,student_name,class_name,status,create_time,create_user)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (null,#{item.noticeId},#{item.title},#{item.studentId},#{item.studentName},0,#{item.createTime},#{item.createUser})
+            (null,#{item.noticeId},#{item.title},#{item.studentId},#{item.studentName},#{item.className},0,#{item.createTime},#{item.createUser})
         </foreach>
 
     </insert>
@@ -155,8 +169,14 @@
             <if test="studentName != null">
                 student_name = #{studentName,jdbcType=VARCHAR},
             </if>
+            <if test="className != null">
+                class_name = #{className,jdbcType=VARCHAR},
+            </if>
             <if test="whereabouts != null">
                 whereabouts = #{whereabouts,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
             </if>
             <if test="leaveDate != null">
                 leave_date = #{leaveDate,jdbcType=TIMESTAMP},
@@ -194,6 +214,9 @@
             </if>
             <if test="studentId !=null and studentId != ''">
                 and student_id=#{studentId}
+            </if>
+            <if test="className !=null and className != ''">
+                and class_name=#{className}
             </if>
         </where>
     </select>

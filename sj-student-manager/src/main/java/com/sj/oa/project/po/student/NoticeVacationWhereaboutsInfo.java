@@ -11,6 +11,9 @@ public class NoticeVacationWhereaboutsInfo {
     //总人数
     private Integer totalNumbers;
 
+    //未填写人数
+    private Integer notInNumbers;
+
     //已填写人数
     private Integer alreadyInNumbers;
 
@@ -58,6 +61,22 @@ public class NoticeVacationWhereaboutsInfo {
 
     public Integer getGoOutNumbers() {
         return goOutNumbers;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getNotInNumbers() {
+        return notInNumbers;
+    }
+
+    public void setNotInNumbers(Integer notInNumbers) {
+        this.notInNumbers = notInNumbers;
     }
 
     public void setGoOutNumbers(Integer goOutNumbers) {

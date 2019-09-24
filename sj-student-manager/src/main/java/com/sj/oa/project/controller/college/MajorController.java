@@ -111,7 +111,7 @@ public class MajorController extends BaseController {
      */
     @RequestMapping("/toAdd")
     public String toAdd(Model model) {
-        return prefix + "/majorInfoAdd";
+        return prefix + "majorInfoAdd";
     }
 
     /**

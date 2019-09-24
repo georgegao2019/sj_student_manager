@@ -7,46 +7,11 @@
 <div class="container-div">
     <div class="row">
         <div class="col-sm-12 select-info">
-            <form id="operlog-form">
-                <div class="select-list gd">
-                    <ul>
-                        <li>
-                            <label>总人数： </label>
-                            <input type="text" name="totalNumbers" readonly="true" id="totalNumbers" th:field="*{whereaboutsInfo.totalNumbers}"/>
-                        </li>
-                        <li>
-                            <label>已填写人数： </label>
-                            <input type="text" name="alreadyInNumbers" readonly="true" id="alreadyInNumbers" th:field="*{whereaboutsInfo.alreadyInNumbers}"/>
-                        </li>
-                        <li>
-                            <label>留校人数： </label>
-                            <input type="text" name="atSchoolNumbers" readonly="true" id="atSchoolNumbers" th:field="*{whereaboutsInfo.atSchoolNumbers}"/>
-                        </li>
-                        <li>
-                            <label>回家人数： </label>
-                            <input type="text" name="atHomeNumbers" readonly="true" id="atHomeNumbers" th:field="*{whereaboutsInfo.atHomeNumbers}"/>
-                        </li>
-                        <li>
-                            <label>外出人数： </label>
-                            <input type="text" name="goOutNumbers" readonly="true" id="goOutNumbers" th:field="*{whereaboutsInfo.goOutNumbers}"/>
-                        </li>
-                        <li>
-                            <input type="hidden" id="id" name="id" th:field="*{whereaboutsInfo.goOutNumbers}">
-                        </li>
-                    </ul>
+                <div class="col-sm-6" id="writeChartDiv" style="width: 800px;height: 500px">
                 </div>
-            </form>
+                <div class="col-sm-6" id="whereaboutChartDiv" style="width: 800px;height: 500px">
+                </div>
         </div>
-        <div class="btn-group hidden-xs" id="toolbar" role="group">
-            <a class="btn btn-outline btn-success btn-rounded" onclick="addCouch()" shiro:hasPermission="whereabouts:add">
-                <i class="fa fa-plus"></i> 新增床位
-            </a><!--
-            <a class="btn btn-outline btn-danger btn-rounded" onclick="$.operate.batRemove()"
-               shiro:hasPermission="dmc:del">
-                <i class="fa fa-trash-o"></i> 删除
-            </a>-->
-        </div>
-
         <div class="col-sm-12 select-info order-table">
             <table id="bootstrap-table" data-mobile-responsive="true"></table>
         </div>
@@ -54,11 +19,30 @@
 </div>
 <div th:include="include :: footer"></div>
 <script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script th:src="@{/js/echarts.js}"></script>
 <script th:inline="javascript">
     var prefix = "/whereabouts";
     var updateFlag = [[${@permission.hasPermi('"whereabouts:update')}]];
-    var delFlag = [[${@permission.hasPermi('"whereabouts:del')}]];
+    var delFlag = [[${@permission.hasPermi('"whereabouts:del')}]]
     $(function () {
+        //获取model中数据
+        var notInNumbers = [[${whereaboutsInfo.notInNumbers}]];
+        var alreadyInNumbers = [[${whereaboutsInfo.alreadyInNumbers}]]
+        var atSchoolNumbers = [[${whereaboutsInfo.atSchoolNumbers}]]
+        var atHomeNumbers = [[${whereaboutsInfo.atHomeNumbers}]]
+        var goOutNumbers = [[${whereaboutsInfo.goOutNumbers}]]
+
+        var data1 = [
+            {value:notInNumbers,name:'未填写'},
+            {value:alreadyInNumbers,name:'已填写'}
+        ];
+
+        var data2 = [
+            {value:atSchoolNumbers,name:'留校'},
+            {value:atHomeNumbers,name:'回家'},
+            {value:goOutNumbers,name:'外出'}
+        ];
+
         var options = {
             url: prefix + "/tableList",
             modalName: "便签",
@@ -75,8 +59,24 @@
                     title: '标题',
                 },
                 {
+                    field: 'studentId',
+                    title: '学号',
+                },
+                {
+                    field: 'studentName',
+                    title: '学生姓名',
+                },
+                {
+                    field: 'className',
+                    title: '所在班级',
+                },
+                {
                     field: 'whereabouts',
                     title: '去向',
+                },
+                {
+                    field: 'address',
+                    title: '地址',
                 },
                 {
                     field: 'leaveDate',
@@ -110,17 +110,81 @@
                     formatter: function (value, row, index) {
                         return $.common.dateFormat(value);
                     }
-                },
-                {
-                    title: '操作',
-                    align: 'center',
-                    formatter: function (value, row, index) {
-                        var actions = [];
-                        return actions.join('');
-                    }
                 }]
         };
         $.table.init(options);
+
+        var writeChartOptions = {
+            title : {
+                text: '假期去向填写情况',
+                subtext: '实时数据',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['已填写','未填写']
+            },
+            series : [
+                {
+                    name: '填写情况',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:data1,
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        }
+
+        var whereaboutChartOptions = {
+            title : {
+                text: '假期去向填写统计饼状图',
+                subtext: '实时数据',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['留校','外出','回家']
+            },
+            series : [
+                {
+                    name: '假期去向',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:data2,
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        }
+
+        var writeChart = echarts.init(document.getElementById("writeChartDiv"));
+        writeChart.setOption(writeChartOptions);
+
+        var whereaboutChart = echarts.init(document.getElementById("whereaboutChartDiv"));
+        whereaboutChart.setOption(whereaboutChartOptions);
     });
 </script>
 </body>
