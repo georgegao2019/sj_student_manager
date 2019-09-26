@@ -79,7 +79,14 @@ public class UserController extends BaseController{
         return getDataTable(users);
     }
 
-
+    @RequestMapping("/toPartList")
+    @RequiresPermissions("user:partList")
+    public String toPartUserList(Model model)
+    {
+        User user = getUser();
+        model.addAttribute("dept",user.getDept());
+        return prefix + "partUser";
+    }
     /**
      *
      * 编辑用户 system/user/edit/20180914-1
