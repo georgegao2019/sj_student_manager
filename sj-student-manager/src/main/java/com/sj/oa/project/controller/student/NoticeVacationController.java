@@ -276,5 +276,4 @@ public class NoticeVacationController extends BaseController {
         model.addAttribute("whereaboutsInfo", result);
         return prefix + "noticeVacationWhereaboutsInfo";
     }
-
 }
