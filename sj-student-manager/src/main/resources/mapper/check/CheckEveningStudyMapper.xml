@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.check.CheckEveningStudyMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.check.CheckLateback">
+        <result column="id" property="id" />
+        <result column="studentid" property="studentId" />
+        <result column="name" property="name" />
+        <result column="reason" property="reason" />
+        <result column="return_time" property="returnTime" />
+        <result column="check_person" property="checkPerson" />
+        <result column="check_time" property="checkTime" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,studentid,name,reason,return_time,check_person,check_time,status,
+        create_time,create_user,update_time,update_user
+    </sql>
+
+    <!--查年级-->
+    <select id="selectYearSessionInfoByLimit" resultMap="com.sj.oa.project.mapper.college.YearSessionInfoMapper.BaseResultMap" parameterType="Integer">
+        select <include refid="com.sj.oa.project.mapper.college.YearSessionInfoMapper.Base_Column_List"/>
+        from t_year_session_info order by year_session desc limit #{number};
+    </select>
+
+    <!--查班级-->
+    <select id="selectClassInfoByGrade" resultMap="com.sj.oa.project.mapper.college.ClassMapper.BaseResultMap" parameterType="String">
+        select <include refid="com.sj.oa.project.mapper.college.ClassMapper.Base_Column_List"/>
+        from t_class_info
+        where class_name in
+        <foreach collection="array" open="(" separator="," close=")" item="grade">
+          #{grade}
+        </foreach>
+    </select>
+
+
+    <!--查学生-->
+    <select id="selectUserByClassName" resultMap="com.sj.oa.project.mapper.UserMapper.BaseResultMap" parameterType="String">
+        select <include refid="com.sj.oa.project.mapper.UserMapper.Base_Column_List"/>
+        from t_user
+        where class_name in
+        <foreach collection="array" open="(" separator="," close=")" item="grade">
+            #{className}
+        </foreach>
+    </select>
+
+
+
+
+</mapper>
