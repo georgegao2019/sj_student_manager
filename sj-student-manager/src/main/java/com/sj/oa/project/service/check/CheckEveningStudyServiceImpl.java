@@ -30,6 +30,7 @@ public class CheckEveningStudyServiceImpl implements ICheckEveningStudyService {
      */
     public List<Classall> selectClassInfoByGrade(List<String> grades){
         return checkEveningStudyMapper.selectClassInfoByGrade(grades);
+        //return null;
     }
 
     /**
