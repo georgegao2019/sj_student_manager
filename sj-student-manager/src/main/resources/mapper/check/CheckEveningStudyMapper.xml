@@ -29,12 +29,12 @@
     </select>
 
     <!--查班级-->
-    <select id="selectClassInfoByGrade" resultMap="com.sj.oa.project.mapper.college.ClassMapper.BaseResultMap" parameterType="String">
+    <select id="selectClassInfoByGrade" resultMap="com.sj.oa.project.mapper.college.ClassMapper.BaseResultMap">
         select <include refid="com.sj.oa.project.mapper.college.ClassMapper.Base_Column_List"/>
         from t_class_info
         where class_name in
-        <foreach collection="array" open="(" separator="," close=")" item="grade">
-          #{grade}
+        <foreach collection="list" open="(" separator="," close=")" item="grade" index="index" >
+          #{grade.yearSession}
         </foreach>
     </select>
 

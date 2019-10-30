@@ -23,6 +23,6 @@ public interface CheckEveningStudyMapper {
     /**
      * 根据class_name查学生
      */
-    List<User> selectUserByClassName(List<String> className);
+    List<User> selectUserByClassName(List<Classall> Classall);
 
 }
