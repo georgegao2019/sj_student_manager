@@ -37,5 +37,10 @@ public interface IDormitoryRoomService {
      * @param number
      * @return
      */
-    int updateIncomeNumberByRoomCode(String roomCode,Integer number);
+    int updateIncomeNumberByRoomCode(String roomCode, Integer number);
+
+    /**
+     * 根据楼层编码获取宿舍编码
+     */
+    List<DormitoryRoom> findRoom(String stepCode);
 }

@@ -69,4 +69,10 @@ public class DormitoryRoomServiceImpl implements IDormitoryRoomService {
     public int updateIncomeNumberByRoomCode(String roomCode, Integer number) {
         return dormitoryRoomMapper.updateIncomeNumberByRoomCode(roomCode,number);
     }
+
+    @Override
+    public List<DormitoryRoom> findRoom(String stepCode){
+
+        return dormitoryRoomMapper.findRoom(stepCode);
+    }
 }

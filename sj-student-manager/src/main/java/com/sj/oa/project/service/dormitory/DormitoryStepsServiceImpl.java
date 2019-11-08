@@ -77,4 +77,8 @@ public class DormitoryStepsServiceImpl implements IDormitoryStepsService  {
         return dormitoryStepsMapper.selectByStepCode(stepCode);
     }
 
+    @Override
+    public List<DormitorySteps> findStep(String buildingCode){
+        return dormitoryStepsMapper.findStep(buildingCode);
+    }
 }

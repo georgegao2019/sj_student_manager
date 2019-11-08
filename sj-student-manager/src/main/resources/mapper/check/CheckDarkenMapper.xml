@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sj.oa.project.mapper.dormitory.DormitoryRoomMapper">
+<mapper namespace="com.sj.oa.project.mapper.check.CheckDarkenMapper">
 
-    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.dormitory.DormitoryRoom">
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.check.CheckDarken">
         <result column="id" property="id" />
         <result column="building_code" property="buildingCode" />
         <result column="step_code" property="stepCode" />
         <result column="room_code" property="roomCode" />
-        <result column="room_number" property="roomNumber" />
-        <result column="room_name" property="roomName" />
-        <result column="canin_number" property="caninNumber" />
-        <result column="income_number" property="incomeNumber" />
-        <result column="leader_studentid" property="leaderStudentid" />
+        <result column="d_code" property="dCode" />
+        <result column="check_person" property="checkPerson" />
+        <result column="status" property="status" />
         <result column="create_time" property="createTime" />
         <result column="create_user" property="createUser" />
         <result column="update_time" property="updateTime" />
         <result column="update_user" property="updateUser" />
+        <association property="user" javaType="User">
+            <id column="uid" jdbcType="VARCHAR" property="uid"/>
+            <result column="className" jdbcType="VARCHAR" property="className"/>
+        </association>
+        <association property="dormitoryRoom" javaType="DormitoryRoom">
+            <id column="id" jdbcType="VARCHAR" property="id"/>
+            <result column="roomName" jdbcType="VARCHAR" property="roomName"/>
+        </association>
+        <association property="dormitoryCouch" javaType="DormitoryCouch">
+            <id column="id" jdbcType="VARCHAR" property="id"/>
+            <result column="roomCode" jdbcType="VARCHAR" property="roomCode"/>
+        </association>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,building_code,step_code,room_code,room_number,room_name,canin_number,income_number,leader_studentid
+        id,building_code,step_code,room_code,d_code,check_person,status,
         create_time,create_user,update_time,update_user
     </sql>
 
     <!--主键查找-->
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String">
         select <include refid="Base_Column_List"/>
-        from t_dormitory_room
+        from t_check_darken
         where id = #{id};
     </select>
 
     <!--批量删除-->
     <delete id="deleteByPrimaryKeys" parameterType="int">
-        delete from
-        t_dormitory_room
+        UPDATE
+        t_check_darken
+        set status = 1
         WHERE id IN
         <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
             #{id}
@@ -43,8 +54,8 @@
     <!--
      添加
     -->
-    <insert id="insertSelective" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
-        insert into t_dormitory_room
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.check.CheckDarken">
+        insert into t_check_darken
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -58,20 +69,14 @@
             <if test="roomCode != null">
                 room_code,
             </if>
-            <if test="roomNumber != null">
-                room_number,
+            <if test="dCode != null">
+                d_code,
             </if>
-            <if test="roomName != null">
-                room_name,
+            <if test="checkPerson != null">
+                check_person,
             </if>
-            <if test="caninNumber != null">
-                canin_number,
-            </if>
-            <if test="incomeNumber != null">
-                income_number,
-            </if>
-            <if test="leaderStudentid != null">
-                leader_studentid,
+            <if test="status != null">
+                status,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -99,20 +104,15 @@
             <if test="roomCode != null">
                 #{roomCode,jdbcType=VARCHAR},
             </if>
-            <if test="roomNumber != null">
-                #{roomNumber,jdbcType=VARCHAR},
+            <if test="dCode != null">
+                #{dCode,jdbcType=VARCHAR},
             </if>
-            <if test="roomName != null">
-                #{roomName,jdbcType=VARCHAR},
+            <if test="checkPerson != null">
+                #{checkPerson,jdbcType=VARCHAR},
             </if>
-            <if test="caninNumber != null">
-                #{caninNumber,jdbcType=INTEGER},
-            </if>
-            <if test="incomeNumber != null">
-                #{incomeNumber,jdbcType=INTEGER},
-            </if>
-            <if test="leaderStudentid != null">
-                #{leaderStudentid,jdbcType=VARCHAR},
+
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -129,8 +129,8 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
-        update t_dormitory_room
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.check.CheckDarken">
+        update t_check_darken
         <set>
             <if test="buildingCode != null">
                 building_code = #{buildingCode,jdbcType=VARCHAR},
@@ -141,20 +141,15 @@
             <if test="roomCode != null">
                 room_code = #{roomCode,jdbcType=VARCHAR},
             </if>
-            <if test="roomNumber != null">
-                room_number = #{roomNumber,jdbcType=VARCHAR},
+            <if test="dCode != null">
+                d_code = #{dCode,jdbcType=VARCHAR},
             </if>
-            <if test="roomName != null">
-                room_name = #{roomName,jdbcType=VARCHAR},
+            <if test="checkPerson != null">
+                check_person = #{checkPerson,jdbcType=VARCHAR},
             </if>
-            <if test="caninNumber != null">
-                canin_number = #{caninNumber,jdbcType=INTEGER},
-            </if>
-            <if test="incomeNumber != null">
-                income_number = #{incomeNumber,jdbcType=VARCHAR},
-            </if>
-            <if test="leaderStudentid != null">
-                leader_studentid = #{leaderStudentid,jdbcType=VARCHAR},
+
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=VARCHAR},
@@ -173,42 +168,10 @@
     </update>
 
     <!-- 用户列表 根据不同条件查询-->
-    <select id="selectByDormitoryRoom" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
+    <select id="selectByCheckDarken" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckDarken">
         select
         <include refid="Base_Column_List"></include>
-        from t_dormitory_room
-        <where>
-            <if test="buildingCode !=null">
-                and building_code = #{buildingCode,jdbcType=VARCHAR}
-            </if>
-            <if test="stepCode !=null">
-                and step_code = #{stepCode,jdbcType=VARCHAR}
-            </if>
-            <if test="roomCode !=null">
-                and room_code = #{roomCode,jdbcType=VARCHAR}
-            </if>
-            <if test="roomName !=null">
-                and room_name = #{roomName,jdbcType=VARCHAR}
-            </if>
-        </where>
-    </select>
-
-    <!-- 校验宿舍编号是否存在-->
-    <select id="checkRoomNumberUnique" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.dormitory.DormitoryRoom">
-        select * from t_dormitory_room
-        where room_number = #{roomNumber,jdbcType=VARCHAR} and building_code = #{buildingCode,jdbcType=VARCHAR}
-    </select>
-
-    <!-- 更新已入住人数 -->
-    <update id="updateIncomeNumberByRoomCode">
-        update t_dormitory_room set income_number = (income_number + #{number,jdbcType=INTEGER})
-        where room_code = #{roomCode,jdbcType=VARCHAR}
-    </update>
-
-    <!--根据楼层查找宿舍对象-->
-    <select id="findRoom" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
-        from t_dormitory_room
-        where step_code = #{stepCode};
+        from t_check_darken
+        where to_days(create_time) = to_days(now())
     </select>
 </mapper>

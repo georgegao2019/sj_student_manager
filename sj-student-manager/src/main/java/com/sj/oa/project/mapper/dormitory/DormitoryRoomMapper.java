@@ -47,4 +47,11 @@ public interface DormitoryRoomMapper {
             @Param(value = "roomCode") String roomCode,
             @Param(value = "number") Integer number);
 
+    /**
+     * 根据楼层查找房间对象
+     * @param stepCode
+     * @return
+     */
+    List<DormitoryRoom> findRoom(String stepCode);
+
 }

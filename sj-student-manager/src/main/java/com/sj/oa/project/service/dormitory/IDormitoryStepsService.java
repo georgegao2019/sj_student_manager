@@ -42,4 +42,9 @@ public interface IDormitoryStepsService {
      * @return
      */
     DormitorySteps selectByStepCode(String stepCode);
+
+    /**
+     * 根据楼编码获取楼层编码
+     */
+    List<DormitorySteps> findStep(String buildingCode);
 }

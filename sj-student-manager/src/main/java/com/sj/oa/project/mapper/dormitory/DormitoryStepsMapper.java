@@ -50,4 +50,6 @@ public interface DormitoryStepsMapper {
      * 根据stepCode 查询楼层信息
      */
     DormitorySteps selectByStepCode(String stepCode);
+
+    List<DormitorySteps> findStep(String buildingCode);
 }
