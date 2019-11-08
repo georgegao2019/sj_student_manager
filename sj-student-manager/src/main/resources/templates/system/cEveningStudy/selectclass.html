@@ -1,130 +1,35 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<body class="gray-bg">
-
-<div class="container-div">
-    <div class="row">
-        <div class="col-sm-12 select-info">
-            <form id="operlog-form">
-                <div class="select-list gd">
-                    <ul>
-                        <li>
-                            <label>应届年份： </label>
-                            <select name="grade">
-                                <option value="">- -</option>
-                                <option th:each="y:${yearSessionInfos}" th:value="${y.yearSession}"
-                                        th:text="${y.yearSession}">
-
-                                </option>
-                            </select>
-                        </li>
-                        <li>
-                            <label>专业： </label>
-                            <select name="majorCode">
-                                <option value="">- -</option>
-                                <option th:each="m:${majors}" th:value="${m.majorCode}"
-                                        th:text="${m.majorName}">
-
-                                </option>
-                            </select>
-                        </li>
-                        <!--<li>
-                            <label>状态： </label>
-                            <select name="status">
-                                <option value="">所有</option>
-                                <option th:value="0">活跃</option>
-                                <option th:value="1">非活跃</option>
-                            </select>
-                        </li>-->
-                        <li>
-                            <a class="btn btn-primary btn-rounded btn-sm"
-                               onclick="$.table.search($('form').attr('id'))"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                            <a class="btn btn-warning btn-rounded btn-sm"
-                               onclick="$.form.reset($('form').attr('id'))"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                        </li>
-                    </ul>
-                </div>
-            </form>
+<link th:href="@{/ajax/libs/iCheck/custom.css}" rel="stylesheet"/>
+<link href="/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css"
+      th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-role-add" action="selectUsers" method="post";>
+        <div class="form-group" th:each="c:${classes}">
+            <input  type="checkbox" name="class" th:value="${c.className}"
+                   th:text="${c.className}" />
         </div>
-
-        <div class="btn-group hidden-xs" id="toolbar" role="group">
-            <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add()" shiro:hasPermission="class:add">
-                <i class="fa fa-plus"></i> 新增
-            </a>
-            <a class="btn btn-outline btn-danger btn-rounded" onclick="$.operate.batRemove()"
-               shiro:hasPermission="class:del">
-                <i class="fa fa-trash-o"></i> 删除
-            </a>
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-9">
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+            <div class="form-control-static col-sm-offset-9">
+                <button type="submit" class="btn btn-primary" formaction="selectDemerit">查看今日扣分项</button>
+            </div>
         </div>
-
-        <div class="col-sm-12 select-info order-table">
-            <table id="bootstrap-table" data-mobile-responsive="true"></table>
-        </div>
-    </div>
+    </form>
 </div>
-<div th:include="include :: footer"></div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
 <script th:src="@{/ajax/libs/select/select2.js}"></script>
 <script th:inline="javascript">
-    var prefix = "/class";
-    var updateFlag = [[${@permission.hasPermi('"class:update')}]];
-    var delFlag = [[${@permission.hasPermi('"class:del')}]];
-    $(function () {
-        var options = {
-            url: prefix + "/tableList",
-            createUrl: prefix + "/toAdd",
-            updateUrl: prefix + "/edit/{id}",
-            removeUrl: prefix + "/del",
-            sortName: "create_time",
-            sortOrder: 'desc',
-            modalName: "便签",
-            search: false,
-            showExport: false,
-            columns: [{
-                checkbox: true
-            },
-                {
-                    field: 'className',
-                    title: '班级名称',
-                },
-                {
-                    field: 'major',
-                    title: '所属专业',
-                },
-                {
-                    field: 'grade',
-                    title: '应届年份',
-                    formatter: function (value) {
-                        return value + '届';
-                    }
-                },
-                {
-                    field: 'totalNumber',
-                    title: '所有学生数',
-                },
-                {
-                    field: 'manNumber',
-                    title: '男生人数',
-                },
-                {
-                    field: 'womenNumber',
-                    title: '女生人数',
-                },
-                {
-                    title: '操作',
-                    align: 'center',
-                    formatter: function (value, row, index) {
-                        var actions = [];
-                        /*actions.push('<a class="' + updateFlag + 'btn btn-success btn-xs" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');*/
-                        actions.push('<a class="' + delFlag + 'btn btn-danger btn-xs"  href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        return actions.join('');
-                    }
-                }]
-        };
-        $.table.init(options);
-    });
+    // //var prefix = "/cEveningStudy";
+    // $(function () {
+    //     $.modal.openFull();
+    // });
 </script>
 </body>
 </html>

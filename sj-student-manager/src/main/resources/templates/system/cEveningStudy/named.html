@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+            <form id="operlog-form" method="post" action="addSave">
+                <div class="col-sm-12 select-info order-table">
+                    <table data-mobile-responsive="true">
+                        <thead>
+                            <tr>
+                                <th style="" data-field="className" tabindex="0">
+                                    <div class="th-inner ">班级</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="" data-field="studentid" tabindex="0">
+                                    <div class="th-inner ">学号</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="text-align: center; " data-field="name" tabindex="0">
+                                    <div class="th-inner ">姓名</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="" data-field="dCode" tabindex="0">
+                                    <div class="th-inner ">扣分项</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-index="0" th:each="user,userStat:${users}">
+
+                            <td style="" th:text="${user.className}"></td>
+                            <td style="" >
+                                <input name="studentid" type="text" style="display:none" th:value="${user.studentId}" th:text="${user.studentId}"/>
+                            </td>
+                            <td style="" th:text="${user.name}"></td>
+                            <td style="">
+                                <select name="dCode" class="dCode">
+                                    <option value=""></option>
+                                    <option th:each="d:${demerits}" th:value="${d.dCode}"
+                                            th:text="${d.dMsg}">
+                                    </option>
+                                </select>
+                            </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-control-static col-sm-offset-9">
+                        <button type="submit" class="btn btn-primary" >提交</button>
+                    </div>
+                </div>
+            </form>
+</div>
+<div th:include="include :: footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script th:inline="javascript">
+    $(function () {
+        var index = layer.open({
+            type: 2,
+            area: [800 + "px", ($(window).height() - 50) + "px"],
+            fix: false,
+            maxmin: true,
+            shade: 0.3,
+            title: title,
+        });
+        layer.full(index)
+    });
+//    $("#submitData").click(function () {
+//        $("tbody .dCode").each(function (index,element) {
+//            var map = {};
+//            if($(this).val()!=undefined&&$(this).val()!=""){
+//                var dCode = $(this).val();
+//                var studentid = dCode.parent().prev().prev().children()[0].val();
+//                map[index] = [studentid,dCode];
+//            }
+//            $.model.addCollection(map);
+//        });
+//    });
+//    $("#operlog-form").validate({
+//
+//        submitHandler: function (form) {
+//            $.ajax({
+//                cache: true,
+//                type: "POST",
+//                url: "/cEveningStudy/addSave",
+//                data: $("form").serializeArray(),
+//                async: false,
+//                error: function (request) {
+//                    $.modal.alertError("系统错误");
+//                },
+//                success: function (data) {
+//                    $.operate.saveSuccess(data);
+//                }
+//            });
+//        }
+//    });
+</script>
+</body>
+</html>

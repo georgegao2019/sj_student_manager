@@ -4,6 +4,7 @@ import com.sj.oa.project.po.User;
 import com.sj.oa.project.po.check.CheckEveningStudy;
 import com.sj.oa.project.po.college.Classall;
 import com.sj.oa.project.po.college.YearSessionInfo;
+import com.sj.oa.project.po.demerit.Demerit;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,11 +19,16 @@ public interface CheckEveningStudyMapper {
     /**
      * 根据grade查班级
      */
-    List<Classall> selectClassInfoByGrade(@Param("yearSessionInfos") List<YearSessionInfo> yearSessionInfos);
+    List<Classall> selectClassInfoByGrade(List<YearSessionInfo> yearSessionInfos);
 
     /**
      * 根据class_name查学生
      */
-    List<User> selectUserByClassName(List<Classall> Classall);
+    List<User> selectUserByClassName(String[] classNames);
 
+    List<Demerit> selectDemeritByType(String type);
+
+    int insertCheckEveningStudy(List<CheckEveningStudy> checkEveningStudies);
+
+    List<CheckEveningStudy> selectCheckEveningStudyByTime(String[] classNames);
 }

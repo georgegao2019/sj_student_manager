@@ -1,6 +1,8 @@
 package com.sj.oa.project.po.check;
 
 import com.sj.oa.framework.web.po.BasePo;
+import com.sj.oa.project.po.User;
+import com.sj.oa.project.po.demerit.Demerit;
 
 public class CheckEveningStudy  extends BasePo {
 
@@ -14,6 +16,16 @@ public class CheckEveningStudy  extends BasePo {
 
     //请假状态 0未请假 1请假
     private Integer vacate;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    private Integer status;
 
     public Integer getId() {
         return id;
@@ -45,5 +57,25 @@ public class CheckEveningStudy  extends BasePo {
 
     public void setVacate(Integer vacate) {
         this.vacate = vacate;
+    }
+
+    private User user;
+
+    private Demerit demerit;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Demerit getDemerit() {
+        return demerit;
+    }
+
+    public void setDemerit(Demerit demerit) {
+        this.demerit = demerit;
     }
 }
