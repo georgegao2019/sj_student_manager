@@ -71,21 +71,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-index="0" th:each="user,userStat:${users}">
-
-                    <td style="" th:text="${user.className}"></td>
-                    <td style="" >
-                        <input name="studentid" type="text" style="display:none" th:value="${user.studentId}" th:text="${user.studentId}"/>
-                    </td>
-                    <td style="" th:text="${user.name}"></td>
-                    <td style="">
-                        <select name="dCode" class="dCode">
-                            <option value=""></option>
-                            <option th:each="d:${demerits}" th:value="${d.dCode}"
-                                    th:text="${d.dMsg}">
-                            </option>
-                        </select>
-                    </td>
+                <tr data-index="0" th:each="cess,cessStat:${cess}">
+                    <td style="display: none" th:text="${cess.id}"></td>
+                    <td style="" th:text="${cess.user.className}"></td>
+                    <td style="" th:text="${cess.studentid}"></td>
+                    <td style="" th:text="${cess.user.name}"></td>
+                    <td style="" th:text="${cess.demerit.dMsg}"></td>
+                    <td style="" th:text="${cess.demerit.dNumber}"></td>
                 </tr>
                 </tbody>
             </table>
