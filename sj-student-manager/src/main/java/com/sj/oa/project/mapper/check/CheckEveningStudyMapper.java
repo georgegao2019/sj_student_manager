@@ -31,4 +31,21 @@ public interface CheckEveningStudyMapper {
     int insertCheckEveningStudy(List<CheckEveningStudy> checkEveningStudies);
 
     List<CheckEveningStudy> selectCheckEveningStudyByTime(String[] classNames);
+
+    /**
+     *  根据id删除
+     */
+    int updateCheckEveningStudyById(CheckEveningStudy checkEveningStudy);
+
+    /**
+     *  根据id查询
+     */
+    CheckEveningStudy selectCheckEveningStudyById(String id);
+
+    /**
+     *  根据id修改
+     */
+    int deleteCheckEveningStudyById(String[] ids);
+
+    List<Demerit> selectDemeritByCode(String dCode);
 }

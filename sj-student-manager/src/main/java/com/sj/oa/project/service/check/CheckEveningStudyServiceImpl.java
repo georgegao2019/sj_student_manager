@@ -53,4 +53,26 @@ public class CheckEveningStudyServiceImpl implements ICheckEveningStudyService {
     public List<CheckEveningStudy> selectCheckEveningStudyByTime(String[] classNames){
         return checkEveningStudyMapper.selectCheckEveningStudyByTime(classNames);
     }
+
+    /**
+     *  根据id删除
+     */
+    public int updateCheckEveningStudyById(CheckEveningStudy checkEveningStudy){
+        return checkEveningStudyMapper.updateCheckEveningStudyById(checkEveningStudy);
+    }
+
+    /**
+     *  根据id修改
+     */
+    public int deleteCheckEveningStudyById(String[] ids){
+        return checkEveningStudyMapper.deleteCheckEveningStudyById(ids);
+    }
+
+    public CheckEveningStudy selectCheckEveningStudyById(String id){
+        return checkEveningStudyMapper.selectCheckEveningStudyById(id);
+    }
+
+    public List<Demerit> selectDemeritByCode(String dCode){
+        return checkEveningStudyMapper.selectDemeritByCode(dCode);
+    }
 }

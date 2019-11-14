@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/iCheck/custom.css}" rel="stylesheet"/>
+<link href="/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css"
+      th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-role-edit" >
+        <input class="form-control" th:value="${checkEveningStudy.id}" type="hidden" name="id" id="id"/>
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">学号：</label>
+            <div class="col-sm-8">
+                <input class="form-control" th:value="${checkEveningStudy.studentid}" type="text" name="studentid" id="studentid" onchange="getStudentName(this.value)"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">姓名：</label>
+            <div class="col-sm-8">
+                <input class="form-control"  type="text" name="name" id="name" disabled/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">班级：</label>
+            <div class="col-sm-8">
+                <input class="form-control"  type="text" name="className" id="className" disabled/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">扣分项：</label>
+            <div class="col-sm-8">
+                <select name="dCode" class="dCode" id="demerit">
+                    <option th:value="${checkEveningStudy.dCode}" selected></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-9">
+                <button type="submit" class="btn btn-primary">提交</button>
+                <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script type="text/javascript">
+    // 表单校验
+    $(function () {
+        getStudentName($("#studentid").val());
+        getDCode($("#demerit").val());
+    });
+    $("#form-role-edit").validate({
+        rules: {
+            majorCode:{
+                required:true,
+                remote: {
+                    url: "/cEveningStudy/checkMajorCodeUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        majorCode: function () {
+                            return $.trim($("#majorCode").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            },
+            majorName:{
+                required:true,
+                remote: {
+                    url: "/major/checkMajorNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        majorName: function () {
+                            return $.trim($("#majorName").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            }
+        },
+        submitHandler: function (form) {
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: "/major/editSave",
+                data: $("form").serializeArray(),
+                async: false,
+                error: function (request) {
+                    $.modal.alertError("系统错误");
+                },
+                success: function (data) {
+                    $.operate.saveSuccess(data);
+                }
+            });
+        }
+    });
+    function getStudentName(studentId) {
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: "/user/getUserByStudentId",
+            data: {
+                studentId:studentId
+            },
+            async: false,
+            traditional: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if(data.code == 0){
+                    var name = data.user.name;
+                    var className = data.user.className;
+                    $("#name").val(name);
+                    $("#className").val(className);
+                }else if(data.code == 1){
+                    $("#name").val("");
+                    $.modal.alertError("学号不存在");
+                }else{
+                    $("#name").val("");
+                    $.modal.alertError("请输入学号");
+                }
+            }
+        });
+    }
+    function getDCode(dCode) {
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: "/cEveningStudy/getDCode",
+            data: {
+                dCode:dCode
+            },
+            async: false,
+            traditional: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if(data.code == 0){
+                    var demerits = data.demerits;
+                    var demerit = $("#demerit");
+                    for(var i = 0;i<demerits.length;i++){
+                        if(demerits[i].dCode==dCode)
+                            demerit.append("<option value='"+demerits[i].dCode+"'>"+demerits[i].dMsg+"</option>");
+                        else
+                            demerit.append("<option value='"+demerits[i].dCode+"'selected>"+demerits[i].dMsg+"</option>");
+                    }
+
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

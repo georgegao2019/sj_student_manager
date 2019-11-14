@@ -32,4 +32,19 @@ public interface ICheckEveningStudyService {
     int insertCheckEveningStudy(List<CheckEveningStudy> checkEveningStudies);
 
     List<CheckEveningStudy> selectCheckEveningStudyByTime(String[] classNames);
+
+
+    /**
+     *  根据id删除
+     */
+    int updateCheckEveningStudyById(CheckEveningStudy checkEveningStudy);
+
+    /**
+     *  根据id修改
+     */
+    int deleteCheckEveningStudyById(String[] ids);
+
+    CheckEveningStudy selectCheckEveningStudyById(String id);
+
+    List<Demerit> selectDemeritByCode(String dCode);
 }
