@@ -84,13 +84,11 @@ public class CheckDarken extends BasePo {
     }
 
 
-    //引用user表
-    private User user;
+
 
     //引用DormitoryRoom表
     private DormitoryRoom dormitoryRoom;
 
-    //引用DormitoryCouch表
-    private DormitoryCouch dormitoryCouch;
+
 
 }

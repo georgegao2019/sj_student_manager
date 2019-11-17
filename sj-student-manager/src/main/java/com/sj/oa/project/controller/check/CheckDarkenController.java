@@ -58,6 +58,8 @@ public class CheckDarkenController extends BaseController {
     public String toList(Model model) {
         return prefix + "/cDarken";
     }
+
+
     /**
      *
      * @描述: 返回表格数据
@@ -71,6 +73,26 @@ public class CheckDarkenController extends BaseController {
     public TableDataInfo tableList(CheckDarken record) {
         startPage();
         List<CheckDarken> records = iCheckDarkenService.selectByCheckDarken(record);
+        return getDataTable(records);
+    }
+
+    /**
+     * 显示本周数据
+     * @param model
+     * @return
+     */
+
+    @RequestMapping("/tolistThisWeekend")
+    @RequiresPermissions("cDarken:listThisWeekend")
+    public String tolistThisWeekend(Model model) {
+        return prefix + "/view";
+    }
+
+    @RequestMapping("/tableListThisWeekend")
+    @ResponseBody
+    public TableDataInfo tableListThisWeekend(CheckDarken record) {
+        startPage();
+        List<CheckDarken> records = iCheckDarkenService.selectByCheckDarkenThisWeekend(record);
         return getDataTable(records);
     }
     /**

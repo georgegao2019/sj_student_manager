@@ -46,4 +46,9 @@ public class CheckDarkenServiceImpl implements ICheckDarkenService{
     public List<CheckDarken> selectByCheckDarken(CheckDarken record) {
         return checkDarkenMapper.selectByCheckDarken(record);
     }
+
+    @Override
+    public List<CheckDarken> selectByCheckDarkenThisWeekend(CheckDarken record) {
+        return checkDarkenMapper.selectByCheckDarkenThisWeekend(record);
+    }
 }

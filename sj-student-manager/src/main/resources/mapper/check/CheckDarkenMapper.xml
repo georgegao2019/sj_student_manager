@@ -14,18 +14,12 @@
         <result column="create_user" property="createUser" />
         <result column="update_time" property="updateTime" />
         <result column="update_user" property="updateUser" />
-        <association property="user" javaType="User">
-            <id column="uid" jdbcType="VARCHAR" property="uid"/>
-            <result column="className" jdbcType="VARCHAR" property="className"/>
-        </association>
+
         <association property="dormitoryRoom" javaType="DormitoryRoom">
             <id column="id" jdbcType="VARCHAR" property="id"/>
-            <result column="roomName" jdbcType="VARCHAR" property="roomName"/>
+            <result column="room_Name" jdbcType="VARCHAR" property="roomName"/>
         </association>
-        <association property="dormitoryCouch" javaType="DormitoryCouch">
-            <id column="id" jdbcType="VARCHAR" property="id"/>
-            <result column="roomCode" jdbcType="VARCHAR" property="roomCode"/>
-        </association>
+
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -42,9 +36,9 @@
 
     <!--批量删除-->
     <delete id="deleteByPrimaryKeys" parameterType="int">
-        UPDATE
+        delete
+        from
         t_check_darken
-        set status = 1
         WHERE id IN
         <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
             #{id}
@@ -173,5 +167,13 @@
         <include refid="Base_Column_List"></include>
         from t_check_darken
         where to_days(create_time) = to_days(now())
+    </select>
+
+    <!-- 用户列表 根据不同条件查询-->
+    <select id="selectByCheckDarkenThisWeekend" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckDarken">
+        select cd.room_code,dr.room_name,cd.status,cd.create_time
+        from t_check_darken cd left join t_dormitory_room dr
+        on cd.room_code= dr.room_code
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(cd.create_time)
     </select>
 </mapper>

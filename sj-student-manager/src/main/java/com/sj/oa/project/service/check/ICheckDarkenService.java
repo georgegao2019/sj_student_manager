@@ -19,4 +19,7 @@ public interface ICheckDarkenService {
 
     //列表条件查询
     List<CheckDarken> selectByCheckDarken(CheckDarken record);
+
+    //列表条件查询
+    List<CheckDarken> selectByCheckDarkenThisWeekend(CheckDarken record);
 }

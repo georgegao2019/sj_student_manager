@@ -9,7 +9,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="d_code" jdbcType="VARCHAR" property="dCode"/>
         <result column="d_msg" jdbcType="VARCHAR" property="dMsg"/>
-        <result column="d_number" jdbcType="INTEGER" property="dNumber"/>
+        <result column="d_number" jdbcType="DOUBLE" property="dNumber"/>
         <result column="d_type" jdbcType="VARCHAR" property="dType"/>
         <result column="status" property="status" />
         <result column="create_time" property="createTime" />
@@ -71,7 +71,7 @@
     <insert id="insert" parameterType="Demerit">
 
     insert into t_demerit (d_code, d_msg, d_number,d_type)
-    values (#{dCode,jdbcType=VARCHAR}, #{dMsg,jdbcType=VARCHAR},#{dNumber,jdbcType=INTEGER},#{dType,jdbcType=VARCHAR})
+    values (#{dCode,jdbcType=VARCHAR}, #{dMsg,jdbcType=VARCHAR},#{dNumber,jdbcType=DOUBLE},#{dType,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="Demerit">
         insert into t_demerit
@@ -112,7 +112,7 @@
                 #{dMsg,jdbcType=VARCHAR},
             </if>
             <if test="dNumber != null">
-                #{dNumber,jdbcType=INTEGER},
+                #{dNumber,jdbcType=DOUBLE},
             </if>
             <if test="dType != null">
                 #{dType,jdbcType=VARCHAR},
@@ -145,7 +145,7 @@
                d_msg = #{dMsg,jdbcType=VARCHAR},
             </if>
             <if test="dNumber != null">
-                d_number = #{dNumber,jdbcType=INTEGER},
+                d_number = #{dNumber,jdbcType=DOUBLE},
             </if>
             <if test="dType != null">
                 d_type = #{dType,jdbcType=VARCHAR},
@@ -158,7 +158,7 @@
        update t_demerit
        set d_code = #{dCode,jdbcType=VARCHAR},
        d_msg = #{dMsg,jdbcType=VARCHAR},
-       d_number = #{dNumber,jdbcType=INTEGER},
+       d_number = #{dNumber,jdbcType=DOUBLE},
        d_type = #{dType,jdbcType=VARCHAR},
     where id = #{id,jdbcType=INTEGER}
   </update>

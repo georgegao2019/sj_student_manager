@@ -13,7 +13,7 @@ public class Demerit extends BasePo {
     private String dMsg;
 
     //扣分分数
-    private String dNumber;
+    private double dNumber;
 
     //扣分类型
     private String dType;
@@ -45,11 +45,11 @@ public class Demerit extends BasePo {
         this.dMsg = dMsg;
     }
 
-    public String getdNumber() {
+    public double getdNumber() {
         return dNumber;
     }
 
-    public void setdNumber(String dNumber) {
+    public void setdNumber(double dNumber) {
         this.dNumber = dNumber;
     }
 

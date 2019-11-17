@@ -35,6 +35,12 @@ public interface CheckDarkenMapper {
      */
     List<CheckDarken> selectByCheckDarken(CheckDarken record);
 
+    /*
+     *
+     * 用户列表 以及 根据条件查询
+     */
+    List<CheckDarken> selectByCheckDarkenThisWeekend(CheckDarken record);
+
 
 
 }
