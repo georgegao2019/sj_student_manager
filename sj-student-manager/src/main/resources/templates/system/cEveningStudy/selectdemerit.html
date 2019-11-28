@@ -4,110 +4,86 @@
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <body class="gray-bg">
-
 <div class="container-div">
     <div class="row">
         <div class="col-sm-12 select-info">
-            <form id="operlog-form">
-                <div class="select-list gd">
-                    <ul>
-                        <li>
-                            <label>学号： </label>
-                            <input type="text" name="studentId" />
-                        </li>
-                        <li class="select-time">
-                            <label>检查时间： </label>
-                            <input type="text" class="time-input" style="width: 150px" id="beginTime" placeholder="开始时间"
-                                   name="beginTime" lay-key="1">
-                            <span>-</span>
-                            <input type="text" class="time-input" style="width: 150px" id="overTime" placeholder="结束时间"
-                                   name="overTime" lay-key="2">
-                        </li>
-                        <li>
-                            <a class="btn btn-primary btn-rounded btn-sm"
-                               onclick="$.table.search($('form').attr('id'))"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                            <a class="btn btn-warning btn-rounded btn-sm"
-                               onclick="$.form.reset($('form').attr('id'))"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                        </li>
-                    </ul>
-                </div>
-            </form>
-        </div>
+            <div class="select-list gd">
+                <ul>
+                    <li>
+                        <label>班级名称： </label>
+                        <input type="text" name="className" readonly="true" id="className" th:value="${className}"/>
+                    </li>
+                </ul>
+            </div>
 
-        <div class="btn-group hidden-xs" id="toolbar" role="group">
-            <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add()" >
-                <i class="fa fa-plus"></i> 新增
-            </a>
-            <a class="btn btn-outline btn-danger btn-rounded" onclick="$.operate.batRemove()"
-               shiro:hasPermission="cLateback:del">
-                <i class="fa fa-trash-o"></i> 删除
-            </a>
-        </div>
+            <div class="btn-group hidden-xs" id="toolbar" role="group">
+                <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add()" shiro:hasPermission="cEveningStudy:add">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a class="btn btn-outline btn-danger btn-rounded" onclick="$.operate.batRemove()" shiro:hasPermission="cEveningStudy:delete">
+                    <i class="fa fa-trash-o"></i> 删除
+                </a>
+            </div>
 
-        <div class="col-sm-12 select-info order-table">
-            <table data-mobile-responsive="true">
-                <thead>
-                <tr>
-                    <th style="" data-field="className" tabindex="0">
-                        <div class="th-inner ">班级</div>
-                        <div class="fht-cell"></div>
-                    </th>
-                    <th style="" data-field="studentid" tabindex="0">
-                        <div class="th-inner ">学号</div>
-                        <div class="fht-cell"></div>
-                    </th>
-                    <th style="text-align: center; " data-field="name" tabindex="0">
-                        <div class="th-inner ">姓名</div>
-                        <div class="fht-cell"></div>
-                    </th>
-                    <th style="" data-field="dCode" tabindex="0">
-                        <div class="th-inner ">扣分项</div>
-                        <div class="fht-cell"></div>
-                    </th>
-                    <th style="" data-field="dCode" tabindex="0">
-                        <div class="th-inner ">分值</div>
-                        <div class="fht-cell"></div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr data-index="0" th:each="cess,cessStat:${cess}">
-                    <td style="" th:text="${cess.user.className}"></td>
-                    <td style="" th:text="${cess.studentid}"></td>
-                    <td style="" th:text="${cess.user.name}"></td>
-                    <td style="" th:text="${cess.demerit.dMsg}"></td>
-                    <td style="" th:text="${cess.demerit.dNumber}"></td>
-                    <td>
-                        <a class="hiddenbtn btn-success btn-xs" href="#" th:onclick="'$.operate.edit('+${cess.id}+')'" ><i class="fa fa-edit"></i>编辑</a>
-                        <a class="hiddenbtn btn-danger btn-xs" href="#" th:onclick="'$.operate.remove('+${cess.id}+')'"><i class="fa fa-remove"></i>删除</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="col-sm-12 select-info order-table">
+                <table id="bootstrap-table" data-mobile-responsive="true"></table>
+            </div>
         </div>
     </div>
 </div>
 <div th:include="include :: footer"></div>
 <script th:src="@{/ajax/libs/select/select2.js}"></script>
 <script th:inline="javascript">
+    //var demerits;
     var prefix = "/cEveningStudy";
-    //var updateFlag = [[${@permission.hasPermi('"major:update')}]];
-    //var delFlag = [[${@permission.hasPermi('"major:del')}]];
+    var updateFlag = [[${@permission.hasPermi('"cEveningStudy:update')}]];
+    var delFlag = [[${@permission.hasPermi('"cEveningStudy:delete')}]];
     $(function () {
+
         var options = {
-            url: prefix + "/tableList",
+            url: prefix + "/demeritAll",
             createUrl: prefix + "/toAdd",
             updateUrl: prefix + "/edit/{id}",
             removeUrl: prefix + "/del",
-            sortName: "create_time",
-            sortOrder: 'desc',
-            modalName: "便签",
+            sortName: "studentid",
+            sortOrder: 'asc',
+            modalName: "违纪记录",
             search: false,
+            queryParams:{
+                className:$("#className").val()
+            },
             showExport: false,
-
+            columns: [
+                {
+                    checkbox: true
+                },
+                {
+                    field: 'studentid',
+                    title: '学号',
+                },
+                {
+                    field: 'name',
+                    title: '姓名',
+                },
+                {
+                    field: 'dMsg',
+                    title: '违纪项',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="' + updateFlag + 'btn btn-success btn-xs" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="' + delFlag + 'btn btn-danger btn-xs"  href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
         };
         $.table.init(options);
     });
+
+
 </script>
 </body>
 </html>

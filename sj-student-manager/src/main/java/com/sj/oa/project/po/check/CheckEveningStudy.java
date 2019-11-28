@@ -11,6 +11,28 @@ public class CheckEveningStudy  extends BasePo {
     //学号
     private String studentid;
 
+    //姓名
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getdMsg() {
+        return dMsg;
+    }
+
+    public void setdMsg(String dMsg) {
+        this.dMsg = dMsg;
+    }
+
+    //扣分信息
+    private String dMsg;
+
     //扣分编号
     private String dCode;
 
@@ -59,23 +81,5 @@ public class CheckEveningStudy  extends BasePo {
         this.vacate = vacate;
     }
 
-    private User user;
 
-    private Demerit demerit;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Demerit getDemerit() {
-        return demerit;
-    }
-
-    public void setDemerit(Demerit demerit) {
-        this.demerit = demerit;
-    }
 }

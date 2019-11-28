@@ -12,14 +12,8 @@
         <result column="create_user" property="createUser" />
         <result column="update_time" property="updateTime" />
         <result column="update_user" property="updateUser" />
-        <association property="user" javaType="User">
-            <result column="name" jdbcType="VARCHAR" property="name"/>
-            <result column="class_name" jdbcType="VARCHAR" property="className"/>
-        </association>
-        <association property="demerit" javaType="Demerit">
-            <result column="d_msg" jdbcType="VARCHAR" property="dMsg"/>
-            <result column="d_number" jdbcType="INTEGER" property="dNumber"/>
-        </association>
+        <result column="name" property="name"/>
+        <result column="d_msg" jdbcType="VARCHAR" property="dMsg"/>
     </resultMap>
 
     <resultMap id="YearResultMap" type="com.sj.oa.project.po.college.YearSessionInfo">
@@ -138,7 +132,7 @@
 
 
     <sql id="Base_Column_List">
-        es.id,es.studentid,u.name,u.class_name,es.d_code,d.d_msg,d.d_number,es.status,
+        es.id,es.studentid,u.name,es.d_code,d.d_msg,es.status,
         es.create_time,es.create_user,es.update_time,es.update_user
     </sql>
 
@@ -161,7 +155,7 @@
     <select id="selectClassInfoByGrade" resultMap="ClassResultMap">
         select <include refid="Class_Column_List"/>
         from t_class_info
-        where class_name in
+        where grade in
         <foreach collection="list" open="(" separator="," close=")" item="grade" index="index" >
           #{grade.yearSession}
         </foreach>
@@ -212,14 +206,11 @@
     <update id="updateCheckEveningStudyById">
         update t_check_evening_study
         <set>
-            <if test="studentid != null">
-                studentid=#{studentid,jdbcType=VARCHAR}
-            </if>
             <if test="dCode != null">
-                d_code=#{dCode,jdbcType=VARCHAR}
+                d_code=#{dCode,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
-                update_time=#{updateTime,jdbcType=DATE}
+                update_time=#{updateTime,jdbcType=DATE},
             </if>
             <if test="updateUser != null">
                 update_user=#{updateUser,jdbcType=VARCHAR}

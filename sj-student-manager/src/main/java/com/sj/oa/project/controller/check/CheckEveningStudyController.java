@@ -30,7 +30,6 @@ import java.util.List;
 @RequestMapping("/cEveningStudy")
 public class CheckEveningStudyController extends BaseController {
 
-    //前缀
     private final static String prefix = "system/cEveningStudy";
 
     @Autowired
@@ -39,42 +38,44 @@ public class CheckEveningStudyController extends BaseController {
     @Autowired
     private IUserService iUserService;
 
-    /**
-     *
-     * @描述: 跳转到选择班级页
-     *
-     * @params:
-     * @return:
-     * @date: 2018/9/26 21:13
-     */
-    @RequestMapping("/tolist")
-    @RequiresPermissions("cEveningStudy:tolist")
-    public String toList(Model model) {
-        List<YearSessionInfo> yearSessionInfos = iCheckEveningStudyService.selectYearSessionInfoByLimit(1);
-        List<Classall> classAlls = iCheckEveningStudyService.selectClassInfoByGrade(yearSessionInfos);
-        model.addAttribute("classes",classAlls);
-        return prefix + "/selectclass";
+    @RequestMapping("/list")
+    @RequiresPermissions("cEveningStudy:list")
+    public String toList() {
+        return prefix + "/classinfo";
     }
 
-    /**
-     *
-     * @描述: 返回表格数据
-     *
-     * @params:
-     * @return:
-     * @date: 2018/9/26 21:15
-     */
-    @RequestMapping("/selectUsers")
-    public String selectUsers(@RequestParam("class")String[] classes,Model model) {
+    @RequestMapping("/classlist")
+    @ResponseBody
+    public TableDataInfo classList()
+    {
+        List<YearSessionInfo> yearSessionInfos = iCheckEveningStudyService.selectYearSessionInfoByLimit(1);
+        startPage();
+        List<Classall> classAlls = iCheckEveningStudyService.selectClassInfoByGrade(yearSessionInfos);
+        return getDataTable(classAlls);
+    }
+
+    @RequestMapping("/selectUsers/{className}")
+    @RequiresPermissions("cEveningStudy:add")
+    public String selectUsers(@PathVariable("className")String className,Model model) {
 //        List<Classall> classList = new ArrayList<Classall>(classes.length);
 //        for(int i = 0;i<classList.size();i++){
 //            classList.get(i).setClassName(classes[i]);
 //        }
-        List<User> users = iCheckEveningStudyService.selectUserByClassName(classes);
+        //String[] classes = {className};
         List<Demerit> demerits = iCheckEveningStudyService.selectDemeritByType("WZXDM");
-        model.addAttribute("users",users);
+        model.addAttribute("className",className);
         model.addAttribute("demerits",demerits);
         return prefix+"/named";
+    }
+
+    @RequestMapping("/users")
+    @ResponseBody
+    public TableDataInfo userList(String className)
+    {
+
+        String[] classes = {className};
+        List<User> users = iCheckEveningStudyService.selectUserByClassName(classes);
+        return getDataTable(users);
     }
 
     @RequestMapping("/selectDemerit")
@@ -87,13 +88,11 @@ public class CheckEveningStudyController extends BaseController {
     }
 
     @RequestMapping("/addSave")
-    public String addCheckEveningStudy(@RequestParam("studentid")String[] studentids,@RequestParam("dCode")String[] dCodes,Model model)
+    @ResponseBody
+    public AjaxResult addCheckEveningStudy(@RequestParam("studentid")String[] studentids,@RequestParam("dCode")String[] dCodes)
     {
-        //List<CheckEveningStudy> checkEveningStudies
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
-        //request.;
         List<CheckEveningStudy> cess = new ArrayList<>();
-
         for(int i = 0;i<studentids.length;i++){
             if(dCodes[i] != null && !dCodes[i].isEmpty()){
                 CheckEveningStudy ces = new CheckEveningStudy();
@@ -105,23 +104,28 @@ public class CheckEveningStudyController extends BaseController {
             }
         }
 
-//        Iterator<CheckEveningStudy> it = checkEveningStudies.iterator();
-//        while(it.hasNext()){
-//            CheckEveningStudy ces = it.next();
-//            if(ces.getdCode() !=null && !ces.getdCode().isEmpty()){
-//                ces.setCreateUser(loginUser.getName());
-//                ces.setCreateTime(new Date());
-//
-//            }else{
-//                it.remove();
-//            }
-//        }
-        iCheckEveningStudyService.insertCheckEveningStudy(cess);
-        List<YearSessionInfo> yearSessionInfos = iCheckEveningStudyService.selectYearSessionInfoByLimit(1);
-        List<Classall> classAlls = iCheckEveningStudyService.selectClassInfoByGrade(yearSessionInfos);
-        model.addAttribute("classes",classAlls);
-        return  prefix + "/selectclass";
-//        return null;
+        Integer r = 0;
+        if(cess.size()>0)
+        r = iCheckEveningStudyService.insertCheckEveningStudy(cess);
+        return  result(r);
+    }
+
+    @RequestMapping("/selectDemerits/{className}")
+    public String selectDemerits(@PathVariable("className") String className, Model model)
+    {
+        model.addAttribute("className", className);
+        return prefix + "/selectdemerit";
+
+    }
+
+    @RequestMapping("/demeritAll")
+    @ResponseBody
+    public TableDataInfo demeritList(String className)
+    {
+        String[] classNames = {className};
+        startPage();
+        List<CheckEveningStudy> checkEveningStudies = iCheckEveningStudyService.selectCheckEveningStudyByTime(classNames);
+        return getDataTable(checkEveningStudies);
     }
 
     /**
@@ -131,16 +135,43 @@ public class CheckEveningStudyController extends BaseController {
      * @date 2018/9/16 14:06
      */
     @RequestMapping("/edit/{id}")
-    //@RequiresPermissions("major:update")
+    @RequiresPermissions("cEveningStudy:update")
     public String edit(@PathVariable("id") String id, Model model)
     {
-        CheckEveningStudy checkEveningStudy = iCheckEveningStudyService.selectCheckEveningStudyById(id);
-        List<Demerit> demerits = iCheckEveningStudyService.selectDemeritByType("WZXDM");
-        model.addAttribute("checkEveningStudy", checkEveningStudy);
-        model.addAttribute("demerits", demerits);
+        CheckEveningStudy ces = iCheckEveningStudyService.selectCheckEveningStudyById(id);
+        model.addAttribute("ces", ces);
         return prefix + "/checkEveningStudyInfoEdit";
 
     }
+
+
+    /**
+     *
+     * @描述 修改保存
+     *
+     * @date 2018/9/16 16:12
+     */
+    @RequestMapping("/editSave")
+    @RequiresPermissions("major:update")
+    @Operlog(modal = "专业管理",descr = "修改信息")
+    @ResponseBody
+    public AjaxResult save(CheckEveningStudy checkEveningStudy)
+    {
+        User loginUser = iUserService.selectByPrimaryKey(getUserId());
+        checkEveningStudy.setUpdateUser(loginUser.getName());
+        checkEveningStudy.setUpdateTime(new Date());
+        int i = 0;
+        try
+        {
+            i = iCheckEveningStudyService.updateCheckEveningStudyById(checkEveningStudy);
+        }
+        catch (Exception e)
+        {
+            return error(e.getMessage());
+        }
+        return result(i);
+    }
+
 
     /**
      *
@@ -149,7 +180,7 @@ public class CheckEveningStudyController extends BaseController {
      * @date 2018/9/16 11:53
      */
     @RequestMapping("/del")
-    //@RequiresPermissions("major:del")
+    @RequiresPermissions("cEveningStudy:delete")
     @ResponseBody
     @Operlog(modal = "专业管理",descr = "删除专业")
     public AjaxResult del(String[] ids)
@@ -166,6 +197,7 @@ public class CheckEveningStudyController extends BaseController {
     }
 
     @RequestMapping("/toAdd")
+    @RequiresPermissions("cEveningStudy:add")
     public String toAdd(Model model) {
         List<Demerit> demerits = iCheckEveningStudyService.selectDemeritByType("WZXZTJC");
         model.addAttribute("demerits", demerits);
