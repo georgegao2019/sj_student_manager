@@ -42,7 +42,7 @@
 
         <div class="col-sm-12 select-info order-table">
             <div class="btn-group hidden-xs btnGroup" id="toolbar" role="group">
-                <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.addFull()"
+                <a class="btn btn-outline btn-success btn-rounded" onclick="addRoom()"
                    shiro:hasPermission="user:add">
                     <i class="fa fa-plus"></i> 新增
                 </a>
@@ -62,6 +62,7 @@
     var updateFlag = [[${@permission.hasPermi('dmr:update')}]];
     var delFlag = [[${@permission.hasPermi('dmr:del')}]];
     var detailFlag = [[${@permission.hasPermi('dmr:info')}]];
+    var nowStepCode = "";
     $(document).ready(function () {
 
         //layuout布局
@@ -128,7 +129,7 @@
         queryUserList: function () {
             var options = {
                 url: "/dmr/tableList",
-                createUrl: "/dmr/toAdd",
+                createUrl: "/dmr/toAdd/{stepCode}",
                 updateUrl: "/dmr/edit/{id}",
                 removeUrl: "/dmr/del",
                 // exportUrl: prefix + "/export",
@@ -185,6 +186,7 @@
             $.table.init(options);
         },
         zTreeOnClick: function (event, treeId, treeNode) {
+            nowStepCode = treeNode.id;
             $.table.clickTree("stepCode", treeNode.id);
         }
     }
@@ -194,6 +196,12 @@
         $.modal.openFull("入住详情",url);
     }
 
+    function addRoom(){
+        if("" != nowStepCode){
+            var url = $.common.isEmpty(nowStepCode) ? $.table._option.createUrl : $.table._option.createUrl.replace("{stepCode}", nowStepCode);
+            $.modal.openFull("添加" + $.table._option.modalName, url)
+        }
+    }
 </script>
 </body>
 
