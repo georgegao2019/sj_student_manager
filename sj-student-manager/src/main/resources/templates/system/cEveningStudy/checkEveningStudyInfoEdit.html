@@ -8,11 +8,11 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-role-edit" >
-        <input class="form-control" th:value="${checkEveningStudy.id}" type="hidden" name="id" id="id"/>
+        <input class="form-control" th:value="${ces.id}" type="hidden" name="id" id="id"/>
         <div class="form-group">
             <label class="col-sm-3 control-label ">学号：</label>
             <div class="col-sm-8">
-                <input class="form-control" th:value="${checkEveningStudy.studentid}" type="text" name="studentid" id="studentid" onchange="getStudentName(this.value)"/>
+                <input class="form-control" th:value="${ces.studentid}" type="text" name="studentid" id="studentid"  readonly/>
             </div>
         </div>
         <div class="form-group">
@@ -31,7 +31,7 @@
             <label class="col-sm-3 control-label ">扣分项：</label>
             <div class="col-sm-8">
                 <select name="dCode" class="dCode" id="demerit">
-                    <option th:value="${checkEveningStudy.dCode}" selected></option>
+                    <option th:value="${ces.dCode}" selected></option>
                 </select>
             </div>
         </div>
@@ -53,47 +53,11 @@
         getDCode($("#demerit").val());
     });
     $("#form-role-edit").validate({
-        rules: {
-            majorCode:{
-                required:true,
-                remote: {
-                    url: "/cEveningStudy/checkMajorCodeUnique",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        majorCode: function () {
-                            return $.trim($("#majorCode").val());
-                        }
-                    },
-                    dataFilter: function (data, type) {
-                        if (data == "0") return true;
-                        else return false;
-                    }
-                }
-            },
-            majorName:{
-                required:true,
-                remote: {
-                    url: "/major/checkMajorNameUnique",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        majorName: function () {
-                            return $.trim($("#majorName").val());
-                        }
-                    },
-                    dataFilter: function (data, type) {
-                        if (data == "0") return true;
-                        else return false;
-                    }
-                }
-            }
-        },
         submitHandler: function (form) {
             $.ajax({
                 cache: true,
                 type: "POST",
-                url: "/major/editSave",
+                url: "/cEveningStudy/editSave",
                 data: $("form").serializeArray(),
                 async: false,
                 error: function (request) {

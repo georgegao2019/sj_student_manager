@@ -5,100 +5,106 @@
 <head th:include="include :: header"></head>
 <body class="gray-bg">
 <div class="container-div">
-            <form id="operlog-form" method="post" action="addSave">
-                <div class="col-sm-12 select-info order-table">
-                    <table data-mobile-responsive="true">
-                        <thead>
-                            <tr>
-                                <th style="" data-field="className" tabindex="0">
-                                    <div class="th-inner ">班级</div>
-                                    <div class="fht-cell"></div>
-                                </th>
-                                <th style="" data-field="studentid" tabindex="0">
-                                    <div class="th-inner ">学号</div>
-                                    <div class="fht-cell"></div>
-                                </th>
-                                <th style="text-align: center; " data-field="name" tabindex="0">
-                                    <div class="th-inner ">姓名</div>
-                                    <div class="fht-cell"></div>
-                                </th>
-                                <th style="" data-field="dCode" tabindex="0">
-                                    <div class="th-inner ">扣分项</div>
-                                    <div class="fht-cell"></div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-index="0" th:each="user,userStat:${users}">
+    <div class="row">
+        <div class="col-sm-12 select-info">
+            <form id="form-role-add" class="form-horizontal m" >
+                <div class="select-list gd">
+                    <ul>
+                        <li>
+                            <label>班级名称： </label>
+                            <input type="text" name="className" readonly="true" id="className" th:value="${className}"/>
+                        </li>
+                    </ul>
+                </div>
 
-                            <td style="" th:text="${user.className}"></td>
-                            <td style="" >
-                                <input name="studentid" type="text" style="display:none" th:value="${user.studentId}" th:text="${user.studentId}"/>
-                            </td>
-                            <td style="" th:text="${user.name}"></td>
-                            <td style="">
-                                <select name="dCode" class="dCode">
-                                    <option value=""></option>
-                                    <option th:each="d:${demerits}" th:value="${d.dCode}"
-                                            th:text="${d.dMsg}">
-                                    </option>
-                                </select>
-                            </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col-sm-12 select-info order-table">
+                    <table id="bootstrap-table" data-mobile-responsive="true"></table>
                 </div>
 
                 <div class="form-group">
                     <div class="form-control-static col-sm-offset-9">
-                        <button type="submit" class="btn btn-primary" >提交</button>
+                        <button type="submit" class="btn btn-primary" shiro:hasPermission="cEveningStudy:add">提交</button>
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
 </div>
 <div th:include="include :: footer"></div>
 <script th:src="@{/ajax/libs/select/select2.js}"></script>
 <script th:inline="javascript">
+    //var demerits;
+    var prefix = "/cEveningStudy";
     $(function () {
-        var index = layer.open({
-            type: 2,
-            area: [800 + "px", ($(window).height() - 50) + "px"],
-            fix: false,
-            maxmin: true,
-            shade: 0.3,
-            title: title,
-        });
-        layer.full(index)
+        var demerits = [[${demerits}]];
+        var strSelect = '';
+        for(var i=0;i< demerits.length;i++){
+            //console.log(demerit);
+            strSelect += '<option value="'+demerits[i]['dCode']+'">'+demerits[i]['dMsg']+'</option>';
+        }
+        var options = {
+            url: prefix + "/users",
+            sortName: "studentid",
+            sortOrder: 'asc',
+            //modalName: "便签",
+            search: false,
+            queryParams:{
+                className:$("#className").val()
+            },
+            showExport: false,
+            columns: [
+                {
+                    title: '学号',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+
+                        //console.log(demerits);
+                        var actions = [];
+
+                        actions.push('<input name="studentid" type="text" value="'+row.studentId+'" readonly />');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'name',
+                    title: '姓名',
+                },
+                {
+                    title: '违纪项',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+
+                        //console.log(demerits);
+                        var actions = [];
+
+                        actions.push('<select name="dCode" class="dCode"><option ></option>'+ strSelect +'</select>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
     });
-//    $("#submitData").click(function () {
-//        $("tbody .dCode").each(function (index,element) {
-//            var map = {};
-//            if($(this).val()!=undefined&&$(this).val()!=""){
-//                var dCode = $(this).val();
-//                var studentid = dCode.parent().prev().prev().children()[0].val();
-//                map[index] = [studentid,dCode];
-//            }
-//            $.model.addCollection(map);
-//        });
-//    });
-//    $("#operlog-form").validate({
-//
-//        submitHandler: function (form) {
-//            $.ajax({
-//                cache: true,
-//                type: "POST",
-//                url: "/cEveningStudy/addSave",
-//                data: $("form").serializeArray(),
-//                async: false,
-//                error: function (request) {
-//                    $.modal.alertError("系统错误");
-//                },
-//                success: function (data) {
-//                    $.operate.saveSuccess(data);
-//                }
-//            });
-//        }
-//    });
+
+
+    $("#form-role-add").validate({
+
+        submitHandler: function (form) {
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: "/cEveningStudy/addSave",
+                data: $("form").serializeArray(),
+                async: false,
+                error: function (request) {
+                    $.modal.alertError("系统错误");
+                },
+                success: function (data) {
+                    $.operate.saveSuccess(data);
+                }
+            });
+        }
+    });
+
 </script>
 </body>
 </html>

@@ -8,18 +8,7 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-role-add">
-        <div class="form-group">
-            <label class="col-sm-3 control-label">应届年份：</label>
-            <div class="col-sm-8">
-                <select name="grade" class="form-control select2-hidden-accessible" id="grade">
-                    <option value="">- -</option>
-                    <option th:each="y:${yearSessions}" th:value="${y.yearSession}"
-                            th:text="${y.yearSession}">
 
-                    </option>
-                </select>
-            </div>
-        </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">所属专业：</label>
             <div class="col-sm-8">

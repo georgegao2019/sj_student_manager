@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-info">
+            <form id="operlog-form">
+                <div class="select-list gd">
+                    <ul>
+                        <li>
+                            <label>专业名称： </label>
+                            <input type="text" name="majorName" />
+                        </li>
+                        <!--<li>
+                            <label>状态： </label>
+                            <select name="status">
+                                <option value="">所有</option>
+                                <option th:value="0">活跃</option>
+                                <option th:value="1">非活跃</option>
+                            </select>
+                        </li>-->
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm"
+                               onclick="$.table.search($('form').attr('id'))"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm"
+                               onclick="$.form.reset($('form').attr('id'))"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-info order-table">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script th:inline="javascript">
+    var prefix = "/cEveningStudy";
+    var addFlag = [[${@permission.hasPermi('"cEveningStudy:add')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/classlist",
+            sortName: "class_name",
+            sortOrder: 'asc',
+            //modalName: "便签",
+            search: false,
+            showExport: false,
+            columns: [
+                {
+                    field: 'className',
+                    title: '班级名称',
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="' + addFlag + 'btn btn-success btn-xs" href="#" onclick="rollCall(\''+row.className+'\')"><i class="fa fa-edit"></i>点名</a> ');
+                        actions.push('<a class="btn btn-success btn-xs" href="#" onclick="selectAll(\''+row.className+'\')"><i class="fa fa-edit"></i>查看</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function rollCall(className) {
+        var url = '/cEveningStudy/selectUsers/' + className;
+        $.modal.openFull("点名",url);
+    }
+
+    function selectAll(className) {
+        var url = '/cEveningStudy/selectDemerits/' + className;
+        $.modal.openFull("总揽",url);
+    }
+
+</script>
+</body>
+</html>
