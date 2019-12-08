@@ -9,7 +9,7 @@
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-role-add">
         <div class="form-group">
-            <label class="col-sm-3 control-label">扣分编号：</label>
+            <label class="col-sm-3 control-label">扣分编码：</label>
             <div class="col-sm-8">
                 <input class="form-control" type="text" name="dCode" id="dCode">
             </div>
@@ -27,11 +27,18 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label">扣分类型：</label>
+            <label class="col-sm-3 control-label ">扣分类型：</label>
+
             <div class="col-sm-8">
-                <input class="form-control" type="text" name="dType" id="dType">
+                <select name="dType" class="form-control select2-hidden-accessible" id="dType">
+                    <option value="">-- 请选择扣分类型--</option>
+                    <option th:each="d:${DemeritTypes}" th:value="${d.dType}"
+                            th:text="${d.tMsg}">
+                    </option>
+                </select>
             </div>
         </div>
+
         <div class="form-group">
             <div class="form-control-static col-sm-offset-9">
                 <button type="submit" class="btn btn-primary">提交</button>
