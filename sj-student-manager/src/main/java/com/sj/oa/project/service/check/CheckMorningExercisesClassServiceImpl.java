@@ -45,4 +45,6 @@ public class CheckMorningExercisesClassServiceImpl implements ICheckMorningExerc
     }
 
 
+
+
 }

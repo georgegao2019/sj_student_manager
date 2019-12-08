@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.check.CheckMorningExercisesClassWeekMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.check.CheckMorningExercisesClassWeek">
+        <result column="id" property="id" />
+        <result column="class_name" property="className" />
+        <result column="week1" property="week1" />
+        <result column="week2" property="week2" />
+        <result column="week3" property="week3" />
+        <result column="week4" property="week4" />
+        <result column="week5" property="week5" />
+        <result column="average_mark" property="averageMark" />
+        <result column="rownum" property="rownum" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,class_name,major_code,
+        week1,week2,week3,week4,week5,average_mark,status,
+        create_time,create_user,update_time,update_user
+    </sql>
+
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String">
+        select <include refid="Base_Column_List"/>
+        from t_check_morning_exercises_class_week
+        where id = #{id};
+    </select>
+
+
+
+    <!--
+     添加
+    -->
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.check.CheckMorningExercisesClassWeek">
+        insert into t_check_morning_exercises_class_week
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="className != null">
+                class_name,
+            </if>
+            <if test="week1 != null">
+                week1,
+            </if>
+            <if test="week2 != null">
+                week2,
+            </if>
+            <if test="week3 != null">
+                week3,
+            </if>
+            <if test="week4 != null">
+                week4,
+            </if>
+            <if test="week5 != null">
+                week5,
+            </if>
+            <if test="averageMark != null">
+                average_mark,
+            </if>
+
+
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
+
+            <if test="week1 != null">
+                #{week1,jdbcType=INTEGER},
+            </if>
+            <if test="week2 != null">
+                #{week2,jdbcType=INTEGER},
+            </if>
+            <if test="week3 != null">
+                #{week3,jdbcType=INTEGER},
+            </if>
+            <if test="week4 != null">
+                #{week4,jdbcType=INTEGER},
+            </if>
+            <if test="week5 != null">
+                #{week5,jdbcType=INTEGER},
+            </if>
+            <if test="averageMark != null">
+                #{averageMark,jdbcType=DOUBLE},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+
+    <!-- 用户列表 查询所有 并且对总分进行排名-->
+    <select id="selectByCheckMorningExercisesClassWeek" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckMorningExercisesClassWeek">
+        select *,@rownum := @rownum + 1 AS rownum
+        from (SELECT @rownum := 0) r, t_check_morning_exercises_class_week
+        where  to_days(create_time) = to_days(now())
+        ORDER BY average_mark DESC;
+    </select>
+
+    <!--获取上周周一的总分-->
+    <select id="getWeek1Mark" resultType="String" parameterType="java.lang.String">
+        SELECT total_mark
+        FROM t_check_morning_exercises_class
+        WHERE WEEKDAY(create_time)+1 = 1 and class_name = #{className} and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) ;
+    </select>
+
+    <!--获取上周周二的总分-->
+    <select id="getWeek2Mark" resultType="String" parameterType="java.lang.String">
+        SELECT total_mark
+        FROM t_check_morning_exercises_class
+        WHERE WEEKDAY(create_time)+1 = 2 and class_name = #{className} and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) ;
+    </select>
+
+    <!--获取上周周三的总分-->
+    <select id="getWeek3Mark" resultType="String" parameterType="java.lang.String">
+        SELECT total_mark
+        FROM t_check_morning_exercises_class
+        WHERE WEEKDAY(create_time)+1 = 3 and class_name = #{className} and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) ;
+    </select>
+
+    <!--获取上周周四的总分-->
+    <select id="getWeek4Mark" resultType="String" parameterType="java.lang.String">
+        SELECT total_mark
+        FROM t_check_morning_exercises_class
+        WHERE WEEKDAY(create_time)+1 = 4 and class_name = #{className} and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) ;
+    </select>
+
+    <!--获取上周周五的总分-->
+    <select id="getWeek5Mark" resultType="String" parameterType="java.lang.String">
+        SELECT  total_mark
+        FROM t_check_morning_exercises_class
+        WHERE WEEKDAY(create_time)+1 = 5 and class_name = #{className} and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) ;
+    </select>
+
+
+
+
+</mapper>

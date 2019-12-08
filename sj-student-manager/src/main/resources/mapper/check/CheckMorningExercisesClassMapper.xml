@@ -437,7 +437,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <!-- 用户列表 根据不同条件查询-->
+    <!-- 用户列表 查询所有 并且对总分进行排名-->
     <select id="selectByCheckMorningExercisesClass" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckMorningExercisesClass">
         select *,@rownum := @rownum + 1 AS rownum
         from (SELECT @rownum := 0) r, t_check_morning_exercises_class

@@ -18,4 +18,6 @@ public interface ICheckMorningExercisesClassService {
     List<CheckMorningExercisesClass> selectByCheckMorningExercisesClass();
 
 
+
+
 }
