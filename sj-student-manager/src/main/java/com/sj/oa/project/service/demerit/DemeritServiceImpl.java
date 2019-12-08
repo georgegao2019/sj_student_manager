@@ -99,4 +99,9 @@ public class DemeritServiceImpl implements IDemeritService {
         return CsEnum.unique.IS_UNIQUE.getValue();
     }
 
+
+   public Demerit findDnumber(String dCode){
+        return demeritMapper.findDnumber(dCode);
+   }
+
 }

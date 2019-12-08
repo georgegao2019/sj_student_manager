@@ -19,14 +19,7 @@
                             <label>学号： </label>
                             <input type="text" name="studentid" />
                         </li>
-                        <li class="select-time">
-                            <label>检查时间： </label>
-                            <input type="text" class="time-input" style="width: 150px" id="beginTime" placeholder="开始时间"
-                                   name="beginTime" lay-key="1">
-                            <span>-</span>
-                            <input type="text" class="time-input" style="width: 150px" id="overTime" placeholder="结束时间"
-                                   name="overTime" lay-key="2">
-                        </li>
+
                         <li>
                             <a class="btn btn-primary btn-rounded btn-sm"
                                onclick="$.table.search($('form').attr('id'))"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -98,12 +91,14 @@
                     title: '检查人'
                 },
                 {
-                    field: 'checkTime',
-                    title: '检查时间',
-                    formatter: function (value, row, index) {
-                        return $.common.dateFormat(value);
-                    }
+                    field: 'dCode',
+                    title: '扣分编码',
                 },
+                {
+                    field: 'dNumber',
+                    title: '扣分分数',
+                },
+
                 {
                     field: 'status',
                     title: '状态',

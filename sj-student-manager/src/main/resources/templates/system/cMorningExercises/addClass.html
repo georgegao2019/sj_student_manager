@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/iCheck/custom.css}" rel="stylesheet"/>
+<link href="/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css"
+      th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-role-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">请选择班级：</label>
+
+            <div class="col-sm-8" onchange="findTotalnumber()">
+                <select name="className" class="form-control select2-hidden-accessible" id="className">
+                    <option value="">-- 请选择班级--</option>
+                    <option th:each="d:${classes}" th:value="${d.className}"
+                            th:text="${d.className}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">总人数：</label>
+            <div class="col-sm-8">
+                <input class="form-control"   type="text" name="totalNumber" id="totalNumber" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">实到人数6:30</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="realNumber1" id="realNumber1" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">实到人数6:35：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="realNumber2" id="realNumber2" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">到勤人数分数</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="totalNumberMark" id="totalNumberMark" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">迟到早退分数</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="lateMark" id="lateMark" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">操前纪律分</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="disciplineMark" id="disciplineMark" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，原地踏步</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark1" id="qMark1" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，上肢运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark2" id="qMark2" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，颈部运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark3" id="qMark3" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，扩胸运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark4" id="qMark4" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，体转运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark5" id="qMark5" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，下肢运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark6" id="qMark6" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，全身运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark7" id="qMark7" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，跑跳运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark8" id="qMark8" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不齐，整理运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qMark9" id="qMark9" value="0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，原地踏步</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark1" id="zMark1" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，上肢运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark2" id="zMark2" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，颈部运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark3" id="zMark3" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，扩胸运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark4" id="zMark4" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，体转运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark5" id="zMark5" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，下肢运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark6" id="zMark6" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，全身运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark7" id="zMark7" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，跑跳运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark8" id="zMark8" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">动作不标准，整理运动</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="zMark9" id="zMark9" value="0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">总分</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="totalMark" id="totalMark" readonly="true">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">旷操</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="lateName" id="lateName" readonly="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">请假</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="qingjiaName" id="qingjiaName" readonly="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">学生导员</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="headmaster" id="headmaster" readonly="true">
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">检查人：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="checkPerson" id="checkPerson">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-9">
+                <button type="submit" class="btn btn-primary">提交</button>
+                <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script type="text/javascript">
+
+
+    $("#form-role-add").validate({
+        rules: {
+            title: {required: true,maxlength:10}
+            , content: {
+                required: true,
+                maxlength:150,
+            }
+        },
+        submitHandler: function (form) {
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: "/cMorningExercisesClass/addSave",
+                data: $("form").serializeArray(),
+                async: false,
+                error: function (request) {
+                    $.modal.alertError("系统错误");
+                },
+                success: function (data) {
+                    $.operate.saveSuccess(data);
+                }
+            });
+        }
+    });
+
+    //获取学生信息
+    function getStudentName(studentId) {
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: "/user/getUserByStudentId",
+            data: {
+                studentId:studentId
+            },
+            async: false,
+            traditional: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if(data.code == 0){
+                    $("#majorCode").val(data.user.majorCode);
+                    $("#majorName").val(data.user.majorName);
+                    $("#className").val(data.user.className);
+                    $("#studentName").val(data.user.name);
+                }else if(data.code == 1){
+                    $("#studentName").val("");
+                    $("#majorCode").val("");
+                    $("#majorName").val("");
+                    $("#className").val("");
+                    $.modal.alertError("学号不存在");
+                }else{
+                    $("#studentName").val("");
+                    $("#majorCode").val("");
+                    $("#majorName").val("");
+                    $("#className").val("");
+                    $.modal.alertError("请输入学号");
+                }
+            }
+        });
+
+
+
+    }
+
+    function findTotalnumber() {
+        var className=$("#className").val();
+        //通过ajax向后台发送数据
+        $.post("findTotalnumber?className="+className,function(data){
+            $("#totalNumber").val(data.totalNumber);
+            $("#headmaster").val(data.headmaster);
+        });
+
+        $.post("findlateName?className="+className,function(data){
+            $("#lateName").val(data);
+        });
+
+        $.post("findqingjiaName?className="+className,function(data){
+            $("#qingjiaName").val(data);
+        });
+
+    };
+
+    $(document).ready(function(){
+        $("#totalMark").click(function(){
+          var Mark1 = parseInt($("#totalNumberMark").val()) +parseInt($("#lateMark").val())+parseInt($("#disciplineMark").val());
+          var qMark =parseInt($("#qMark1").val())+parseInt($("#qMark2").val())+parseInt($("#qMark3").val())+parseInt($("#qMark4").val())+parseInt($("#qMark5").val())+parseInt($("#qMark6").val())+parseInt($("#qMark7").val())+parseInt($("#qMark8").val())+parseInt($("#qMark9").val());
+           var zMark = parseInt($("#zMark1").val())+parseInt($("#zMark2").val())+parseInt($("#zMark3").val())+parseInt($("#zMark4").val())+parseInt($("#zMark5").val())+parseInt($("#zMark6").val())+parseInt($("#zMark7").val())+parseInt($("#zMark8").val())+parseInt($("#zMark9").val());
+           var totalMark = Mark1+(40-Math.abs(qMark)-Math.abs(zMark));
+            $("#totalMark").val(totalMark);
+        });
+    });
+ 
+
+</script>
+</body>
+</html>

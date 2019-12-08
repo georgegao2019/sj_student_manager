@@ -14,12 +14,25 @@
         <result column="create_user" property="createUser" />
         <result column="update_time" property="updateTime" />
         <result column="update_user" property="updateUser" />
+        <result column="room_name" property="roomName"/>
 
-        <association property="dormitoryRoom" javaType="DormitoryRoom">
-            <id column="id" jdbcType="VARCHAR" property="id"/>
-            <result column="room_Name" jdbcType="VARCHAR" property="roomName"/>
-        </association>
 
+
+    </resultMap>
+
+    <resultMap id="DormResultMap" type="com.sj.oa.project.po.check.CheckDarken">
+        <result column="id" property="id" />
+        <result column="building_code" property="buildingCode" />
+        <result column="step_code" property="stepCode" />
+        <result column="room_code" property="roomCode" />
+        <result column="d_code" property="dCode" />
+        <result column="check_person" property="checkPerson" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="room_Name" jdbcType="VARCHAR" property="roomName"/>
     </resultMap>
 
     <sql id="Base_Column_List">

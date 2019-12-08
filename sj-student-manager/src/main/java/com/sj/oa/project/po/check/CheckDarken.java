@@ -27,6 +27,16 @@ public class CheckDarken extends BasePo {
     //状态 0有效 1失效
     private Integer status;
 
+    private String roomName;
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
     public String getCheckPerson() {
         return checkPerson;
     }
@@ -86,8 +96,6 @@ public class CheckDarken extends BasePo {
 
 
 
-    //引用DormitoryRoom表
-    private DormitoryRoom dormitoryRoom;
 
 
 

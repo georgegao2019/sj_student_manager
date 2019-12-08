@@ -211,4 +211,11 @@
         select * from t_class_info
         where class_name = #{className}
     </select>
+
+    <!--根据班级查找总人数-->
+    <select id="findTotalNumber" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from  t_class_info
+        where class_name = #{className};
+    </select>
 </mapper>

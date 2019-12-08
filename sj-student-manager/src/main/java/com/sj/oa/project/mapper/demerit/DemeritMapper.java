@@ -53,5 +53,6 @@ public interface DemeritMapper {
      */
     Demerit checkDemeritCodeUnique(String dCode);
 
+    Demerit findDnumber(String dCode);
 
 }

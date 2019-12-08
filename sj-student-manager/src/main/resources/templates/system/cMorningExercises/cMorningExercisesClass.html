@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style type="text/css">
+    * {margin:0; padding:0; text-indent:0; }
+    p { color: black; font-family:宋体; font-style: normal; font-weight: normal; text-decoration: none; font-size: 14pt; margin:0pt; }
+    .s6 { color: black; font-family:宋体; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; }
+    .s7 { color: black; font-family:宋体; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; }
+    .s8 { color: black; font-family:宋体; font-style: normal; font-weight: normal; text-decoration: none; font-size: 14pt; }
+    .s9 { color: black; font-family:宋体; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt; }
+    .s10 { color: black; font-family:宋体; font-style: normal; font-weight: normal; text-decoration: none; font-size: 9pt; }
+    .s11 { color: black; font-family:宋体; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; }
+   h1 { color: black; font-family:宋体; font-style: normal; font-weight: bold; text-decoration: none; font-size: 15pt; }
+   li {display: block; }
+   #l1> li:before {counter-increment: c1; content: counter(c1, decimal)". "; color: black; font-family:宋体; font-style: normal; font-weight: bold; text-decoration: none; font-size: 14pt; }
+    #l1> li:first-child:before {counter-increment: c1 0;  }
+    .a1 {
+        border-top-style:solid;
+        border-top-width:1pt;
+        border-left-style:solid;
+        border-left-width:1pt;
+        border-bottom-style:solid;
+        border-bottom-width:1pt;
+        border-right-style:solid;
+        border-right-width:1pt
+    }
+    .b1 {
+        text-indent: 0pt;
+        text-align: left;
+
+    }
+    .b3 {
+        text-indent: 0pt;
+        line-height: 109%;
+        text-align: justify;
+    }
+    .b4 {
+        padding-left: 7pt;
+        padding-right: 1pt;
+        text-indent: 0pt;
+        line-height: 109%;
+        text-align: left;
+    }
+    .b5 {
+        padding-top: 7pt;
+        padding-left: 8pt;
+        padding-right: 4pt;
+        text-indent: 0pt;
+        text-align: center;
+    }
+    .b6 {
+        padding-left: 5pt;
+        text-indent: 0pt;
+        text-align: center;
+    }
+
+
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+
+
+
+
+
+
+        <div class="col-sm-12 select-info order-table">
+            <br>
+            <div class="btn-group hidden-xs" id="toolbar" role="group">
+                <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.add()" shiro:hasPermission="cMorningExercisesClass:add">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a id="dlink" class="btn btn-outline btn-success btn-rounded" onclick="exportExcel()">
+                    <i class="fa fa-plus"></i> 导出为Excel
+                </a>
+            </div>
+            <br>
+            <table class="table table-bordered table-striped"  id="table1"         >
+                <thead>
+                <tr style="height:24pt">
+                    <td class="a1" rowspan="3" style="width:59pt;">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6" style="padding-left: 18pt;text-indent: 0pt;text-align: left;">
+                            班级
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="3" style="width:26pt;">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b3" style="padding-left: 7pt;padding-right: 1pt;">
+                            总人数
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="3" style="width:35pt;">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b3" style="padding-left: 6pt;">
+                            实到人数6:30
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="3" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b3" style="padding-left: 6pt;">
+                            实到人数6:35
+                        </p>
+                    </td>
+                    <td class="a1" colspan="13" style="width:490pt; ">
+                        <p class="s6" style="padding-left: 224pt;padding-right: 219pt;text-indent: 0pt;text-align: center;">
+                            评分选项
+                        </p>
+                    </td>
+                    <td class="a1" colspan="6" rowspan="2" style="width:354pt;">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                    </td>
+                </tr>
+                <tr style="height:24pt">
+                    <td class="a1" rowspan="2" style="width:35pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            到勤人数
+                            (30)
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:36pt;">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            迟到早退(10)
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:35pt; ">
+                        <p class="s6 b4 b3">
+                            操前纪律、队列(20)
+                        </p>
+                    </td>
+                    <td class="a1" colspan="10" style="width:384pt; ">
+                        <p class="s6 b5">
+                            做操质量(40)
+                        </p>
+                    </td>
+                </tr>
+                <tr style="height:66pt">
+                    <td class="a1" style="width:51pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            原地踏步
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            上肢运动
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt;">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            颈部运动
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            扩胸运动
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            体转运动
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            下肢运动
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            全身运动
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            跑跳运动
+                        </p>
+                    </td>
+                    <td class="a1" style="width:36pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b4">
+                            整理运动
+                        </p>
+                    </td>
+                    <td class="a1" style="width:63pt; ">
+                        <p class="s6 b5">
+                            总分(100)
+                        </p>
+                    </td>
+                    <td class="a1" style="width:57pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b5">
+                            旷操
+                        </p>
+                    </td>
+                    <td class="a1" style="width:63pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b5">
+                            请假
+                        </p>
+                    </td>
+                    <td class="a1" style="width:50pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b5">
+                            学生导员
+                        </p>
+                    </td>
+                    <td class="a1" style="width:59pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b5">
+                            名次
+                        </p>
+                    </td>
+                    <td class="a1" style="width:62pt; ">
+                        <p class="b1">
+                            <br/>
+                        </p>
+                        <p class="s6 b5">
+                            操作
+                        </p>
+                    </td>
+                </tr>
+                </thead>
+                <tbody  >
+                <div th:each="MorClass:${Records}">
+                <tr style="height:28pt" >
+                    <td class="a1" rowspan="2" style="width:59pt; ">
+
+                        <p class="s7 b6">
+
+                            <span th:text="${MorClass.className}"></span>
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:26pt; ">
+
+                        <p class="s8 b6"  >
+                            <span th:text="${MorClass.totalNumber}"></span>
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:35pt; ">
+
+                        <p class="s8 b6" th:text="${MorClass.realNumber1}">
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:36pt; ">
+
+                        <p class="s8 b6" th:text="${MorClass.realNumber2}">
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:35pt; ">
+
+                        <p class="s8 b6" th:text="${MorClass.totalNumberMark}">
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:36pt; ">
+
+                        <p class="s8 b6" th:text="${MorClass.lateMark}">
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:35pt; ">
+
+                        <p class="s8 b6" th:text="${MorClass.disciplineMark}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:51pt; ">
+                        <p class="s9 b6">
+                            动作不齐
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.qMark1}">
+
+                        </p>
+                    </td>
+
+                    <td class="a1" style="width:33pt; " >
+                        <p class="s8 b6" th:text="${MorClass.qMark2}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.qMark3}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.qMark4}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.qMark5}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.qMark6}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.qMark7}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.qMark8}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.qMark9}">
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:63pt; ">
+
+                        <p class="s8 b6" th:text="${MorClass.totalMark}">
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:57pt; ">
+
+                        <p class="s7 b6" th:text="${MorClass.lateName}">
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:63pt; ">
+                        <p class="s7 b6"  th:text="${MorClass.qingjiaName}">
+
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:50pt; ">
+
+                        <p class="s7 b6" th:text="${MorClass.headmaster}">
+
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:59pt; ">
+
+                        <p class="s11 b6" th:text="${MorClass.rownum}">
+
+                        </p>
+                    </td>
+                    <td class="a1" rowspan="2" style="width:62pt; ">
+
+
+                        <a class=" btn btn-danger btn-xs"  href="#"  onclick="$.operate.remove([[${MorClass.id}]])"> <i class="fa fa-remove"></i>删除</a>'
+                    </td>
+                </tr>
+                <tr style="height:28pt">
+                    <td class="a1" style="width:51pt; ">
+                        <p class="s9 b6">
+                            动作不标准
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.zMark1}">
+
+                        </p>
+                    </td>
+
+                    <td class="a1" style="width:33pt; " >
+                        <p class="s8 b6" th:text="${MorClass.zMark2}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.zMark3}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.zMark4}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.zMark5}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.zMark6}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.zMark7}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.zMark8}">
+
+                        </p>
+                    </td>
+                    <td class="a1" style="width:33pt; ">
+                        <p class="s8 b6" th:text="${MorClass.zMark9}">
+
+                        </p>
+                    </td>
+                </tr>
+                </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+<div th:include="include :: footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+
+
+    <script th:inline="javascript">
+        var prefix = "/cMorningExercisesClass";
+        var updateFlag = [[${@permission.hasPermi('"major:update')}]];
+        //var delFlag = [[${@permission.hasPermi('"major:del')}]];
+        $(function () {
+            var options = {
+                url: prefix + "/tableList",
+                createUrl: prefix + "/toAdd",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/del",
+                sortName: "create_time",
+                sortOrder: 'desc',
+                modalName: "便签",
+                search: false,
+                showExport: true,
+
+            };
+            $.table.init(options);
+        });
+
+
+
+
+
+
+    </script>
+
+    <script>
+        function exportExcel(){
+            HtmlExportToExcel('table1','MorningExercise');
+        }
+    </script>
+
+    <script language="JavaScript" type="text/javascript">
+        //jQuery HTML导出Excel文件(兼容IE及所有浏览器)
+        function HtmlExportToExcel(tableid,file_name) {
+            var filename =file_name; //'Book'
+            if (getExplorer() == 'ie' || getExplorer() == undefined) {
+                HtmlExportToExcelForIE(tableid, filename);
+            }
+            else {
+                HtmlExportToExcelForEntire(tableid, filename)
+            }
+        }
+        //IE浏览器导出Excel
+        function HtmlExportToExcelForIE(tableid, filename) {
+            try {
+                var curTbl = document.getElementById(tableid);
+                var oXL;
+                try{
+                    oXL = new ActiveXObject("Excel.Application"); //创建AX对象excel
+                }catch(e){
+                    alert("无法启动Excel!\n\n如果您确信您的电脑中已经安装了Excel，"+"那么请调整IE的安全级别。\n\n具体操作：\n\n"+"工具 → Internet选项 → 安全 → 自定义级别 → 对没有标记为安全的ActiveX进行初始化和脚本运行 → 启用");
+                    return false;
+                }
+                var oWB = oXL.Workbooks.Add(); //获取workbook对象
+                var oSheet = oWB.ActiveSheet;//激活当前sheet
+                var sel = document.body.createTextRange();
+                sel.moveToElementText(curTbl); //把表格中的内容移到TextRange中
+                try{
+                    sel.select(); //全选TextRange中内容
+                }catch(e1){
+                    e1.description
+                }
+                sel.execCommand("Copy");//复制TextRange中内容
+                oSheet.Paste();//粘贴到活动的EXCEL中
+                oXL.Visible = true; //设置excel可见属性
+                var fname = oXL.Application.GetSaveAsFilename(filename+".xls", "Excel Spreadsheets (*.xls), *.xls");
+                oWB.SaveAs(fname);
+                oWB.Close();
+                oXL.Quit();
+
+            } catch (e) {
+                alert(e.description);
+            }
+        }
+
+        //非IE浏览器导出Excel
+        var HtmlExportToExcelForEntire = (function() {
+            var uri = 'data:application/vnd.ms-excel;base64,',
+                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+                base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+                format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+            return function(table, name) {
+                if (!table.nodeType) { table = document.getElementById(table); }
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                document.getElementById("dlink").href = uri + base64(format(template, ctx));
+                document.getElementById("dlink").download = name + ".xls";
+                document.getElementById("dlink").click();
+            }
+        })()
+
+        function getExplorer() {
+            var explorer = window.navigator.userAgent;
+            //ie
+            if (explorer.indexOf("MSIE") >= 0) {
+                return 'ie';
+            }
+            //firefox
+            else if (explorer.indexOf("Firefox") >= 0) {
+                return 'Firefox';
+            }
+            //Chrome
+            else if (explorer.indexOf("Chrome") >= 0) {
+                return 'Chrome';
+            }
+            //Opera
+            else if (explorer.indexOf("Opera") >= 0) {
+                return 'Opera';
+            }
+            //Safari
+            else if (explorer.indexOf("Safari") >= 0) {
+                return 'Safari';
+            }
+        }
+    </script>
+
+
+
+
+</body>
+</html>

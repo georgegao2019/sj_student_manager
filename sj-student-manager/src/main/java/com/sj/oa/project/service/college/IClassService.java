@@ -64,4 +64,7 @@ public interface IClassService {
      */
     String checkClassNameUnique(Classall record);
 
+
+   Classall findTotalNumber(String className);
+
 }

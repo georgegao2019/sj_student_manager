@@ -19,4 +19,8 @@ public interface ICheckMorningExercisesService {
 
     //列表条件查询
     List<CheckMorningExercises> selectByCheckMorningExercises(CheckMorningExercises record);
+
+    String findlateName(String className);
+
+    String findqingjiaName(String className);
 }

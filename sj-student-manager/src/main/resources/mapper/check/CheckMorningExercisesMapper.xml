@@ -9,7 +9,8 @@
         <result column="class_id" property="classId" />
         <result column="class_name" property="className" />
         <result column="check_person" property="checkPerson" />
-        <result column="check_time" property="checkTime" />
+        <result column="d_code" jdbcType="VARCHAR" property="dCode"/>
+        <result column="d_number" jdbcType="DOUBLE" property="dNumber"/>
         <result column="status" property="status" />
         <result column="studentid" property="studentid" />
         <result column="student_name" property="studentName" />
@@ -20,7 +21,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,major_code,major_name,class_id,class_name,check_person,check_time,status,studentid,student_name,
+        id,major_code,major_name,class_id,class_name,check_person,d_code,d_number,status,studentid,student_name,
         create_time,create_user,update_time,update_user
     </sql>
 
@@ -66,8 +67,11 @@
             <if test="checkPerson != null">
                 check_person,
             </if>
-            <if test="checkTime != null">
-                check_time,
+            <if test="dCode != null">
+                d_code,
+            </if>
+            <if test="dNumber != null">
+                d_number,
             </if>
             <if test="status != null">
                 status,
@@ -110,8 +114,11 @@
             <if test="checkPerson != null">
                 #{checkPerson,jdbcType=VARCHAR},
             </if>
-            <if test="checkTime != null">
-                #{checkTime,jdbcType=TIMESTAMP},
+            <if test="dCode != null">
+                #{dCode,jdbcType=VARCHAR},
+            </if>
+            <if test="dNumber != null">
+                #{dNumber,jdbcType=DOUBLE},
             </if>
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
@@ -152,11 +159,14 @@
             <if test="className != null">
                 class_name = #{className,jdbcType=VARCHAR},
             </if>
-            <if test="checkTime != null">
-                check_time = #{checkTime,jdbcType=TIMESTAMP},
-            </if>
             <if test="checkPerson != null">
                 check_person = #{checkPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="dCode != null">
+                d_code = #{dCode,jdbcType=VARCHAR},
+            </if>
+            <if test="dNumber != null">
+                d_number = #{dNumber,jdbcType=DOUBLE},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=INTEGER},
@@ -188,25 +198,24 @@
         select
         <include refid="Base_Column_List"></include>
         from t_check_morning_exercises
-        <where>
-            <if test="majorCode !=null and majorCode != ''">
-                and major_code = #{majorCode}
-            </if>
-            <if test="classId !=null and classId != '' ">
-                and class_id = #{classId}
-            </if>
-            <if test="studentid !=null and studentid != '' ">
-                and studentid = #{studentid}
-            </if>
-            <if test="studentName !=null and studentName != '' ">
-                and student_name = #{studentName}
-            </if>
-            <if test="beginTime !=null ">
-                <![CDATA[   and DATE_FORMAT(check_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]>
-            </if>
-            <if test="overTime !=null and overTime ">
-                <![CDATA[  and DATE_FORMAT(check_time, '%Y-%m-%d') <= DATE_FORMAT(#{overTime}, '%Y-%m-%d')    ]]>
-            </if>
-        </where>
+        where  to_days(create_time) = to_days(now())
+
     </select>
+
+
+    <select id="findlateName" resultType="String"  parameterType="java.lang.String">
+        select
+          GROUP_CONCAT(student_name SEPARATOR ',')
+        from t_check_morning_exercises
+        where d_code ='ZQQ' and  to_days(create_time) = to_days(now()) and class_name = #{className};
+    </select>
+
+    <select id="findqingjiaName" resultType="String" parameterType="java.lang.String">
+        select
+          GROUP_CONCAT(student_name SEPARATOR ',')
+        from t_check_morning_exercises
+        where d_code ='ZQJ' and  to_days(create_time) = to_days(now()) and class_name = #{className};
+    </select>
+
+
 </mapper>

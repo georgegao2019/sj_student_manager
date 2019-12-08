@@ -36,4 +36,8 @@ public interface CheckMorningExercisesMapper {
      * 用户列表 以及 根据条件查询
      */
     List<CheckMorningExercises> selectByCheckMorningExercises(CheckMorningExercises record);
+
+    String findlateName(String className);
+
+    String findqingjiaName(String className);
 }

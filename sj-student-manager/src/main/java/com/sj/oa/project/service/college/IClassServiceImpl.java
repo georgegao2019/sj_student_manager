@@ -78,4 +78,11 @@ public class IClassServiceImpl implements IClassService {
     }
 
 
+    @Override
+    public Classall findTotalNumber(String className){
+
+        return classMapper.findTotalNumber(className);
+    }
+
+
 }

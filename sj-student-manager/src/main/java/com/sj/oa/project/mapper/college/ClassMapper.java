@@ -53,4 +53,7 @@ public interface ClassMapper {
     List<Classall> selectClassAndMajor();
 
     Classall checkClassNameUnique(String className);
+
+
+    Classall findTotalNumber(String className);
 }

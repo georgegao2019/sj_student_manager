@@ -42,4 +42,16 @@ public class CheckMoringExercisesService implements ICheckMorningExercisesServic
     public List<CheckMorningExercises> selectByCheckMorningExercises(CheckMorningExercises record) {
         return checkMorningExercisesMapper.selectByCheckMorningExercises(record);
     }
+
+    @Override
+    public String findlateName(String className){
+
+        return checkMorningExercisesMapper.findlateName(className);
+    }
+
+    @Override
+    public String findqingjiaName(String className){
+
+        return checkMorningExercisesMapper.findqingjiaName(className);
+    }
 }

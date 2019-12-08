@@ -24,6 +24,7 @@
                             class="fa fa-refresh"></i></button>
                 </div>
             </div>
+            <input id="stepId" type="hidden" />
             <div class="ui-layout-content">
                 <div id="tree" class="ztree"></div>
             </div>
@@ -42,7 +43,7 @@
 
         <div class="col-sm-12 select-info order-table">
             <div class="btn-group hidden-xs btnGroup" id="toolbar" role="group">
-                <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.addFull()"
+                <a class="btn btn-outline btn-success btn-rounded" onclick="$.operate.addFull($('stepId'))"
                    shiro:hasPermission="user:add">
                     <i class="fa fa-plus"></i> 新增
                 </a>
@@ -128,7 +129,7 @@
         queryUserList: function () {
             var options = {
                 url: "/dmr/tableList",
-                createUrl: "/dmr/toAdd",
+                createUrl: "/dmr/toAdd/{id}",
                 updateUrl: "/dmr/edit/{id}",
                 removeUrl: "/dmr/del",
                 // exportUrl: prefix + "/export",
@@ -185,6 +186,7 @@
             $.table.init(options);
         },
         zTreeOnClick: function (event, treeId, treeNode) {
+            $("#stepId").val(treeNode.id);
             $.table.clickTree("stepCode", treeNode.id);
         }
     }

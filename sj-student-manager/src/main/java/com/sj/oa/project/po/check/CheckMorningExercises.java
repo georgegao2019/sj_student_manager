@@ -23,17 +23,15 @@ public class CheckMorningExercises extends BasePo {
     //班级名称
     private String className;
 
-    //应到人数
-    private Integer totalNumber;
-
-    //实到人数
-    private Integer alreadNumber;
 
     //检查人
     private String checkPerson;
 
-    //检查时间
-    private Date checkTime;
+    //扣分编码
+    private String dCode;
+
+    //扣分分数
+    private double dNumber;
 
     //状态 0有效  1失效
     private Integer status;
@@ -44,7 +42,7 @@ public class CheckMorningExercises extends BasePo {
     //缺勤学生姓名
     private String studentName;
 
-  public Integer getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -84,22 +82,6 @@ public class CheckMorningExercises extends BasePo {
         this.className = className;
     }
 
-    public Integer getTotalNumber() {
-        return totalNumber;
-    }
-
-    public void setTotalNumber(Integer totalNumber) {
-        this.totalNumber = totalNumber;
-    }
-
-    public Integer getAlreadNumber() {
-        return alreadNumber;
-    }
-
-    public void setAlreadNumber(Integer alreadNumber) {
-        this.alreadNumber = alreadNumber;
-    }
-
     public String getCheckPerson() {
         return checkPerson;
     }
@@ -108,12 +90,20 @@ public class CheckMorningExercises extends BasePo {
         this.checkPerson = checkPerson;
     }
 
-    public Date getCheckTime() {
-        return checkTime;
+    public String getdCode() {
+        return dCode;
     }
 
-    public void setCheckTime(Date checkTime) {
-        this.checkTime = checkTime;
+    public void setdCode(String dCode) {
+        this.dCode = dCode;
+    }
+
+    public double getdNumber() {
+        return dNumber;
+    }
+
+    public void setdNumber(double dNumber) {
+        this.dNumber = dNumber;
     }
 
     public Integer getStatus() {

@@ -56,4 +56,7 @@ public interface IDemeritService {
      * @return 结果
      */
     public String checkDemeritCodeUnique(Demerit demerit);
+
+
+    Demerit findDnumber(String dCode);
 }

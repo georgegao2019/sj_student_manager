@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.oa.project.mapper.check.CheckMorningExercisesClassMapper">
+
+    <resultMap id="BaseResultMap" type="com.sj.oa.project.po.check.CheckMorningExercisesClass">
+        <result column="id" property="id" />
+        <result column="class_name" property="className" />
+        <result column="major_code" property="majorCode" />
+        <result column="total_number" property="totalNumber" />
+        <result column="should_number" property="shouldNumber" />
+        <result column="real_number1" property="realNumber1" />
+        <result column="real_number2" property="realNumber2" />
+        <result column="headmaster" property="headmaster" />
+        <result column="discipline_mark" property="disciplineMark" />
+        <result column="total_number_mark" property="totalNumberMark" />
+        <result column="late_mark" property="lateMark" />
+        <result column="late_name" property="lateName" />
+        <result column="qingjia_name" property="qingjiaName" />
+        <result column="q_mark1" property="qMark1" />
+        <result column="q_mark2" property="qMark2" />
+        <result column="q_mark3" property="qMark3" />
+        <result column="q_mark4" property="qMark4" />
+        <result column="q_mark5" property="qMark5" />
+        <result column="q_mark6" property="qMark6" />
+        <result column="q_mark7" property="qMark7" />
+        <result column="q_mark8" property="qMark8" />
+        <result column="q_mark9" property="qMark9" />
+        <result column="z_mark1" property="zMark1" />
+        <result column="z_mark2" property="zMark2" />
+        <result column="z_mark3" property="zMark3" />
+        <result column="z_mark4" property="zMark4" />
+        <result column="z_mark5" property="zMark5" />
+        <result column="z_mark6" property="zMark6" />
+        <result column="z_mark7" property="zMark7" />
+        <result column="z_mark8" property="zMark8" />
+        <result column="z_mark9" property="zMark9" />
+        <result column="total_mark" property="totalMark" />
+
+
+        <result column="status" property="status" />
+
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,class_name,major_code,total_number,should_number,real_number1,real_number2,headmaster,discipline_mark,
+        total_number_mark,late_mark,late_name,qingjia_name,
+        q_mark1,q_mark2,q_mark3,q_mark4,q_mark5,q_mark6,q_mark7,q_mark8,q_mark9,
+        z_mark1,z_mark2,z_mark3,z_mark4,z_mark5,z_mark6,z_mark7,z_mark8,z_mark9,
+        total_mark,status,
+        create_time,create_user,update_time,update_user
+    </sql>
+
+    <!--主键查找-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String">
+        select <include refid="Base_Column_List"/>
+        from t_check_morning_exercises_class
+        where id = #{id};
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteByPrimaryKeys" parameterType="int">
+        UPDATE
+        t_check_morning_exercises_class
+        set status = 1
+        WHERE id IN
+        <foreach collection="array" item="id" index="idex" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--
+     添加
+    -->
+    <insert id="insertSelective" parameterType="com.sj.oa.project.po.check.CheckMorningExercisesClass">
+        insert into t_check_morning_exercises_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="className != null">
+                class_name,
+            </if>
+            <if test="majorCode != null">
+                major_code,
+            </if>
+
+            <if test="totalNumber != null">
+                total_number,
+            </if>
+            <if test="shouldNumber != null">
+                should_number,
+            </if>
+            <if test="realNumber1 != null">
+                real_number1,
+            </if>
+            <if test="realNumber2 != null">
+                real_number2,
+            </if>
+            <if test="headmaster != null">
+                headmaster,
+            </if>
+            <if test="disciplineMark != null">
+                discipline_mark,
+            </if>
+            <if test="totalNumberMark != null">
+                total_number_mark,
+            </if>
+            <if test="lateMark != null">
+                late_mark,
+            </if>
+            <if test="lateName != null">
+                late_name,
+            </if>
+            <if test="qingjiaName != null">
+                qingjia_name,
+            </if>
+
+            <if test="qMark1 != null">
+                q_mark1,
+            </if>
+            <if test="qMark2 != null">
+                q_mark2,
+            </if>
+            <if test="qMark3 != null">
+                q_mark3,
+            </if>
+            <if test="qMark4 != null">
+                q_mark4,
+            </if>
+            <if test="qMark5 != null">
+                q_mark5,
+            </if>
+            <if test="qMark6 != null">
+                q_mark6,
+            </if>
+            <if test="qMark7 != null">
+                q_mark7,
+            </if>
+            <if test="qMark8 != null">
+                q_mark8,
+            </if>
+            <if test="qMark9 != null">
+                q_mark9,
+            </if>
+
+            <if test="zMark1 != null">
+                z_mark1,
+            </if>
+            <if test="zMark2 != null">
+                z_mark2,
+            </if>
+            <if test="zMark3 != null">
+                z_mark3,
+            </if>
+            <if test="zMark4 != null">
+                z_mark4,
+            </if>
+            <if test="zMark5 != null">
+                z_mark5,
+            </if>
+            <if test="zMark6 != null">
+                z_mark6,
+            </if>
+            <if test="zMark7 != null">
+                z_mark7,
+            </if>
+            <if test="zMark8 != null">
+                z_mark8,
+            </if>
+            <if test="zMark9 != null">
+                z_mark9,
+            </if>
+            <if test="totalMark != null">
+                total_mark,
+            </if>
+
+
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="majorCode != null">
+                #{majorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="totalNumber != null">
+                #{totalNumber,jdbcType=INTEGER},
+            </if>
+            <if test="shouldNumber != null">
+                #{shouldNumber,jdbcType=INTEGER},
+            </if>
+            <if test="realNumber1 != null">
+                #{realNumber1,jdbcType=INTEGER},
+            </if>
+            <if test="realNumber2 != null">
+                #{realNumber2,jdbcType=INTEGER},
+            </if>
+            <if test="headmaster != null">
+                #{headmaster,jdbcType=VARCHAR},
+            </if>
+            <if test="disciplineMark != null">
+                #{disciplineMark,jdbcType=INTEGER},
+            </if>
+            <if test="totalNumberMark != null">
+                #{totalNumberMark,jdbcType=INTEGER},
+            </if>
+            <if test="lateMark != null">
+                #{lateMark,jdbcType=INTEGER},
+            </if>
+            <if test="lateName != null">
+                #{lateName,jdbcType=VARCHAR},
+            </if>
+            <if test="qingjiaName != null">
+                #{qingjiaName,jdbcType=VARCHAR},
+            </if>
+            <if test="qMark1 != null">
+                #{qMark1,jdbcType=INTEGER},
+            </if>
+            <if test="qMark2 != null">
+                #{qMark2,jdbcType=INTEGER},
+            </if>
+            <if test="qMark3 != null">
+                #{qMark3,jdbcType=INTEGER},
+            </if>
+            <if test="qMark4 != null">
+                #{qMark4,jdbcType=INTEGER},
+            </if>
+            <if test="qMark5 != null">
+                #{qMark5,jdbcType=INTEGER},
+            </if>
+            <if test="qMark6 != null">
+                #{qMark6,jdbcType=INTEGER},
+            </if>
+            <if test="qMark7 != null">
+                #{qMark7,jdbcType=INTEGER},
+            </if>
+            <if test="qMark8 != null">
+                #{qMark8,jdbcType=INTEGER},
+            </if>
+            <if test="qMark9 != null">
+                #{qMark9,jdbcType=INTEGER},
+            </if>
+
+            <if test="zMark1 != null">
+                #{zMark1,jdbcType=INTEGER},
+            </if>
+            <if test="zMark2 != null">
+                #{zMark2,jdbcType=INTEGER},
+            </if>
+            <if test="zMark3 != null">
+                #{zMark3,jdbcType=INTEGER},
+            </if>
+            <if test="zMark4 != null">
+                #{zMark4,jdbcType=INTEGER},
+            </if>
+            <if test="zMark5 != null">
+                #{zMark5,jdbcType=INTEGER},
+            </if>
+            <if test="zMark6 != null">
+                #{zMark6,jdbcType=INTEGER},
+            </if>
+            <if test="zMark7 != null">
+                #{zMark7,jdbcType=INTEGER},
+            </if>
+            <if test="zMark8 != null">
+                #{zMark8,jdbcType=INTEGER},
+            </if>
+            <if test="zMark9 != null">
+                #{zMark9,jdbcType=INTEGER},
+            </if>
+            <if test="totalMark != null">
+                #{totalMark,jdbcType=INTEGER},
+            </if>
+
+
+
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sj.oa.project.po.check.CheckMorningExercisesClass">
+        update t_check_morning_exercises_class
+        <set>
+            <if test="className != null">
+                class_name = #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="majorCode != null">
+                major_code = #{majorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="totalNumber != null">
+                total_number = #{totalNumber,jdbcType=INTEGER},
+            </if>
+            <if test="shouldNumber != null">
+                should_number = #{shouldNumber,jdbcType=INTEGER},
+            </if>
+            <if test="realNumber1 != null">
+                real_number1 = #{realNumber1,jdbcType=INTEGER},
+            </if>
+            <if test="realNumber2 != null">
+                real_number2 = #{realNumber2,jdbcType=INTEGER},
+            </if>
+
+            <if test="headmaster != null">
+                headmaster = #{headmaster,jdbcType=VARCHAR},
+            </if>
+
+            <if test="disciplineMark != null">
+                discipline_mark = #{disciplineMark,jdbcType=INTEGER},
+            </if>
+            <if test="totalNumberMark != null">
+                total_number_mark = #{totalNumberMark,jdbcType=INTEGER},
+            </if>
+
+            <if test="lateMark != null">
+                late_mark = #{lateMark,jdbcType=INTEGER},
+            </if>
+            <if test="lateName != null">
+                late_name = #{lateName,jdbcType=VARCHAR},
+            </if>
+            <if test="qingjiaName != null">
+                qingjia_name = #{qingjiaName,jdbcType=VARCHAR},
+            </if>
+
+            <if test="qMark1 != null">
+                q_mark1 = #{qMark1,jdbcType=INTEGER},
+            </if>
+            <if test="qMark2 != null">
+                q_mark2 = #{qMark2,jdbcType=INTEGER},
+            </if>
+            <if test="qMark3 != null">
+                q_mark3 = #{qMark3,jdbcType=INTEGER},
+            </if>
+            <if test="qMark4 != null">
+                q_mark4 = #{qMark4,jdbcType=INTEGER},
+            </if>
+            <if test="qMark5 != null">
+                q_mark5 = #{qMark5,jdbcType=INTEGER},
+            </if>
+            <if test="qMark6 != null">
+                q_mark6 = #{qMark6,jdbcType=INTEGER},
+            </if>
+            <if test="qMark7 != null">
+                q_mark7 = #{qMark7,jdbcType=INTEGER},
+            </if>
+            <if test="qMark8 != null">
+                q_mark8 = #{qMark8,jdbcType=INTEGER},
+            </if>
+            <if test="qMark9 != null">
+                q_mark9 = #{qMark9,jdbcType=INTEGER},
+            </if>
+
+            <if test="zMark1 != null">
+                z_mark1 = #{zMark1,jdbcType=INTEGER},
+            </if>
+            <if test="zMark2 != null">
+                z_mark2 = #{zMark2,jdbcType=INTEGER},
+            </if>
+            <if test="zMark3 != null">
+                z_mark3 = #{zMark3,jdbcType=INTEGER},
+            </if>
+            <if test="zMark4 != null">
+                z_mark4 = #{zMark4,jdbcType=INTEGER},
+            </if>
+            <if test="zMark5 != null">
+                z_mark5 = #{zMark5,jdbcType=INTEGER},
+            </if>
+            <if test="zMark6 != null">
+                z_mark6 = #{zMark6,jdbcType=INTEGER},
+            </if>
+            <if test="zMark7 != null">
+                z_mark7 = #{zMark7,jdbcType=INTEGER},
+            </if>
+            <if test="zMark8 != null">
+                z_mark8 = #{zMark8,jdbcType=INTEGER},
+            </if>
+            <if test="zMark9 != null">
+                z_mark9 = #{zMark9,jdbcType=INTEGER},
+            </if>
+            <if test="totalMark != null">
+                total_mark = #{totalMark,jdbcType=INTEGER},
+            </if>
+
+
+
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_time = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 用户列表 根据不同条件查询-->
+    <select id="selectByCheckMorningExercisesClass" resultMap="BaseResultMap" parameterType="com.sj.oa.project.po.check.CheckMorningExercisesClass">
+        select *,@rownum := @rownum + 1 AS rownum
+        from (SELECT @rownum := 0) r, t_check_morning_exercises_class
+        where  to_days(create_time) = to_days(now())
+        ORDER BY total_mark DESC;
+
+
+    </select>
+
+
+</mapper>

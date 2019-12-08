@@ -4,13 +4,17 @@ import com.sj.oa.framework.annotation.Operlog;
 import com.sj.oa.framework.web.controller.BaseController;
 import com.sj.oa.framework.web.page.TableDataInfo;
 import com.sj.oa.framework.web.po.AjaxResult;
-import com.sj.oa.project.po.check.CheckMorningExercises;
 import com.sj.oa.project.po.User;
+import com.sj.oa.project.po.check.CheckMorningExercises;
+import com.sj.oa.project.po.check.CheckMorningExercisesClass;
+import com.sj.oa.project.po.college.Classall;
+import com.sj.oa.project.po.college.YearSessionInfo;
 import com.sj.oa.project.po.demerit.Demerit;
 import com.sj.oa.project.service.check.ICheckEveningStudyService;
+import com.sj.oa.project.service.check.ICheckMorningExercisesClassService;
 import com.sj.oa.project.service.check.ICheckMorningExercisesService;
+import com.sj.oa.project.service.college.IClassService;
 import com.sj.oa.project.service.college.IMajorService;
-import com.sj.oa.project.service.demerit.IDemeritService;
 import com.sj.oa.project.service.user.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +27,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author gaojun
- * @date 2019/8/1
- * 早操检查controller
- */
+
 @Controller
-@RequestMapping("/cMorningExercises")
-public class CheckMorningExercisesController extends BaseController{
+@RequestMapping("/cMorningExercisesClass")
+public class CheckMorningExercisesClassController extends BaseController {
+
     //前缀
     private final static String prefix = "system/cMorningExercises";
     @Autowired
-    ICheckMorningExercisesService iCheckMorningExercisesService;
+    ICheckMorningExercisesClassService ICheckMorningExercisesClassService;
     @Autowired
     IUserService iUserService;
     @Autowired
     com.sj.oa.project.service.demerit.IDemeritService IDemeritService;
     @Autowired
-    private IMajorService iMajorService;
-    @Autowired
     private ICheckEveningStudyService iCheckEveningStudyService;
+    @Autowired
+    IClassService IClassService;
+    @Autowired
+    ICheckMorningExercisesService iCheckMorningExercisesService;
+
     /**
      *
      * @描述: 跳转到列表页
@@ -52,11 +56,15 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2018/9/26 21:13
      */
     @RequestMapping("/tolist")
-    @RequiresPermissions("cMorningExercises:list")
+    @RequiresPermissions("cMorningExercisesClass:list")
     public String toList(Model model) {
         //查询全部专业
         //List<Major> majors = iMajorService.selectMajorList();
-        return prefix + "/cMorningExercises";
+        List<CheckMorningExercisesClass> records = ICheckMorningExercisesClassService.selectByCheckMorningExercisesClass();
+
+        model.addAttribute("Records", records);
+
+        return prefix + "/cMorningExercisesClass";
     }
     /**
      *
@@ -66,13 +74,13 @@ public class CheckMorningExercisesController extends BaseController{
      * @return:
      * @date: 2018/9/26 21:15
      */
-    @RequestMapping("/tableList")
-    @ResponseBody
-    public TableDataInfo tableList(CheckMorningExercises record) {
-        startPage();
-        List<CheckMorningExercises> records = iCheckMorningExercisesService.selectByCheckMorningExercises(record);
-        return getDataTable(records);
-    }
+//    @RequestMapping("/tableList")
+//    @ResponseBody
+//    public TableDataInfo tableList(CheckMorningExercisesClass record) {
+//        startPage();
+//        List<CheckMorningExercisesClass> records = iCheckMorningExercisesClassService.selectByCheckMorningExercisesClass(record);
+//        return getDataTable(records);
+//    }
     /**
      *
      * @描述: 添加页面
@@ -83,9 +91,11 @@ public class CheckMorningExercisesController extends BaseController{
      */
     @RequestMapping("/toAdd")
     public String toAdd(Model model) {
-        List<Demerit> demerits = iCheckEveningStudyService.selectDemeritByType("ZC");
-        model.addAttribute("demerits", demerits);
-        return prefix + "/add";
+
+        List<YearSessionInfo> yearSessionInfos = iCheckEveningStudyService.selectYearSessionInfoByLimit(1);
+        List<Classall> classAlls = iCheckEveningStudyService.selectClassInfoByGrade(yearSessionInfos);
+        model.addAttribute("classes",classAlls);
+        return prefix + "/addClass";
     }
     /**
      *
@@ -96,16 +106,16 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2018/9/26 21:16
      */
     @RequestMapping("/addSave")
-    @RequiresPermissions("cMorningExercises:add")
+    @RequiresPermissions("cMorningExercisesClass:add")
     @Operlog(modal = "早操检查",descr = "添加记录")
     @ResponseBody
-    public AjaxResult addSave(CheckMorningExercises record) throws Exception {
+    public AjaxResult addSave(CheckMorningExercisesClass record) throws Exception {
         record.setCreateTime(new Date());
         User loginUser = iUserService.selectByPrimaryKey(getUserId());
         record.setCreateUser(loginUser.getName());
         //新增的早操检查记录默认是 有效 状态
         record.setStatus(0);
-        return result(iCheckMorningExercisesService.insertSelective(record));
+        return result(ICheckMorningExercisesClassService.insertSelective(record));
     }
     /**
      *
@@ -116,11 +126,11 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2019/8/1 22:02
      */
     @RequestMapping("/del")
-    @RequiresPermissions("cMorningExercises:del")
+    @RequiresPermissions("cMorningExercisesClass:del")
     @Operlog(modal = "早操检查",descr = "删除记录")
     @ResponseBody
     public AjaxResult del(Integer[] ids) {
-        return result(iCheckMorningExercisesService.deleteByPrimaryKeys(ids));
+        return result(ICheckMorningExercisesClassService.deleteByPrimaryKeys(ids));
     }
     /**
      *
@@ -130,13 +140,13 @@ public class CheckMorningExercisesController extends BaseController{
      * @return:
      * @date: 2019/8/26 21:17
      */
-    @RequestMapping("/cMorningExercises/{id}")
-    @RequiresPermissions("cMorningExercises:update")
+    @RequestMapping("/cMorningExercisesClass/{id}")
+    @RequiresPermissions("cMorningExercisesClass:update")
     @Operlog(modal = "早操检查",descr = "查询记录")
     public String toEdit(@PathVariable("id") Integer id, Model model) {
-        CheckMorningExercises record = iCheckMorningExercisesService.selectByPrimaryKey(id);
+        CheckMorningExercisesClass record = ICheckMorningExercisesClassService.selectByPrimaryKey(id);
         model.addAttribute("note", record);
-        return prefix + "/edit";
+        return prefix + "/editClass";
     }
     /**
      *
@@ -147,18 +157,40 @@ public class CheckMorningExercisesController extends BaseController{
      * @date: 2019/8/1 21:01
      */
     @RequestMapping("/editSave")
-    @RequiresPermissions("cMorningExercises:update")
+    @RequiresPermissions("cMorningExercisesClass:update")
     @Operlog(modal = "早操检查",descr = "修改记录")
     @ResponseBody
-    public AjaxResult editSave(CheckMorningExercises record) {
-        return result(iCheckMorningExercisesService.updateByPrimaryKeySelective(record));
+    public AjaxResult editSave(CheckMorningExercisesClass record) {
+        return result(ICheckMorningExercisesClassService.updateByPrimaryKeySelective(record));
     }
 
-    @RequestMapping("/findDnumber")
+
+
+
+    @RequestMapping("/findTotalnumber")
     @ResponseBody
-    public Demerit findDnumber(Model model,String dCode){
-
-        return  IDemeritService.findDnumber(dCode);
+    public Classall findTotalnumber(Model model, String className){
+        Classall  Class = IClassService.findTotalNumber(className);
+        return Class;
 
     }
+
+    @RequestMapping("/findlateName")
+    @ResponseBody
+    public String findlateName(String className){
+        String  name = iCheckMorningExercisesService.findlateName(className);
+        return name;
+
+    }
+
+    @RequestMapping("/findqingjiaName")
+    @ResponseBody
+    public String findqingjiaName(String className){
+        String  name = iCheckMorningExercisesService.findqingjiaName(className);
+        return name;
+
+    }
+
+
+
 }

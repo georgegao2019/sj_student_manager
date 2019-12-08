@@ -30,11 +30,11 @@
                                onclick="$.form.reset($('form').attr('id'))"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                         </li>
                     </ul>
+
+                        <button type="button"class="btn btn-warning btn-rounded btn-sm" id="generate-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> 将表格转换为Excel</button>
+
                 </div>
             </form>
-        </div>
-        <div class="col-md-3" style="padding:2em 0;">
-            <button type="button" class="btn btn-success btn-block" id="generate-excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> 将表格转换为Excel</button>
         </div>
 
         <div class="btn-group hidden-xs" id="toolbar" role="group">
@@ -47,9 +47,8 @@
             </a>
         </div>
 
-
         <div class="col-sm-12 select-info order-table">
-            <table data-mobile-responsive="true" id="test_table">
+            <table data-mobile-responsive="true"  id="test_table">
                 <thead>
                 <tr>
                     <th style="" data-field="className" tabindex="0">
@@ -72,15 +71,10 @@
                         <div class="th-inner ">分值</div>
                         <div class="fht-cell"></div>
                     </th>
-                    <th style=""  tabindex="0">
-                        <div class="th-inner ">操作</div>
-                        <div class="fht-cell"></div>
-                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr data-index="0" th:each="cess,cessStat:${cess}">
-
                     <td style="" th:text="${cess.user.className}"></td>
                     <td style="" th:text="${cess.studentid}"></td>
                     <td style="" th:text="${cess.user.name}"></td>
@@ -96,13 +90,13 @@
         </div>
     </div>
 </div>
+
 <div th:include="include :: footer"></div>
-<script th:src="@{/ajax/libs/select/select2.js}"></script>
-<script src="../js/jquery.min.js" ></script>
 <script src="../js/jszip.min.js" ></script>
 <script src="../js/FileSaver.js" ></script>
 <script src="../js/demo.page.js" ></script>
 <script src="../js/excel-gen.js" ></script>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
 <script th:inline="javascript">
     var prefix = "/cEveningStudy";
     //var updateFlag = [[${@permission.hasPermi('"major:update')}]];
@@ -117,7 +111,7 @@
             sortOrder: 'desc',
             modalName: "便签",
             search: false,
-            showExport: true,
+            showExport: false,
 
         };
         $.table.init(options);

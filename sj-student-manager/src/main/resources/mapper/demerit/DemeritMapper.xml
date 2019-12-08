@@ -162,4 +162,12 @@
        d_type = #{dType,jdbcType=VARCHAR},
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <select id="findDnumber" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List"/>
+        from t_demerit
+        where d_code = #{dCode}
+
+
+    </select>
 </mapper>
