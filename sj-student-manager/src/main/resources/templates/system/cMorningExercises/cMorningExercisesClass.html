@@ -411,7 +411,7 @@
                     <td class="a1" rowspan="2" style="width:62pt; ">
 
 
-                        <a class=" btn btn-danger btn-xs"  href="#"  onclick="$.operate.remove([[${MorClass.id}]])"> <i class="fa fa-remove"></i>删除</a>
+                        <a class=" btn btn-danger btn-xs"  href="#"  th:onclick="'remove(\''+${MorClass.id}+'\')'"> <i class="fa fa-remove"></i>删除</a>
                     </td>
                 </tr>
                 <tr style="height:28pt">
@@ -592,6 +592,10 @@
             else if (explorer.indexOf("Safari") >= 0) {
                 return 'Safari';
             }
+        }
+
+        function remove(id){
+            $.operate.remove(id);
         }
     </script>
 
